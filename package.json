@@ -1,0 +1,52 @@
+{
+    "name": "markdown-formatter",
+    "displayName": "markdown-formatter",
+    "description": "Markdown Format Extension",
+    "version": "0.0.6",
+    "icon": "icon.png",
+    "publisher": "mervin",
+    "engines": {
+        "vscode": "^1.0.0"
+    },
+    "categories": [
+        "Snippets"
+    ],
+    "activationEvents": [
+        "onLanguage:markdown"
+    ],
+    "main": "./out/src/extension",
+    "contributes": {
+        "configuration": {
+            "type": "object",
+            "title": "Markdown Formatter",
+            "properties": {
+                "markdownFormatter.enable": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Enable/disable Markdown Formatter."
+                },
+                "markdownFormatter.formatOpt": {
+                    "type": "object",
+                    "default": {},
+                    "description": "you have code style ~~ now."
+                }
+            }
+        }
+    },
+    "scripts": {
+        "vscode:prepublish": "node ./node_modules/vscode/bin/compile",
+        "compile": "node ./node_modules/vscode/bin/compile -watch -p ./",
+        "postinstall": "node ./node_modules/vscode/bin/install"
+    },
+    "devDependencies": {
+        "escape-string-regexp": "^1.0.5",
+        "reformat-markdown-table": "^1.1.0",
+        "typescript": "^1.8.5",
+        "vscode": "^0.11.0"
+    },
+    "dependencies": {
+        "escape-string-regexp": "^1.0.5",
+        "reformat-markdown-table": "^1.1.0",
+        "js-beautify": "^1.8.8"
+    }
+}
