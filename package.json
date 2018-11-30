@@ -8,6 +8,10 @@
     "engines": {
         "vscode": "^1.0.0"
     },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/sumnow/markdown-formatter"
+    },
     "categories": [
         "Snippets"
     ],

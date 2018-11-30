@@ -1,4 +1,4 @@
-# markdown-formatter
+# markdown-formatter CN
 
 ## 介绍
 
@@ -32,7 +32,11 @@
 
 VSCode 版本 1.29.1 (macOS Mojave)
 
-# markdown-formatter
+## 联系
+
+如果你有任何想法,请联系我
+
+# markdown-formatter EN
 
 ## Introduction
 
@@ -63,3 +67,13 @@ In any `markdown` standard file with a `.md` suffix, you can use `shift+option+f
 ## Software version
 
 VSCode version 1.29.1 (macOS Mojave)
+
+## Contact
+
+If you have any ideas, please contact me.
+
+email: mydiamervin@gmail.com
+
+or
+
+[here](https://github.com/sumnow/markdown-formatter/issues)
