@@ -11,12 +11,14 @@ var escapeStringRegexp = require('escape-string-regexp');
 var beautify = require('js-beautify')
 
 let config = workspace.getConfiguration('markdownFormatter');
+let commaEN = config.get<boolean>('commaEN', false);
 let enable: boolean = config.get<boolean>('enable', true);
 let formatOpt: any = config.get<any>('formatOpt', {});
 
 workspace.onDidChangeConfiguration(e => {
     config = workspace.getConfiguration('markdownFormatter');
     enable = config.get<boolean>('enable', true);
+    commaEN = config.get<boolean>('commaEN', false);
     formatOpt = config.get<any>('formatOpt', {});
 });
 
@@ -27,7 +29,7 @@ export function activate(context: vscode.ExtensionContext) {
     // comma symbol
     const COMMA_EXP = /[,，]\ */g;
     // period symbol
-    const PERIOD_EXP = /([。;；！、？：])\ */g;
+    const PERIOD_EXP = /([，,。;；！、？：])\ */g;
     // h1 symbol
     const H1_EXP = /^(# [^\n]+)\n*/g;
     // h2,h3,h4... symbol
@@ -43,8 +45,15 @@ export function activate(context: vscode.ExtensionContext) {
     const EXTRALINE_EXP = /\n\n+/g;
 
     // code block
-    const JS_EXP = /( {4}[^\n]+\n*)+/g;
+    // const JS_EXP = /( {4}[^\n]+\n*)+/g;
+    const JS_EXP = /(( {4}|\t)[^\n]+\n*)+/g;
     const CODE_EXP = /\n*```([\s\S]+?)```\n*/g;
+    const ISCODE_EXP = /\n*```(\w*)\n([\s\S]+?)```\n*/g
+
+    // line-break
+    const LINE_BREAK_EXP = /\r\n/g;
+    // 
+    // const line_EXP = /\n*```(\w*)\n([\s\S]+?)```\n*/g
 
     function extractTables(text: string): string[] {
         return text.match(TABLE_EXP);
@@ -53,23 +62,27 @@ export function activate(context: vscode.ExtensionContext) {
         provideDocumentFormattingEdits(document, options, token) {
             if (!enable) { return }
 
-            const beautifyOpt = formatOpt
+            const beautifyOpt = Object.assign({ "preserve_newlines": false }, formatOpt)
             const result: vscode.TextEdit[] = [];
 
             const start = new vscode.Position(0, 0);
             const end = new vscode.Position(document.lineCount - 1, document.lineAt(document.lineCount - 1).text.length);
             const range = new vscode.Range(start, end);
             let text = document.getText(range)
+            text = text.replace(LINE_BREAK_EXP, '\n')
+            // console.log(text.replace(line_EXP, '$1---$2'))
 
             // simple handle
-            text = text.replace(COMMA_EXP, ', ')
+            if (commaEN) {
+                text = text.replace(COMMA_EXP, ',')
+            }
             text = text.replace(PERIOD_EXP, '$1 ')
             text = text.replace(BACK_QUOTE_EXP, ' `$1` ')
             text = text.replace(H_EXP, '\n\n' + '$1' + '\n\n')
             text = text.replace(H1_EXP, '$1' + '\n\n')
             text = text.replace(CODE_EXP, '\n\n```' + '$1' + '```\n\n')
             text = text.replace(LINK_EXP, '\n\n' + '$1' + '\n\n')
-            text = text.replace(LINK_SPACE_EXP, '\n'+'$1 $2')
+            text = text.replace(LINK_SPACE_EXP, '\n' + '$1 $2')
             text = text.replace(EXTRALINE_EXP, '\n\n')
 
             // handler js
@@ -80,12 +93,15 @@ export function activate(context: vscode.ExtensionContext) {
                     text = text.replace(re, beautify(e, beautifyOpt) + '\n\n')
                 })
             }
-            const _codeArr = text.match(CODE_EXP)
+            const _codeArr = text.match(ISCODE_EXP)
 
             if (_codeArr && _codeArr.length > 0) {
                 _codeArr.forEach(e => {
-                    var re = new RegExp(escapeStringRegexp(e.replace(CODE_EXP, '$1')), 'g')
-                    text = text.replace(re, '\n' + beautify(e.replace(CODE_EXP, '$1'), beautifyOpt) + '\n')
+                    var isJs = e.replace(ISCODE_EXP, '$1').toLocaleLowerCase()
+                    if (isJs === 'js' || isJs === 'javascript' || isJs === '') {
+                        var re = new RegExp(escapeStringRegexp(e.replace(ISCODE_EXP, '$2')), 'g')
+                        text = text.replace(re, '\n' + beautify(e.replace(ISCODE_EXP, '$2'), beautifyOpt) + '\n')
+                    }
                 })
             }
 

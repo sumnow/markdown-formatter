@@ -1,5 +1,15 @@
-## Change Log
+# Log
 
+[EN](#ChangeLog)
+[CN](#开发日志)
+
+## ChangeLog
+
+#### 0.0.7
+
+- fix bug: code dulicated formatted
+- fix bug: PC / UNIX endofline
+- update README.md
 
 #### 0.0.6 
 
@@ -16,21 +26,27 @@
 
 #### 0.0.3
 
-- Empty a line for the title;
+- Empty a line for the title; 
 
 #### 0.0.2
 
-- Fix the back-quote problem in the code block;
+- Fix the back-quote problem in the code block; 
 
 #### 0.0.1  
 
-- Initial release of the tidy-markdown extension;
+- Initial release of the tidy-markdown extension; 
 
 ## 开发日志
 
+#### 修复问题
+
+- 修复bug: 代码重复格式化
+- 修复bug: PC/UNIX 行尾符号
+- 更新 README.md
+
 #### 0.0.6
 
-- 修复引用显示bug
+- 修复bug: 引用显示
 - 更新README.md和图标
 
 #### 0.0.5
@@ -52,6 +68,4 @@
 #### 0.0.1  
 
 - 初始化 `markdown-formatter` 版本
-
-
 

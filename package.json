@@ -2,7 +2,7 @@
     "name": "markdown-formatter",
     "displayName": "markdown-formatter",
     "description": "Markdown Format Extension",
-    "version": "0.0.6",
+    "version": "0.0.7",
     "icon": "icon.png",
     "publisher": "mervin",
     "engines": {
@@ -27,7 +27,12 @@
                 "markdownFormatter.enable": {
                     "type": "boolean",
                     "default": true,
-                    "description": "Enable/disable Markdown Formatter."
+                    "description": "Enable/disable markdown-formatter."
+                },
+                "markdownFormatter.commaEN:": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "unify it as a half-width character','."
                 },
                 "markdownFormatter.formatOpt": {
                     "type": "object",

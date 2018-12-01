@@ -10,11 +10,13 @@ var escapeStringRegexp = require('escape-string-regexp');
 // import beautify from 'js-beautify'
 var beautify = require('js-beautify');
 var config = vscode_1.workspace.getConfiguration('markdownFormatter');
+var commaEN = config.get('commaEN', false);
 var enable = config.get('enable', true);
 var formatOpt = config.get('formatOpt', {});
 vscode_1.workspace.onDidChangeConfiguration(function (e) {
     config = vscode_1.workspace.getConfiguration('markdownFormatter');
     enable = config.get('enable', true);
+    commaEN = config.get('commaEN', false);
     formatOpt = config.get('formatOpt', {});
 });
 // this method is called when your extension is activated
@@ -23,7 +25,7 @@ function activate(context) {
     // comma symbol
     var COMMA_EXP = /[,，]\ */g;
     // period symbol
-    var PERIOD_EXP = /([。;；！、？：])\ */g;
+    var PERIOD_EXP = /([，,。;；！、？：])\ */g;
     // h1 symbol
     var H1_EXP = /^(# [^\n]+)\n*/g;
     // h2,h3,h4... symbol
@@ -38,8 +40,14 @@ function activate(context) {
     // duplicated line
     var EXTRALINE_EXP = /\n\n+/g;
     // code block
-    var JS_EXP = /( {4}[^\n]+\n*)+/g;
+    // const JS_EXP = /( {4}[^\n]+\n*)+/g;
+    var JS_EXP = /(( {4}|\t)[^\n]+\n*)+/g;
     var CODE_EXP = /\n*```([\s\S]+?)```\n*/g;
+    var ISCODE_EXP = /\n*```(\w*)\n([\s\S]+?)```\n*/g;
+    // line-break
+    var LINE_BREAK_EXP = /\r\n/g;
+    // 
+    // const line_EXP = /\n*```(\w*)\n([\s\S]+?)```\n*/g
     function extractTables(text) {
         return text.match(TABLE_EXP);
     }
@@ -48,14 +56,18 @@ function activate(context) {
             if (!enable) {
                 return;
             }
-            var beautifyOpt = formatOpt;
+            var beautifyOpt = Object.assign({ "preserve_newlines": false }, formatOpt);
             var result = [];
             var start = new vscode.Position(0, 0);
             var end = new vscode.Position(document.lineCount - 1, document.lineAt(document.lineCount - 1).text.length);
             var range = new vscode.Range(start, end);
             var text = document.getText(range);
+            text = text.replace(LINE_BREAK_EXP, '\n');
+            // console.log(text.replace(line_EXP, '$1---$2'))
             // simple handle
-            text = text.replace(COMMA_EXP, ', ');
+            if (commaEN) {
+                text = text.replace(COMMA_EXP, ',');
+            }
             text = text.replace(PERIOD_EXP, '$1 ');
             text = text.replace(BACK_QUOTE_EXP, ' `$1` ');
             text = text.replace(H_EXP, '\n\n' + '$1' + '\n\n');
@@ -72,11 +84,14 @@ function activate(context) {
                     text = text.replace(re, beautify(e, beautifyOpt) + '\n\n');
                 });
             }
-            var _codeArr = text.match(CODE_EXP);
+            var _codeArr = text.match(ISCODE_EXP);
             if (_codeArr && _codeArr.length > 0) {
                 _codeArr.forEach(function (e) {
-                    var re = new RegExp(escapeStringRegexp(e.replace(CODE_EXP, '$1')), 'g');
-                    text = text.replace(re, '\n' + beautify(e.replace(CODE_EXP, '$1'), beautifyOpt) + '\n');
+                    var isJs = e.replace(ISCODE_EXP, '$1').toLocaleLowerCase();
+                    if (isJs === 'js' || isJs === 'javascript' || isJs === '') {
+                        var re = new RegExp(escapeStringRegexp(e.replace(ISCODE_EXP, '$2')), 'g');
+                        text = text.replace(re, '\n' + beautify(e.replace(ISCODE_EXP, '$2'), beautifyOpt) + '\n');
+                    }
                 });
             }
             // handler table

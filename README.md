@@ -1,4 +1,7 @@
-# markdown-formatter CN
+# markdown-formatter
+
+[CN](#介绍)
+[EN](#Introduction)
 
 ## 介绍
 
@@ -17,7 +20,7 @@
 ## 主要功能
 
 - `。;；！、？：`这些符号后添加一个空格；
-- `,，`提供一个空格并且统一为半角符；
+- `,，`后一个空格，同一为半角符(可选)；
 - 反逗号前后空一格；
 - 标题上下空出一行；
 - 代码块上下空出一行；
@@ -32,11 +35,23 @@
 
 VSCode 版本 1.29.1 (macOS Mojave)
 
+## 配置
+
+    enable = config.get<boolean>('enable', true); // 是否启用格式化
+    commaEN = config.get<boolean>('commaEN', false); // 是否统一符号
+    formatOpt = config.get<any>('formatOpt', {}); // beautify配置
+
 ## 联系
 
 如果你有任何想法,请联系我
 
-# markdown-formatter EN
+email: mydiamervin@gmail.com
+
+或者
+
+[这里](https://github.com/sumnow/markdown-formatter/issues)
+
+---
 
 ## Introduction
 
@@ -53,7 +68,7 @@ In any `markdown` standard file with a `.md` suffix, you can use `shift+option+f
 ## Function
 
 - For `。 ；;！ ？ ：`Add a space after these symbols;
-- Provide a space for `,，` and unify it as a half-width character;
+- Provide a space for `,，` , unify it as a half-width character(Optional);
 - a space before and after the back-quote;
 - Empty a line for the title;
 - Empty a line for the code block;
@@ -67,6 +82,12 @@ In any `markdown` standard file with a `.md` suffix, you can use `shift+option+f
 ## Software version
 
 VSCode version 1.29.1 (macOS Mojave)
+
+## Config
+
+    enable = config.get<boolean>('enable', true); // enable/disable markdown-formatter
+    commaEN = config.get<boolean>('commaEN', false); // unity to ','
+    formatOpt = config.get<any>('formatOpt', {}); // config beautify 
 
 ## Contact
 
