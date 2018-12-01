@@ -62,7 +62,10 @@ export function activate(context: vscode.ExtensionContext) {
         provideDocumentFormattingEdits(document, options, token) {
             if (!enable) { return }
 
-            const beautifyOpt = Object.assign({ "preserve_newlines": false }, formatOpt)
+            let beautifyOpt = {}
+            if (formatOpt !== false) {
+                beautifyOpt = Object.assign({ "preserve_newlines": false }, formatOpt)
+            }
             const result: vscode.TextEdit[] = [];
 
             const start = new vscode.Position(0, 0);
@@ -86,23 +89,25 @@ export function activate(context: vscode.ExtensionContext) {
             text = text.replace(EXTRALINE_EXP, '\n\n')
 
             // handler js
-            const _jsArr = text.match(JS_EXP)
-            if (_jsArr && _jsArr.length > 0) {
-                _jsArr.forEach(e => {
-                    var re = new RegExp(escapeStringRegexp(e), 'g')
-                    text = text.replace(re, beautify(e, beautifyOpt) + '\n\n')
-                })
-            }
-            const _codeArr = text.match(ISCODE_EXP)
+            if (formatOpt !== false) {
+                const _jsArr = text.match(JS_EXP)
+                if (_jsArr && _jsArr.length > 0) {
+                    _jsArr.forEach(e => {
+                        var re = new RegExp(escapeStringRegexp(e), 'g')
+                        text = text.replace(re, beautify(e, beautifyOpt) + '\n\n')
+                    })
+                }
+                const _codeArr = text.match(ISCODE_EXP)
 
-            if (_codeArr && _codeArr.length > 0) {
-                _codeArr.forEach(e => {
-                    var isJs = e.replace(ISCODE_EXP, '$1').toLocaleLowerCase()
-                    if (isJs === 'js' || isJs === 'javascript' || isJs === '') {
-                        var re = new RegExp(escapeStringRegexp(e.replace(ISCODE_EXP, '$2')), 'g')
-                        text = text.replace(re, '\n' + beautify(e.replace(ISCODE_EXP, '$2'), beautifyOpt) + '\n')
-                    }
-                })
+                if (_codeArr && _codeArr.length > 0) {
+                    _codeArr.forEach(e => {
+                        var isJs = e.replace(ISCODE_EXP, '$1').toLocaleLowerCase()
+                        if (isJs === 'js' || isJs === 'javascript' || isJs === '') {
+                            var re = new RegExp(escapeStringRegexp(e.replace(ISCODE_EXP, '$2')), 'g')
+                            text = text.replace(re, '\n' + beautify(e.replace(ISCODE_EXP, '$2'), beautifyOpt) + '\n')
+                        }
+                    })
+                }
             }
 
             // handler table

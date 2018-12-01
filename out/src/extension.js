@@ -56,7 +56,10 @@ function activate(context) {
             if (!enable) {
                 return;
             }
-            var beautifyOpt = Object.assign({ "preserve_newlines": false }, formatOpt);
+            var beautifyOpt = {};
+            if (formatOpt !== false) {
+                beautifyOpt = Object.assign({ "preserve_newlines": false }, formatOpt);
+            }
             var result = [];
             var start = new vscode.Position(0, 0);
             var end = new vscode.Position(document.lineCount - 1, document.lineAt(document.lineCount - 1).text.length);
@@ -77,22 +80,24 @@ function activate(context) {
             text = text.replace(LINK_SPACE_EXP, '\n' + '$1 $2');
             text = text.replace(EXTRALINE_EXP, '\n\n');
             // handler js
-            var _jsArr = text.match(JS_EXP);
-            if (_jsArr && _jsArr.length > 0) {
-                _jsArr.forEach(function (e) {
-                    var re = new RegExp(escapeStringRegexp(e), 'g');
-                    text = text.replace(re, beautify(e, beautifyOpt) + '\n\n');
-                });
-            }
-            var _codeArr = text.match(ISCODE_EXP);
-            if (_codeArr && _codeArr.length > 0) {
-                _codeArr.forEach(function (e) {
-                    var isJs = e.replace(ISCODE_EXP, '$1').toLocaleLowerCase();
-                    if (isJs === 'js' || isJs === 'javascript' || isJs === '') {
-                        var re = new RegExp(escapeStringRegexp(e.replace(ISCODE_EXP, '$2')), 'g');
-                        text = text.replace(re, '\n' + beautify(e.replace(ISCODE_EXP, '$2'), beautifyOpt) + '\n');
-                    }
-                });
+            if (formatOpt !== false) {
+                var _jsArr = text.match(JS_EXP);
+                if (_jsArr && _jsArr.length > 0) {
+                    _jsArr.forEach(function (e) {
+                        var re = new RegExp(escapeStringRegexp(e), 'g');
+                        text = text.replace(re, beautify(e, beautifyOpt) + '\n\n');
+                    });
+                }
+                var _codeArr = text.match(ISCODE_EXP);
+                if (_codeArr && _codeArr.length > 0) {
+                    _codeArr.forEach(function (e) {
+                        var isJs = e.replace(ISCODE_EXP, '$1').toLocaleLowerCase();
+                        if (isJs === 'js' || isJs === 'javascript' || isJs === '') {
+                            var re = new RegExp(escapeStringRegexp(e.replace(ISCODE_EXP, '$2')), 'g');
+                            text = text.replace(re, '\n' + beautify(e.replace(ISCODE_EXP, '$2'), beautifyOpt) + '\n');
+                        }
+                    });
+                }
             }
             // handler table
             var _tableArr = extractTables(text);

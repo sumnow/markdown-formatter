@@ -5,6 +5,10 @@
 
 ## ChangeLog
 
+#### 0.0.8
+
+- enable/disable format code 
+
 #### 0.0.7
 
 - fix bug: code dulicated formatted
@@ -38,7 +42,11 @@
 
 ## 开发日志
 
-#### 修复问题
+#### 0.0.8
+
+- 是否格式化代码
+
+#### 0.07
 
 - 修复bug: 代码重复格式化
 - 修复bug: PC/UNIX 行尾符号

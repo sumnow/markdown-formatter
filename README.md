@@ -39,7 +39,9 @@ VSCode 版本 1.29.1 (macOS Mojave)
 
     enable = config.get<boolean>('enable', true); // 是否启用格式化
     commaEN = config.get<boolean>('commaEN', false); // 是否统一符号
-    formatOpt = config.get<any>('formatOpt', {}); // beautify配置
+    formatOpt = config.get<any>('formatOpt', {}); // 是否格式化代码或者配置beautifyjs(false: 不格式化代码，{}: 配置beautifyjs)
+
+配置beautifyjs, 可以参考[这里](https://github.com/beautify-web/js-beautify)
 
 ## 联系
 
@@ -87,7 +89,9 @@ VSCode version 1.29.1 (macOS Mojave)
 
     enable = config.get<boolean>('enable', true); // enable/disable markdown-formatter
     commaEN = config.get<boolean>('commaEN', false); // unity to ','
-    formatOpt = config.get<any>('formatOpt', {}); // config beautify 
+    formatOpt = config.get<any>('formatOpt', {}); // enable/disable format code or config beautifyjs(false: disable format code , {}: config beautifyjs)
+
+How to config beautifyjs, you can click[here](https://github.com/beautify-web/js-beautify)
 
 ## Contact
 
