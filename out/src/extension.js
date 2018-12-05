@@ -13,9 +13,11 @@ var config = vscode_1.workspace.getConfiguration('markdownFormatter');
 var commaEN = config.get('commaEN', false);
 var enable = config.get('enable', true);
 var formatOpt = config.get('formatOpt', {});
+var codeAreaFormat = config.get('codeAreaFormat', true);
 vscode_1.workspace.onDidChangeConfiguration(function (e) {
     config = vscode_1.workspace.getConfiguration('markdownFormatter');
     enable = config.get('enable', true);
+    codeAreaFormat = config.get('codeAreaFormat', true);
     commaEN = config.get('commaEN', false);
     formatOpt = config.get('formatOpt', {});
 });
@@ -31,7 +33,7 @@ function activate(context) {
     // h2,h3,h4... symbol
     var H_EXP = /\n*(##+ [^\n]+)\n*/g;
     // table
-    var TABLE_EXP = /((?:(?:[^\n]*?\|[^\n]*)\ *)?(?:\r?\n|^))((?:\|\ *(?::?-+:?|::)\ *|\|?(?:\ *(?::?-+:?|::)\ *\|)+)(?:\ *(?::?-+:?|::)\ *)?\ *\r?\n)((?:(?:[^\n]*?\|[^\n]*)\ *(?:\r?\n|$))+)/g;
+    var TABLE_EXP = /((?:(?:[^\n]*?\|[^\n]*)\ *)?(?:\r?\n|^))(?:[^|]+)((?:\|\ *(?::?-+:?|::)\ *|\|?(?:\ *(?::?-+:?|::)\ *\|)+)(?:\ *(?::?-+:?|::)\ *)?\ *\r?\n)((?:(?:[^\n]*?\|[^\n]*)\ *(?:\r?\n|$))+)/g;
     //back quote
     var BACK_QUOTE_EXP = /\ *`([^`\n]+)`\ */g;
     // link 
@@ -40,8 +42,8 @@ function activate(context) {
     // duplicated line
     var EXTRALINE_EXP = /\n\n+/g;
     // code block
-    // const JS_EXP = /( {4}[^\n]+\n*)+/g;
-    var JS_EXP = /(( {4}|\t)[^\n]+\n*)+/g;
+    var CODE_AREA_EXP = /\n+((?:(?: {4}|\t)+[^\n]+\n*)+)/g;
+    // const CODE_AREA_EXP = /(?:(?: {4}|\t)+[^\n]+\n*)+/g;
     var CODE_EXP = /\n*```([\s\S]+?)```\n*/g;
     var ISCODE_EXP = /\n*```(\w*)\n([\s\S]+?)```\n*/g;
     // line-break
@@ -67,27 +69,16 @@ function activate(context) {
             var text = document.getText(range);
             text = text.replace(LINE_BREAK_EXP, '\n');
             // console.log(text.replace(line_EXP, '$1---$2'))
-            // simple handle
-            if (commaEN) {
-                text = text.replace(COMMA_EXP, ',');
+            // handler table
+            var _tableArr = extractTables(text);
+            if (_tableArr && _tableArr.length > 0) {
+                _tableArr.forEach(function (table) {
+                    var re = new RegExp(escapeStringRegexp(String(table)), 'g');
+                    text = text.replace(re, function (substring) { return reformat(table); });
+                });
             }
-            text = text.replace(PERIOD_EXP, '$1 ');
-            text = text.replace(BACK_QUOTE_EXP, ' `$1` ');
-            text = text.replace(H_EXP, '\n\n' + '$1' + '\n\n');
-            text = text.replace(H1_EXP, '$1' + '\n\n');
-            text = text.replace(CODE_EXP, '\n\n```' + '$1' + '```\n\n');
-            text = text.replace(LINK_EXP, '\n\n' + '$1' + '\n\n');
-            text = text.replace(LINK_SPACE_EXP, '\n' + '$1 $2');
-            text = text.replace(EXTRALINE_EXP, '\n\n');
             // handler js
             if (formatOpt !== false) {
-                var _jsArr = text.match(JS_EXP);
-                if (_jsArr && _jsArr.length > 0) {
-                    _jsArr.forEach(function (e) {
-                        var re = new RegExp(escapeStringRegexp(e), 'g');
-                        text = text.replace(re, beautify(e, beautifyOpt) + '\n\n');
-                    });
-                }
                 var _codeArr = text.match(ISCODE_EXP);
                 if (_codeArr && _codeArr.length > 0) {
                     _codeArr.forEach(function (e) {
@@ -98,14 +89,27 @@ function activate(context) {
                         }
                     });
                 }
-            }
-            // handler table
-            var _tableArr = extractTables(text);
-            if (_tableArr && _tableArr.length > 0) {
-                _tableArr.forEach(function (table) {
-                    var re = new RegExp(escapeStringRegexp(String(table)), 'g');
-                    text = text.replace(re, function (substring) { return reformat(table); });
-                });
+                var temp_text = text.replace(ISCODE_EXP, '');
+                // console.log(temp_text)
+                var _jsArr = temp_text.match(CODE_AREA_EXP);
+                if (codeAreaFormat && _jsArr && _jsArr.length > 0) {
+                    _jsArr.forEach(function (e) {
+                        var re = new RegExp(escapeStringRegexp(e), 'g');
+                        text = text.replace(re, '\n\n' + beautify(e.replace(CODE_AREA_EXP, '$1'), beautifyOpt) + '\n\n');
+                    });
+                }
+                // simple handle
+                if (commaEN) {
+                    text = text.replace(COMMA_EXP, ',');
+                }
+                text = text.replace(PERIOD_EXP, '$1 ');
+                text = text.replace(BACK_QUOTE_EXP, ' `$1` ');
+                text = text.replace(H_EXP, '\n\n' + '$1' + '\n\n');
+                text = text.replace(H1_EXP, '$1' + '\n\n');
+                text = text.replace(CODE_EXP, '\n\n```' + '$1' + '```\n\n');
+                text = text.replace(LINK_EXP, '\n\n' + '$1' + '\n\n');
+                text = text.replace(LINK_SPACE_EXP, '\n' + '$1 $2');
+                text = text.replace(EXTRALINE_EXP, '\n\n');
             }
             result.push(new vscode.TextEdit(range, text));
             return result;

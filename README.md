@@ -17,7 +17,7 @@
 
 **注意** 它并不会修复你的markdown语法错误，例如作为标题,`#`后没有加空格，这是因为在代码中#是一个可用字符，广泛得用作注释或变量声明。
 
-## 主要功能
+## 功能
 
 - `。;；！、？：`这些符号后添加一个空格；
 - `,，`后一个空格，同一为半角符(可选)；
@@ -26,10 +26,22 @@
 - 代码块上下空出一行；
 - 表格自动对齐；
 - 为引用上下空出一行；
-- 会格式化代码块中代码，依据`js-beautify`工具，目前只有`javascript`语言；
-- 相邻的空行合并
+- 相邻的空行合并；
+- 依据配置会格式化代码块中代码，依据`js-beautify`工具，目前只有`javascript`语言
 
-> 在`settings.json` 可以配置js格式化规则.
+    1. 代码区
+
+            function sayHello() {console.log('hello')}
+        
+        总是会被按照js语法格式化，如果`codeAreaFormat`为`true`(默认值)
+
+    2. 代码块
+    ``` lang
+    function sayHello() {console.log('hello')}
+    ```
+    如果`lang`为`js`或者`javascript`或者为空,会按照js语法格式化。
+
+> 编辑 `VS Code` 的 `settings.json` 可以配置js格式化规则.
 
 ## 测试版本
 
@@ -40,6 +52,8 @@ VSCode 版本 1.29.1 (macOS Mojave)
     enable = config.get<boolean>('enable', true); // 是否启用格式化
     commaEN = config.get<boolean>('commaEN', false); // 是否统一符号
     formatOpt = config.get<any>('formatOpt', {}); // 是否格式化代码或者配置beautifyjs(false: 不格式化代码，{}: 配置beautifyjs)
+    let codeAreaFormat: boolean = config.get<boolean>('codeAreaFormat', true);
+
 
 配置beautifyjs, 可以参考[这里](https://github.com/beautify-web/js-beautify)
 
@@ -65,9 +79,11 @@ After the installation is complete, you will need to restart your vscode.
 
 In any `markdown` standard file with a `.md` suffix, you can use `shift+option+f` to quickly format the code.
 
+![example.gif](images/example.gif)
+
 > PS: It does not fix your markdown syntax errors, for example, there is no space after `#` as a title , because in the code # is a usable character that is widely used as a comment or variable declaration.
 
-## Function
+## Feature
 
 - For `。 ；;！ ？ ：`Add a space after these symbols;
 - Provide a space for `,，` , unify it as a half-width character(Optional);
@@ -76,8 +92,24 @@ In any `markdown` standard file with a `.md` suffix, you can use `shift+option+f
 - Empty a line for the code block;
 - The table is aligned automatically;
 - Empty a line for the link block;
-- Will format the code, by `js-beautify` tool, currently only the `javascript` language;
-- erase dulicated line
+- erase dulicated line;
+- Format the code, by `js-beautify` tool, currently only the `javascript` language;
+
+
+1. code area
+
+            function sayHello() {console.log('hello')}
+        
+        
+        
+    Will always be formatted according to js syntax, if `codeAreaFormat` is `true` (default)
+
+    2. code block
+    ``` lang
+    function sayHello() {console.log('hello')}
+    ```
+    
+    If `lang` is `js` or `javascript` or empty, it will be formatted according to js syntax.
 
 > The js formatting rules can be configured in `settings.json`.
 

@@ -11,13 +11,16 @@ var escapeStringRegexp = require('escape-string-regexp');
 var beautify = require('js-beautify')
 
 let config = workspace.getConfiguration('markdownFormatter');
-let commaEN = config.get<boolean>('commaEN', false);
+let commaEN: boolean = config.get<boolean>('commaEN', false);
 let enable: boolean = config.get<boolean>('enable', true);
 let formatOpt: any = config.get<any>('formatOpt', {});
+let codeAreaFormat: boolean = config.get<boolean>('codeAreaFormat', true);
+
 
 workspace.onDidChangeConfiguration(e => {
     config = workspace.getConfiguration('markdownFormatter');
     enable = config.get<boolean>('enable', true);
+    codeAreaFormat = config.get<boolean>('codeAreaFormat', true);
     commaEN = config.get<boolean>('commaEN', false);
     formatOpt = config.get<any>('formatOpt', {});
 });
@@ -35,7 +38,7 @@ export function activate(context: vscode.ExtensionContext) {
     // h2,h3,h4... symbol
     const H_EXP = /\n*(##+ [^\n]+)\n*/g;
     // table
-    const TABLE_EXP = /((?:(?:[^\n]*?\|[^\n]*)\ *)?(?:\r?\n|^))((?:\|\ *(?::?-+:?|::)\ *|\|?(?:\ *(?::?-+:?|::)\ *\|)+)(?:\ *(?::?-+:?|::)\ *)?\ *\r?\n)((?:(?:[^\n]*?\|[^\n]*)\ *(?:\r?\n|$))+)/g;
+    const TABLE_EXP = /((?:(?:[^\n]*?\|[^\n]*)\ *)?(?:\r?\n|^))(?:[^|]+)((?:\|\ *(?::?-+:?|::)\ *|\|?(?:\ *(?::?-+:?|::)\ *\|)+)(?:\ *(?::?-+:?|::)\ *)?\ *\r?\n)((?:(?:[^\n]*?\|[^\n]*)\ *(?:\r?\n|$))+)/g;
     //back quote
     const BACK_QUOTE_EXP = /\ *`([^`\n]+)`\ */g;
     // link 
@@ -45,8 +48,8 @@ export function activate(context: vscode.ExtensionContext) {
     const EXTRALINE_EXP = /\n\n+/g;
 
     // code block
-    // const JS_EXP = /( {4}[^\n]+\n*)+/g;
-    const JS_EXP = /(( {4}|\t)[^\n]+\n*)+/g;
+    const CODE_AREA_EXP = /\n+((?:(?: {4}|\t)+[^\n]+\n*)+)/g;
+    // const CODE_AREA_EXP = /(?:(?: {4}|\t)+[^\n]+\n*)+/g;
     const CODE_EXP = /\n*```([\s\S]+?)```\n*/g;
     const ISCODE_EXP = /\n*```(\w*)\n([\s\S]+?)```\n*/g
 
@@ -75,28 +78,18 @@ export function activate(context: vscode.ExtensionContext) {
             text = text.replace(LINE_BREAK_EXP, '\n')
             // console.log(text.replace(line_EXP, '$1---$2'))
 
-            // simple handle
-            if (commaEN) {
-                text = text.replace(COMMA_EXP, ',')
+            // handler table
+            const _tableArr = extractTables(text)
+            if (_tableArr && _tableArr.length > 0) {
+                _tableArr.forEach((table) => {
+                    var re = new RegExp(escapeStringRegexp(String(table)), 'g')
+                    text = text.replace(re, (substring: string) => reformat(table))
+                })
             }
-            text = text.replace(PERIOD_EXP, '$1 ')
-            text = text.replace(BACK_QUOTE_EXP, ' `$1` ')
-            text = text.replace(H_EXP, '\n\n' + '$1' + '\n\n')
-            text = text.replace(H1_EXP, '$1' + '\n\n')
-            text = text.replace(CODE_EXP, '\n\n```' + '$1' + '```\n\n')
-            text = text.replace(LINK_EXP, '\n\n' + '$1' + '\n\n')
-            text = text.replace(LINK_SPACE_EXP, '\n' + '$1 $2')
-            text = text.replace(EXTRALINE_EXP, '\n\n')
+
 
             // handler js
             if (formatOpt !== false) {
-                const _jsArr = text.match(JS_EXP)
-                if (_jsArr && _jsArr.length > 0) {
-                    _jsArr.forEach(e => {
-                        var re = new RegExp(escapeStringRegexp(e), 'g')
-                        text = text.replace(re, beautify(e, beautifyOpt) + '\n\n')
-                    })
-                }
                 const _codeArr = text.match(ISCODE_EXP)
 
                 if (_codeArr && _codeArr.length > 0) {
@@ -108,16 +101,31 @@ export function activate(context: vscode.ExtensionContext) {
                         }
                     })
                 }
+                const temp_text = text.replace(ISCODE_EXP, '')
+                // console.log(temp_text)
+                const _jsArr = temp_text.match(CODE_AREA_EXP)
+                if (codeAreaFormat && _jsArr && _jsArr.length > 0) {
+                    _jsArr.forEach(e => {
+                        var re = new RegExp(escapeStringRegexp(e), 'g')
+                        text = text.replace(re, '\n\n' + beautify(e.replace(CODE_AREA_EXP, '$1'), beautifyOpt) + '\n\n')
+                    })
+                }
+
+                // simple handle
+                if (commaEN) {
+                    text = text.replace(COMMA_EXP, ',')
+                }
+                text = text.replace(PERIOD_EXP, '$1 ')
+                text = text.replace(BACK_QUOTE_EXP, ' `$1` ')
+                text = text.replace(H_EXP, '\n\n' + '$1' + '\n\n')
+                text = text.replace(H1_EXP, '$1' + '\n\n')
+                text = text.replace(CODE_EXP, '\n\n```' + '$1' + '```\n\n')
+                text = text.replace(LINK_EXP, '\n\n' + '$1' + '\n\n')
+                text = text.replace(LINK_SPACE_EXP, '\n' + '$1 $2')
+                text = text.replace(EXTRALINE_EXP, '\n\n')
             }
 
-            // handler table
-            const _tableArr = extractTables(text)
-            if (_tableArr && _tableArr.length > 0) {
-                _tableArr.forEach((table) => {
-                    var re = new RegExp(escapeStringRegexp(String(table)), 'g')
-                    text = text.replace(re, (substring: string) => reformat(table))
-                })
-            }
+
             result.push(new vscode.TextEdit(range, text));
             return result;
         }

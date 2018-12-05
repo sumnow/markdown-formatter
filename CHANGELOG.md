@@ -5,6 +5,14 @@
 
 ## ChangeLog
 
+#### 0.1.0
+
+- fix bug: format table  failed
+
+#### 0.0.9
+
+- fix bug: code area formatted failed
+
 #### 0.0.8
 
 - enable/disable format code 
@@ -41,6 +49,14 @@
 - Initial release of the tidy-markdown extension; 
 
 ## 开发日志
+
+#### 0.1.0
+
+- 修复表格格式化bug
+
+#### 0.0.9
+
+- 修复代码区域bug
 
 #### 0.0.8
 
