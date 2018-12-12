@@ -2,7 +2,7 @@
     "name": "markdown-formatter",
     "displayName": "markdown-formatter",
     "description": "Markdown Format Extension",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "icon": "icon.png",
     "publisher": "mervin",
     "engines": {
@@ -30,9 +30,9 @@
                     "description": "Enable/disable markdown-formatter."
                 },
                 "markdownFormatter.commaEN:": {
-                    "type": "boolean",
-                    "default": false,
-                    "description": "Unify it as a half-width character/or not."
+                    "type": "string",
+                    "default": "",
+                    "description": "Unify fullwidth( ，：；！‘’（）) as a half-width character( ,:;!''() )."
                 },
                 "markdownFormatter.codeAreaFormat:": {
                     "type": "boolean",

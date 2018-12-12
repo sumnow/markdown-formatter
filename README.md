@@ -20,7 +20,7 @@
 ## 功能
 
 - `。;；！、？：`这些符号后添加一个空格；
-- `,，`后一个空格，同一为半角符(可选)；
+- `，，：；！“”‘’（）`，转换为半角符(可选)；
 - 反逗号前后空一格；
 - 标题上下空出一行；
 - 代码块上下空出一行；
@@ -50,7 +50,7 @@ VSCode 版本 1.29.1 (macOS Mojave)
 ## 配置
 
     enable = config.get<boolean>('enable', true); // 是否启用格式化
-    commaEN = config.get<boolean>('commaEN', false); // 是否统一符号
+    commaEN: string = config.get<string>('commaEN', ''); // 全角符号转化为半角符号
     formatOpt = config.get<any>('formatOpt', {}); // 是否格式化代码或者配置beautifyjs(false: 不格式化代码，{}: 配置beautifyjs)
     let codeAreaFormat: boolean = config.get<boolean>('codeAreaFormat', true);
 
@@ -120,7 +120,7 @@ VSCode version 1.29.1 (macOS Mojave)
 ## Config
 
     enable = config.get<boolean>('enable', true); // enable/disable markdown-formatter
-    commaEN = config.get<boolean>('commaEN', false); // unity to ','
+    commaEN: string = config.get<string>('commaEN', ''); // fullwidth character translate into halfwidth character
     formatOpt = config.get<any>('formatOpt', {}); // enable/disable format code or config beautifyjs(false: disable format code , {}: config beautifyjs)
 
 How to config beautifyjs, you can click[here](https://github.com/beautify-web/js-beautify)

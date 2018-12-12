@@ -11,7 +11,7 @@ var escapeStringRegexp = require('escape-string-regexp');
 var beautify = require('js-beautify')
 
 let config = workspace.getConfiguration('markdownFormatter');
-let commaEN: boolean = config.get<boolean>('commaEN', false);
+let commaEN: string = config.get<string>('commaEN', '');
 let enable: boolean = config.get<boolean>('enable', true);
 let formatOpt: any = config.get<any>('formatOpt', {});
 let codeAreaFormat: boolean = config.get<boolean>('codeAreaFormat', true);
@@ -21,7 +21,7 @@ workspace.onDidChangeConfiguration(e => {
     config = workspace.getConfiguration('markdownFormatter');
     enable = config.get<boolean>('enable', true);
     codeAreaFormat = config.get<boolean>('codeAreaFormat', true);
-    commaEN = config.get<boolean>('commaEN', false);
+    commaEN = config.get<string>('commaEN', '');
     formatOpt = config.get<any>('formatOpt', {});
 });
 
@@ -57,6 +57,7 @@ export function activate(context: vscode.ExtensionContext) {
     const LINE_BREAK_EXP = /\r\n/g;
     // 
     // const line_EXP = /\n*```(\w*)\n([\s\S]+?)```\n*/g
+    const LIST_EXP = /(((?:\n)+(?: {4}|\t)*(?:\d\.|\-|\*|\+) [^\n]+)+)/g;
 
     function extractTables(text: string): string[] {
         return text.match(TABLE_EXP);
@@ -76,7 +77,6 @@ export function activate(context: vscode.ExtensionContext) {
             const range = new vscode.Range(start, end);
             let text = document.getText(range)
             text = text.replace(LINE_BREAK_EXP, '\n')
-            // console.log(text.replace(line_EXP, '$1---$2'))
 
             // handler table
             const _tableArr = extractTables(text)
@@ -86,7 +86,6 @@ export function activate(context: vscode.ExtensionContext) {
                     text = text.replace(re, (substring: string) => reformat(table))
                 })
             }
-
 
             // handler js
             if (formatOpt !== false) {
@@ -102,7 +101,6 @@ export function activate(context: vscode.ExtensionContext) {
                     })
                 }
                 const temp_text = text.replace(ISCODE_EXP, '')
-                // console.log(temp_text)
                 const _jsArr = temp_text.match(CODE_AREA_EXP)
                 if (codeAreaFormat && _jsArr && _jsArr.length > 0) {
                     _jsArr.forEach(e => {
@@ -111,10 +109,21 @@ export function activate(context: vscode.ExtensionContext) {
                     })
                 }
 
-                // simple handle
+                // handle fullwidth character
                 if (commaEN) {
-                    text = text.replace(COMMA_EXP, ',')
+                    const fullwidthArr = `，：；！“”‘’（）`.split('')
+                    const halfwidthArr = `,:;!""''()`.split('')
+                    const commaArr = commaEN.split('')
+                    commaArr.forEach(e => {
+                        const _i = fullwidthArr.indexOf(e)
+                        if (_i > -1) {
+                            const _reg = new RegExp('\\' + e, 'g')
+                            text = text.replace(_reg, halfwidthArr[_i])
+                        }
+                    })
                 }
+
+                text = text.replace(LIST_EXP, '\n' + '$1' + '\n');
                 text = text.replace(PERIOD_EXP, '$1 ')
                 text = text.replace(BACK_QUOTE_EXP, ' `$1` ')
                 text = text.replace(H_EXP, '\n\n' + '$1' + '\n\n')

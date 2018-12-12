@@ -5,6 +5,11 @@
 
 ## ChangeLog
 
+#### 0.1.1
+
+- add feature: list formatted
+- add feature: fullwidth to halfwidth
+
 #### 0.1.0
 
 - fix bug: format table  failed

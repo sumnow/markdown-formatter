@@ -10,7 +10,7 @@ var escapeStringRegexp = require('escape-string-regexp');
 // import beautify from 'js-beautify'
 var beautify = require('js-beautify');
 var config = vscode_1.workspace.getConfiguration('markdownFormatter');
-var commaEN = config.get('commaEN', false);
+var commaEN = config.get('commaEN', '');
 var enable = config.get('enable', true);
 var formatOpt = config.get('formatOpt', {});
 var codeAreaFormat = config.get('codeAreaFormat', true);
@@ -18,7 +18,7 @@ vscode_1.workspace.onDidChangeConfiguration(function (e) {
     config = vscode_1.workspace.getConfiguration('markdownFormatter');
     enable = config.get('enable', true);
     codeAreaFormat = config.get('codeAreaFormat', true);
-    commaEN = config.get('commaEN', false);
+    commaEN = config.get('commaEN', '');
     formatOpt = config.get('formatOpt', {});
 });
 // this method is called when your extension is activated
@@ -50,6 +50,7 @@ function activate(context) {
     var LINE_BREAK_EXP = /\r\n/g;
     // 
     // const line_EXP = /\n*```(\w*)\n([\s\S]+?)```\n*/g
+    var LIST_EXP = /(((?:\n)+(?: {4}|\t)*(?:\d\.|\-|\*|\+) [^\n]+)+)/g;
     function extractTables(text) {
         return text.match(TABLE_EXP);
     }
@@ -68,7 +69,6 @@ function activate(context) {
             var range = new vscode.Range(start, end);
             var text = document.getText(range);
             text = text.replace(LINE_BREAK_EXP, '\n');
-            // console.log(text.replace(line_EXP, '$1---$2'))
             // handler table
             var _tableArr = extractTables(text);
             if (_tableArr && _tableArr.length > 0) {
@@ -90,7 +90,6 @@ function activate(context) {
                     });
                 }
                 var temp_text = text.replace(ISCODE_EXP, '');
-                // console.log(temp_text)
                 var _jsArr = temp_text.match(CODE_AREA_EXP);
                 if (codeAreaFormat && _jsArr && _jsArr.length > 0) {
                     _jsArr.forEach(function (e) {
@@ -98,10 +97,20 @@ function activate(context) {
                         text = text.replace(re, '\n\n' + beautify(e.replace(CODE_AREA_EXP, '$1'), beautifyOpt) + '\n\n');
                     });
                 }
-                // simple handle
+                // handle fullwidth character
                 if (commaEN) {
-                    text = text.replace(COMMA_EXP, ',');
+                    var fullwidthArr_1 = "\uFF0C\uFF1A\uFF1B\uFF01\u201C\u201D\u2018\u2019\uFF08\uFF09".split('');
+                    var halfwidthArr_1 = ",:;!\"\"''()".split('');
+                    var commaArr = commaEN.split('');
+                    commaArr.forEach(function (e) {
+                        var _i = fullwidthArr_1.indexOf(e);
+                        if (_i > -1) {
+                            var _reg = new RegExp('\\' + e, 'g');
+                            text = text.replace(_reg, halfwidthArr_1[_i]);
+                        }
+                    });
                 }
+                text = text.replace(LIST_EXP, '\n' + '$1' + '\n');
                 text = text.replace(PERIOD_EXP, '$1 ');
                 text = text.replace(BACK_QUOTE_EXP, ' `$1` ');
                 text = text.replace(H_EXP, '\n\n' + '$1' + '\n\n');
