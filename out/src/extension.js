@@ -45,7 +45,7 @@ function activate(context) {
     var CODE_AREA_EXP = /\n+((?:(?: {4}|\t)+[^\n]+\n*)+)/g;
     // const CODE_AREA_EXP = /(?:(?: {4}|\t)+[^\n]+\n*)+/g;
     var CODE_EXP = /\n*```([\s\S]+?)```\n*/g;
-    var ISCODE_EXP = /\n*```(\w*)\n([\s\S]+?)```\n*/g;
+    var ISCODE_EXP = /\n*```(?: *)(\w*)\n([\s\S]+?)```\n*/g;
     // line-break
     var LINE_BREAK_EXP = /\r\n/g;
     // 
@@ -89,7 +89,7 @@ function activate(context) {
                         }
                     });
                 }
-                var temp_text = text.replace(ISCODE_EXP, '');
+                var temp_text = text.replace(ISCODE_EXP, '\n');
                 var _jsArr = temp_text.match(CODE_AREA_EXP);
                 if (codeAreaFormat && _jsArr && _jsArr.length > 0) {
                     _jsArr.forEach(function (e) {

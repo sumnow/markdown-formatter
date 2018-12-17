@@ -1,9 +1,14 @@
 # Log
 
-[EN](#ChangeLog)
-[CN](#开发日志)
+[EN](#ChangeLog)  or  [中文](#开发日志)
+
+---
 
 ## ChangeLog
+
+#### 0.1.2
+
+- fix bug: code area next code block not formatted as except
 
 #### 0.1.1
 
@@ -51,9 +56,20 @@
 
 #### 0.0.1  
 
-- Initial release of the tidy-markdown extension; 
+- Initial release of the tidy-markdown extension;
+
+--- 
 
 ## 开发日志
+
+#### 0.1.2
+
+- 修复bug: 代码区域下的代码块没有被正确格式化
+
+#### 0.1.1
+
+- 添加功能: 列表格式化
+- 添加功能: 全角，半角的转换
 
 #### 0.1.0
 

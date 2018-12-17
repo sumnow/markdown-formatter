@@ -16,7 +16,6 @@ let enable: boolean = config.get<boolean>('enable', true);
 let formatOpt: any = config.get<any>('formatOpt', {});
 let codeAreaFormat: boolean = config.get<boolean>('codeAreaFormat', true);
 
-
 workspace.onDidChangeConfiguration(e => {
     config = workspace.getConfiguration('markdownFormatter');
     enable = config.get<boolean>('enable', true);
@@ -51,7 +50,7 @@ export function activate(context: vscode.ExtensionContext) {
     const CODE_AREA_EXP = /\n+((?:(?: {4}|\t)+[^\n]+\n*)+)/g;
     // const CODE_AREA_EXP = /(?:(?: {4}|\t)+[^\n]+\n*)+/g;
     const CODE_EXP = /\n*```([\s\S]+?)```\n*/g;
-    const ISCODE_EXP = /\n*```(\w*)\n([\s\S]+?)```\n*/g
+    const ISCODE_EXP = /\n*```(?: *)(\w*)\n([\s\S]+?)```\n*/g
 
     // line-break
     const LINE_BREAK_EXP = /\r\n/g;
@@ -100,7 +99,7 @@ export function activate(context: vscode.ExtensionContext) {
                         }
                     })
                 }
-                const temp_text = text.replace(ISCODE_EXP, '')
+                const temp_text = text.replace(ISCODE_EXP, '\n')
                 const _jsArr = temp_text.match(CODE_AREA_EXP)
                 if (codeAreaFormat && _jsArr && _jsArr.length > 0) {
                     _jsArr.forEach(e => {
