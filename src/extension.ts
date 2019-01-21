@@ -47,7 +47,7 @@ export function activate(context: vscode.ExtensionContext) {
     const EXTRALINE_EXP = /\n\n+/g;
 
     // code block
-    const CODE_AREA_EXP = /\n+((?:(?: {4}|\t)+[^\n]+\n*)+)/g;
+    const CODE_AREA_EXP = /\n+((?:(?: {4}|\t)+[^\n\-\+\*]+\n*)+)/g;
     // const CODE_AREA_EXP = /(?:(?: {4}|\t)+[^\n]+\n*)+/g;
     const CODE_EXP = /\n*```([\s\S]+?)```\n*/g;
     const ISCODE_EXP = /\n*```(?: *)(\w*)\n([\s\S]+?)```\n*/g
