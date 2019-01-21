@@ -110,8 +110,8 @@ export function activate(context: vscode.ExtensionContext) {
 
                 // handle fullwidth character
                 if (commaEN) {
-                    const fullwidthArr = `，：；！“”‘’（）`.split('')
-                    const halfwidthArr = `,:;!""''()`.split('')
+                    const fullwidthArr = `，：；！“”‘’（）？`.split('')
+                    const halfwidthArr = `,:;!""''()?`.split('')
                     const commaArr = commaEN.split('')
                     commaArr.forEach(e => {
                         const _i = fullwidthArr.indexOf(e)

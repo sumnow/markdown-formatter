@@ -21,7 +21,7 @@ In any `markdown` standard file with a `.md` suffix, you can use `shift+option+f
 ## Feature
 
 - For `。 ；;！ ？ ：`Add a space after these symbols;
-- Provide a space for `,，` , unify it as a half-width character(Optional);
+- `，，：；！“”‘’（）？` , unify it as a half-width character(Optional);
 - a space before and after the back-quote;
 - Empty a line for the title;
 - Empty a line for the code block;
@@ -89,7 +89,7 @@ or
 ## 功能
 
 - `。;；！、？：`这些符号后添加一个空格；
-- `，，：；！“”‘’（）`，转换为半角符(可选)；
+- `，，：；！“”‘’（）？`，转换为半角符(可选)；
 - 反逗号前后空一格；
 - 标题上下空出一行；
 - 代码块上下空出一行；

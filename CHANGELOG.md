@@ -6,6 +6,10 @@
 
 ## ChangeLog
 
+#### 0.1.3
+
+- add charctar '？ ' to '?'
+
 #### 0.1.2
 
 - fix bug: code area next code block not formatted as except
@@ -56,11 +60,15 @@
 
 #### 0.0.1  
 
-- Initial release of the tidy-markdown extension;
+- Initial release of the tidy-markdown extension; 
 
 --- 
 
 ## 开发日志
+
+#### 0.1.3
+
+- 添加 符号 '？ ' 转换为 '?'
 
 #### 0.1.2
 
@@ -69,7 +77,7 @@
 #### 0.1.1
 
 - 添加功能: 列表格式化
-- 添加功能: 全角，半角的转换
+- 添加功能: 全角， 半角的转换
 
 #### 0.1.0
 
