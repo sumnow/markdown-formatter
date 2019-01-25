@@ -66,8 +66,8 @@ export function activate(context: vscode.ExtensionContext) {
             if (!enable) { return }
 
             let beautifyOpt = {}
-            if (formatOpt !== false) {
-                beautifyOpt = Object.assign({ "preserve_newlines": false }, formatOpt)
+            if (formatOpt) {
+                beautifyOpt = Object.assign(beautify, formatOpt)
             }
             const result: vscode.TextEdit[] = [];
 
@@ -95,7 +95,7 @@ export function activate(context: vscode.ExtensionContext) {
                         var isJs = e.replace(ISCODE_EXP, '$1').toLocaleLowerCase()
                         if (isJs === 'js' || isJs === 'javascript' || isJs === '') {
                             var re = new RegExp(escapeStringRegexp(e.replace(ISCODE_EXP, '$2')), 'g')
-                            text = text.replace(re, '\n' + beautify(e.replace(ISCODE_EXP, '$2'), beautifyOpt) + '\n')
+                            text = text.replace(re, '' + beautify(e.replace(ISCODE_EXP, '$2'), beautifyOpt) + '\n')
                         }
                     })
                 }
