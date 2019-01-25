@@ -6,6 +6,10 @@
 
 ## ChangeLog
 
+#### 0.1.5
+
+- improve js-beautify's content
+
 #### 0.1.4
 
 - fix list bug
@@ -69,6 +73,10 @@
 --- 
 
 ## 开发日志
+
+#### 0.1.5
+
+- 提高js-beautify的显示效果
 
 #### 0.1.4
 
