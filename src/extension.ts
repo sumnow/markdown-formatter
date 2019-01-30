@@ -47,7 +47,8 @@ export function activate(context: vscode.ExtensionContext) {
     const EXTRALINE_EXP = /\n\n+/g;
 
     // code block
-    const CODE_AREA_EXP = /\n+((?:(?: {4}|\t)+[^\n\-\+\*]+\n*)+)/g;
+    // const CODE_AREA_EXP = /\n+((?:(?: {4}|\t)+[^\n\-\+\*][^\n]+\n*)+)/g;
+    const CODE_AREA_EXP = /\n+((?:(?: {4}|\t)+(?!\d\.|\+|\-|\*)[^\n]+\n*)+)/g;
     // const CODE_AREA_EXP = /(?:(?: {4}|\t)+[^\n]+\n*)+/g;
     const CODE_EXP = /\n*```([\s\S]+?)```\n*/g;
     const ISCODE_EXP = /\n*```(?: *)(\w*)\n([\s\S]+?)```\n*/g
@@ -101,10 +102,14 @@ export function activate(context: vscode.ExtensionContext) {
                 }
                 const temp_text = text.replace(ISCODE_EXP, '\n')
                 const _jsArr = temp_text.match(CODE_AREA_EXP)
+                console.log(_jsArr)
                 if (codeAreaFormat && _jsArr && _jsArr.length > 0) {
                     _jsArr.forEach(e => {
                         var re = new RegExp(escapeStringRegexp(e), 'g')
+                        
+                        // console.log(e.replace(CODE_AREA_EXP, '$1'))
                         text = text.replace(re, '\n\n' + beautify(e.replace(CODE_AREA_EXP, '$1'), beautifyOpt) + '\n\n')
+                        // console.log(text)
                     })
                 }
 

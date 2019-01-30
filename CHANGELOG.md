@@ -6,6 +6,10 @@
 
 ## ChangeLog
 
+#### 0.1.6
+
+- fix list problem in code area
+
 #### 0.1.5
 
 - improve js-beautify's content
@@ -73,6 +77,10 @@
 --- 
 
 ## 开发日志
+
+#### 0.1.6
+
+- 修复code里的list显示的问题
 
 #### 0.1.5
 
