@@ -57,7 +57,7 @@ export function activate(context: vscode.ExtensionContext) {
     const LINE_BREAK_EXP = /\r\n/g;
     // 
     // const line_EXP = /\n*```(\w*)\n([\s\S]+?)```\n*/g
-    const LIST_EXP = /(((?:\n)+(?: {4}|\t)*(?:\d\.|\-|\*|\+) [^\n]+)+)/g;
+    const LIST_EXP = /(((?:\n)+(?: {4}|\t)*(?:\d+\.|\-|\*|\+) [^\n]+)+)/g;
 
     function extractTables(text: string): string[] {
         return text.match(TABLE_EXP);
@@ -102,7 +102,6 @@ export function activate(context: vscode.ExtensionContext) {
                 }
                 const temp_text = text.replace(ISCODE_EXP, '\n')
                 const _jsArr = temp_text.match(CODE_AREA_EXP)
-                console.log(_jsArr)
                 if (codeAreaFormat && _jsArr && _jsArr.length > 0) {
                     _jsArr.forEach(e => {
                         var re = new RegExp(escapeStringRegexp(e), 'g')

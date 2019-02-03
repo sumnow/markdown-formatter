@@ -2,7 +2,7 @@
     "name": "markdown-formatter",
     "displayName": "markdown-formatter",
     "description": "Markdown Format Extension",
-    "version": "0.1.6",
+    "version": "0.1.7",
     "icon": "icon.png",
     "publisher": "mervin",
     "engines": {

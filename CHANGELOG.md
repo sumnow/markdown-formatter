@@ -6,6 +6,10 @@
 
 ## ChangeLog
 
+#### 0.1.7
+
+- fix bug: break line when list's length more than 9
+
 #### 0.1.6
 
 - fix list problem in code area
@@ -77,6 +81,10 @@
 --- 
 
 ## 开发日志
+
+#### 0.1.7
+
+- 修复bug: list长度大于9时换行
 
 #### 0.1.6
 
