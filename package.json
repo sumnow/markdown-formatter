@@ -2,7 +2,7 @@
     "name": "markdown-formatter",
     "displayName": "markdown-formatter",
     "description": "Markdown Format Extension",
-    "version": "0.1.7",
+    "version": "0.1.8",
     "icon": "icon.png",
     "publisher": "mervin",
     "engines": {
@@ -54,7 +54,6 @@
     },
     "devDependencies": {
         "escape-string-regexp": "^1.0.5",
-        "reformat-markdown-table": "^1.1.0",
         "typescript": "^1.8.5",
         "vscode": "^0.11.0"
     },

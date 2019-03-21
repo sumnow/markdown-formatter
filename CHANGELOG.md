@@ -6,6 +6,10 @@
 
 ## ChangeLog
 
+#### 0.1.8
+
+- fix bug: chinese in table be formatted
+
 #### 0.1.7
 
 - fix bug: break line when list's length more than 9
@@ -81,6 +85,10 @@
 --- 
 
 ## 开发日志
+
+#### 0.1.8
+
+- 修复bug： 表格中中文字符对齐
 
 #### 0.1.7
 
