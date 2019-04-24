@@ -20,8 +20,8 @@ In any `markdown` standard file with a `.md` suffix, you can use `shift+option+f
 
 ## Feature
 
-- For `。 ；;！ ？ ：`Add a space after these symbols;
-- `，，：；！“”‘’（）？` , unify it as a half-width character(Optional);
+- For `，,。;；！、？：:.`Add a space after these symbols;
+- `，：；！“”‘’（）？。` , unify it as a half-width character(Optional);
 - a space before and after the back-quote;
 - Empty a line for the title;
 - Empty a line for the code block;
@@ -33,18 +33,17 @@ In any `markdown` standard file with a `.md` suffix, you can use `shift+option+f
 
 1. code area
 
-            function sayHello() {console.log('hello')}
-        
-        
-        
-    Will always be formatted according to js syntax, if `codeAreaFormat` is `true` (default)
-
-    2. code block
-    ``` lang
     function sayHello() {console.log('hello')}
-    ```
+        
+Will always be formatted according to js syntax, if `codeAreaFormat` is `true` (default)
+
+2. code block
+
+``` lang
+function sayHello() {console.log('hello')}
+```
     
-    If `lang` is `js` or `javascript` or empty, it will be formatted according to js syntax.
+If `lang` is `js` or `javascript` or empty, it will be formatted according to js syntax.
 
 > The js formatting rules can be configured in `settings.json`.
 
@@ -88,8 +87,8 @@ or
 
 ## 功能
 
-- `。;；！、？：`这些符号后添加一个空格；
-- `，，：；！“”‘’（）？`，转换为半角符(可选)；
+- `，,。;；！、？：:.`这些符号后添加一个空格；
+- `，：；！“”‘’（）？。`，转换为半角符(可选)；
 - 反逗号前后空一格；
 - 标题上下空出一行；
 - 代码块上下空出一行；
@@ -98,19 +97,24 @@ or
 - 相邻的空行合并；
 - 依据配置会格式化代码块中代码，依据`js-beautify`工具，目前只有`javascript`语言
 
-    1. 代码区
+#### 代码中的格式化
 
-            function sayHello() {console.log('hello')}
-        
-        总是会被按照js语法格式化，如果`codeAreaFormat`为`true`(默认值)
+1. 代码区
 
-    2. 代码块
-    ``` lang
     function sayHello() {console.log('hello')}
-    ```
-    如果`lang`为`js`或者`javascript`或者为空,会按照js语法格式化。
+        
+总是会被按照js语法格式化，如果`codeAreaFormat`为`true`(默认值)
 
-> 编辑 `VS Code` 的 `settings.json` 可以配置js格式化规则.
+2. 代码块
+
+``` lang
+function sayHello() {console.log('hello')}
+```
+
+
+如果`lang`为`js`或者`javascript`或者为空,会按照js语法格式化，如果你很少写入js代码，你可以通过配置参数`formatOpt`为false来禁止代码块或者代码区的自动格式化代码。
+
+此外，还可以通过配置参数 `formatOpt` 更改js格式化规则，参照[js-beautify](https://github.com/beautify-web/js-beautify).
 
 ## 测试版本
 
@@ -118,13 +122,16 @@ VSCode 版本 1.29.1 (macOS Mojave)
 
 ## 配置
 
-    enable = config.get<boolean>('enable', true); // 是否启用格式化
-    commaEN: string = config.get<string>('commaEN', ''); // 全角符号转化为半角符号
-    formatOpt = config.get<any>('formatOpt', {}); // 是否格式化代码或者配置beautifyjs(false: 不格式化代码，{}: 配置beautifyjs)
+    // 是否启用格式化
+    enable = config.get<boolean>('enable', true); 
+    // 将配置string里的全角符号转化为半角符号如`，：；！“”‘’（）？。`
+    commaEN: string = config.get<string>('commaEN', ''); 
+    // 是否格式化代码或者配置js-beautify(false: 不格式化代码，{}: 配置beautifyjs)
+    formatOpt = config.get<any>('formatOpt', {}); 
     let codeAreaFormat: boolean = config.get<boolean>('codeAreaFormat', true);
 
 
-配置beautifyjs, 可以参考[这里](https://github.com/beautify-web/js-beautify)
+配置js-beautify, 可以参考[这里](https://github.com/beautify-web/js-beautify)
 
 ## 联系
 

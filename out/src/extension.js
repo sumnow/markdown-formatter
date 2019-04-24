@@ -3,12 +3,142 @@
 // Import the module and reference it with the alias vscode in your code below
 var vscode = require('vscode');
 var vscode_1 = require('vscode');
-// import { reformat } from 'reformat-markdown-table'
-var reformat = require('reformat-markdown-table').reformat;
 // import * as escapeStringRegexp from 'escape-string-regexp'
 var escapeStringRegexp = require('escape-string-regexp');
 // import beautify from 'js-beautify'
 var beautify = require('js-beautify');
+// table format object
+var tableObj = {
+    utils: {
+        splitStringToTable: function (str) {
+            return tableObj.utils.trim(String(str)).split('\n').map(function (row) {
+                row = row.replace(/^[\|\s]+/, '');
+                row = row.replace(/[\|\s]+$/, '');
+                return row.split('|').map(tableObj.utils.trim);
+            });
+        },
+        getMaxLengthPerColumn: function (table) {
+            return table[0].map(function (str, column_index) {
+                return tableObj.utils.getMaxLength(tableObj.utils.getColumn(table, column_index));
+            });
+        },
+        getMaxLength: function (array) {
+            // chinese character
+            var reg = /[\u4e00-\u9fa5]/g;
+            return array.reduce(function (max, item) {
+                var _length = item.length;
+                // handler chinese
+                if (!(item instanceof Array) && reg.test(item)) {
+                    _length = _length - item.match(reg).length + Math.floor((item.match(reg).length) / 3 * 5);
+                }
+                return Math.max(max, _length);
+            }, 0);
+        },
+        padHeaderSeparatorString: function (str, len) {
+            switch (tableObj.utils.getAlignment(str)) {
+                case 'l': return tableObj.utils.repeatStr('-', Math.max(3, len));
+                case 'c': return ':' + tableObj.utils.repeatStr('-', Math.max(3, len - 2)) + ':';
+                case 'r': return tableObj.utils.repeatStr('-', Math.max(3, len - 1)) + ':';
+            }
+        },
+        getAlignment: function (str) {
+            if (str[str.length - 1] === ':') {
+                return str[0] === ':' ? 'c' : 'r';
+            }
+            return 'l';
+        },
+        fillInMissingColumns: function (table) {
+            var max = tableObj.utils.getMaxLength(table);
+            table.forEach(function (row, i) {
+                while (row.length < max) {
+                    row.push(i === 1 ? '---' : '');
+                }
+            });
+        },
+        getColumn: function (table, column_index) {
+            return table.map(function (row) {
+                return row[column_index];
+            });
+        },
+        trim: function (str) {
+            return str.trim();
+        },
+        padStringWithAlignment: function (str, len, alignment) {
+            switch (alignment) {
+                case 'l': return tableObj.utils.padRight(str, len);
+                case 'c': return tableObj.utils.padLeftAndRight(str, len);
+                case 'r': return tableObj.utils.padLeft(str, len);
+            }
+        },
+        padLeft: function (str, len) {
+            var reg = /[\u4e00-\u9fa5]/g;
+            var _length = str.length;
+            if (reg.test(str)) {
+                _length = _length - str.match(reg).length + Math.ceil((str.match(reg).length) / 3 * 5);
+            }
+            return tableObj.utils.getPadding(len - _length) + str;
+        },
+        padRight: function (str, len) {
+            var reg = /[\u4e00-\u9fa5]/g;
+            var _length = str.length;
+            if (reg.test(str)) {
+                _length = _length - str.match(reg).length + Math.ceil((str.match(reg).length) / 3 * 5);
+            }
+            return str + tableObj.utils.getPadding(len - _length);
+        },
+        padLeftAndRight: function (str, len) {
+            var reg = /[\u4e00-\u9fa5]/g;
+            var _length = str.length;
+            if (reg.test(str)) {
+                _length = _length - str.match(reg).length + Math.ceil((str.match(reg).length) / 3 * 5);
+            }
+            var l = (len - _length) / 2;
+            return tableObj.utils.getPadding(Math.ceil(l)) + str + tableObj.utils.getPadding(Math.floor(l));
+        },
+        getPadding: function (len) {
+            return tableObj.utils.repeatStr(' ', len);
+        },
+        repeatStr: function (str, count) {
+            return count > 0 ? Array(count + 1).join(str) : '';
+        }
+    },
+    reformat: function (str) {
+        var table = tableObj.utils.splitStringToTable(str), alignments, max_length_per_column;
+        table[1] = table[1].map(function (cell) {
+            return tableObj.utils.padHeaderSeparatorString(cell, 0);
+        });
+        tableObj.utils.fillInMissingColumns(table);
+        alignments = table[1].map(tableObj.utils.getAlignment);
+        max_length_per_column = tableObj.utils.getMaxLengthPerColumn(table);
+        return table.map(function (row, row_index) {
+            return '|' + row.map(function (cell, column_index) {
+                var column_length = max_length_per_column[column_index];
+                if (row_index === 1) {
+                    return tableObj.utils.padHeaderSeparatorString(cell, column_length + 2);
+                }
+                return ' ' + tableObj.utils.padStringWithAlignment(cell, column_length, alignments[column_index]) + ' ';
+            }).join('|') + '|';
+        }).join('\n') + '\n';
+    }
+};
+function removeReplace(text, reg, func) {
+    var _tempRegArr = text.match(reg);
+    if (_tempRegArr && _tempRegArr.length > 0) {
+        var _tempArr_1 = [];
+        _tempRegArr.forEach(function (e, i) {
+            var _reg = new RegExp(escapeStringRegexp(e), 'g');
+            _tempArr_1.push(e);
+            text = text.replace(_reg, "$mdFormatter$" + i + "$mdFormatter$");
+        });
+        text = func(text);
+        var _mdformatterArr = text.match(/\$mdFormatter\$\d+\$mdFormatter\$/g);
+        _mdformatterArr.forEach(function (e, i) {
+            var _reg = new RegExp(escapeStringRegexp(e), 'g');
+            text = text.replace(_reg, _tempArr_1[i]);
+        });
+        return text;
+    }
+}
 var config = vscode_1.workspace.getConfiguration('markdownFormatter');
 var commaEN = config.get('commaEN', '');
 var enable = config.get('enable', true);
@@ -24,10 +154,11 @@ vscode_1.workspace.onDidChangeConfiguration(function (e) {
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 function activate(context) {
-    // comma symbol
-    var COMMA_EXP = /[,，]\ */g;
-    // period symbol
-    var PERIOD_EXP = /([，,。;；！、？：])\ */g;
+    // repalce symbol
+    var CHINESE_SYMBOL = "\uFF0C\uFF1A\uFF1B\uFF01\u201C\u201D\u2018\u2019\uFF08\uFF09\uFF1F\u3002";
+    var ENGLISH_SYMBOL = ",:;!\"\"''()?.";
+    // punctuation which need a space after it
+    var PUNCTUATION_EXP = /([，,。;；！、？：:.])\ */g;
     // h1 symbol
     var H1_EXP = /^(# [^\n]+)\n*/g;
     // h2,h3,h4... symbol
@@ -36,21 +167,22 @@ function activate(context) {
     var TABLE_EXP = /((?:(?:[^\n]*?\|[^\n]*)\ *)?(?:\r?\n|^))(?:[^|]+)((?:\|\ *(?::?-+:?|::)\ *|\|?(?:\ *(?::?-+:?|::)\ *\|)+)(?:\ *(?::?-+:?|::)\ *)?\ *\r?\n)((?:(?:[^\n]*?\|[^\n]*)\ *(?:\r?\n|$))+)/g;
     //back quote
     var BACK_QUOTE_EXP = /\ *`([^`\n]+)`\ */g;
+    // const NO_PERIOD_BACK_QUOTE_EXP = /\ *`([^.`\n]+)`\ */g;
+    // const NO_PERIOD_BACK_QUOTE_EXP1 = /\ *`([^`\n]*\.[^`\n]*)`\ */g;
     // link 
     var LINK_SPACE_EXP = /\n(>+) *([^\n]+)/g;
     var LINK_EXP = /\n((>+[^\n]+\n)+)/g;
     // duplicated line
     var EXTRALINE_EXP = /\n\n+/g;
     // code block
-    var CODE_AREA_EXP = /\n+((?:(?: {4}|\t)+[^\n]+\n*)+)/g;
+    // const CODE_AREA_EXP = /\n+((?:(?: {4}|\t)+[^\n\-\+\*][^\n]+\n*)+)/g;
+    var CODE_AREA_EXP = /\n+((?:(?: {4}|\t)+(?!\d\.|\+|\-|\*)[^\n]+\n*)+)/g;
     // const CODE_AREA_EXP = /(?:(?: {4}|\t)+[^\n]+\n*)+/g;
     var CODE_EXP = /\n*```([\s\S]+?)```\n*/g;
     var ISCODE_EXP = /\n*```(?: *)(\w*)\n([\s\S]+?)```\n*/g;
     // line-break
     var LINE_BREAK_EXP = /\r\n/g;
-    // 
-    // const line_EXP = /\n*```(\w*)\n([\s\S]+?)```\n*/g
-    var LIST_EXP = /(((?:\n)+(?: {4}|\t)*(?:\d\.|\-|\*|\+) [^\n]+)+)/g;
+    var LIST_EXP = /(((?:\n)+(?: {4}|\t)*(?:\d+\.|\-|\*|\+) [^\n]+)+)/g;
     function extractTables(text) {
         return text.match(TABLE_EXP);
     }
@@ -60,21 +192,40 @@ function activate(context) {
                 return;
             }
             var beautifyOpt = {};
-            if (formatOpt !== false) {
-                beautifyOpt = Object.assign({ "preserve_newlines": false }, formatOpt);
+            if (formatOpt) {
+                beautifyOpt = Object.assign(beautify, formatOpt);
             }
             var result = [];
             var start = new vscode.Position(0, 0);
             var end = new vscode.Position(document.lineCount - 1, document.lineAt(document.lineCount - 1).text.length);
             var range = new vscode.Range(start, end);
             var text = document.getText(range);
+            // format \r\n to \n,fix
             text = text.replace(LINE_BREAK_EXP, '\n');
+            // format PUNCTUATION_EXP
+            text = removeReplace(text, BACK_QUOTE_EXP, function (text) {
+                text = text.replace(PUNCTUATION_EXP, '$1 ');
+                // handle fullwidth character
+                if (commaEN) {
+                    var fullwidthArr_1 = CHINESE_SYMBOL.split('');
+                    var halfwidthArr_1 = ENGLISH_SYMBOL.split('');
+                    var commaArr = commaEN.split('');
+                    commaArr.forEach(function (e) {
+                        var _i = fullwidthArr_1.indexOf(e);
+                        if (_i > -1) {
+                            var _reg = new RegExp('\\' + e, 'g');
+                            text = text.replace(_reg, halfwidthArr_1[_i]);
+                        }
+                    });
+                }
+                return text;
+            });
             // handler table
             var _tableArr = extractTables(text);
             if (_tableArr && _tableArr.length > 0) {
                 _tableArr.forEach(function (table) {
                     var re = new RegExp(escapeStringRegexp(String(table)), 'g');
-                    text = text.replace(re, function (substring) { return reformat(table); });
+                    text = text.replace(re, function (substring) { return tableObj.reformat(table); });
                 });
             }
             // handler js
@@ -85,7 +236,7 @@ function activate(context) {
                         var isJs = e.replace(ISCODE_EXP, '$1').toLocaleLowerCase();
                         if (isJs === 'js' || isJs === 'javascript' || isJs === '') {
                             var re = new RegExp(escapeStringRegexp(e.replace(ISCODE_EXP, '$2')), 'g');
-                            text = text.replace(re, '\n' + beautify(e.replace(ISCODE_EXP, '$2'), beautifyOpt) + '\n');
+                            text = text.replace(re, '' + beautify(e.replace(ISCODE_EXP, '$2'), beautifyOpt) + '\n');
                         }
                     });
                 }
@@ -97,21 +248,8 @@ function activate(context) {
                         text = text.replace(re, '\n\n' + beautify(e.replace(CODE_AREA_EXP, '$1'), beautifyOpt) + '\n\n');
                     });
                 }
-                // handle fullwidth character
-                if (commaEN) {
-                    var fullwidthArr_1 = "\uFF0C\uFF1A\uFF1B\uFF01\u201C\u201D\u2018\u2019\uFF08\uFF09".split('');
-                    var halfwidthArr_1 = ",:;!\"\"''()".split('');
-                    var commaArr = commaEN.split('');
-                    commaArr.forEach(function (e) {
-                        var _i = fullwidthArr_1.indexOf(e);
-                        if (_i > -1) {
-                            var _reg = new RegExp('\\' + e, 'g');
-                            text = text.replace(_reg, halfwidthArr_1[_i]);
-                        }
-                    });
-                }
+                // commaEN = CHINESE_SYMBOL
                 text = text.replace(LIST_EXP, '\n' + '$1' + '\n');
-                text = text.replace(PERIOD_EXP, '$1 ');
                 text = text.replace(BACK_QUOTE_EXP, ' `$1` ');
                 text = text.replace(H_EXP, '\n\n' + '$1' + '\n\n');
                 text = text.replace(H1_EXP, '$1' + '\n\n');
@@ -121,6 +259,7 @@ function activate(context) {
                 text = text.replace(EXTRALINE_EXP, '\n\n');
             }
             result.push(new vscode.TextEdit(range, text));
+            vscode.window.showInformationMessage('format .md successfully!');
             return result;
         }
     }));

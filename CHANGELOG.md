@@ -6,6 +6,14 @@
 
 ## ChangeLog
 
+#### 0.2.0
+
+- update readme
+
+#### 0.1.9
+
+- can format period normally now!
+
 #### 0.1.8
 
 - fix bug: chinese in table be formatted
@@ -85,6 +93,14 @@
 --- 
 
 ## 开发日志
+
+#### 0.2.0
+
+- 更新readme
+
+#### 0.1.9
+
+- 现在可以正常格式化句号了
 
 #### 0.1.8
 
