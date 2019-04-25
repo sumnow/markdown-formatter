@@ -2,7 +2,7 @@
     "name": "markdown-formatter",
     "displayName": "markdown-formatter",
     "description": "Markdown Format Extension",
-    "version": "0.2.0",
+    "version": "0.2.1",
     "icon": "icon.png",
     "publisher": "mervin",
     "engines": {
@@ -32,7 +32,7 @@
                 "markdownFormatter.commaEN:": {
                     "type": "string",
                     "default": "",
-                    "description": "Unify fullwidth( ，：；！“”‘’（）？。 ) as a half-width character( ,:;!''()?. )."
+                    "description": "Unify full-width (，：；！“”‘’（）？。) as a half-width character(,:;!''()?.)."
                 },
                 "markdownFormatter.codeAreaFormat:": {
                     "type": "boolean",
@@ -42,7 +42,7 @@
                 "markdownFormatter.formatOpt": {
                     "type": "object",
                     "default": {},
-                    "description": "you have code style ~~ now."
+                    "description": "js-beautify options"
                 }
             }
         }

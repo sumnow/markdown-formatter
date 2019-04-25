@@ -9,7 +9,7 @@ var escapeStringRegexp = require('escape-string-regexp');
 var beautify = require('js-beautify')
 
 // table format object
-var tableObj = {
+const tableObj = {
     utils: {
         splitStringToTable(str) {
             return tableObj.utils.trim(String(str)).split('\n').map(function (row) {
@@ -163,6 +163,7 @@ workspace.onDidChangeConfiguration(e => {
     formatOpt = config.get<any>('formatOpt', {});
 });
 
+let textLast = ''
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
@@ -219,13 +220,17 @@ export function activate(context: vscode.ExtensionContext) {
             const end = new vscode.Position(document.lineCount - 1, document.lineAt(document.lineCount - 1).text.length);
             const range = new vscode.Range(start, end);
             let text = document.getText(range)
-            
+            if (text === textLast) {
+                vscode.window.showInformationMessage('No text to format.');
+                return ;
+            }
+            textLast = text;
             // format \r\n to \n,fix
             text = text.replace(LINE_BREAK_EXP, '\n');
 
             // format PUNCTUATION_EXP
-            text = removeReplace(text, BACK_QUOTE_EXP, text => { 
-                text = text.replace(PUNCTUATION_EXP, '$1 ') 
+            text = removeReplace(text, BACK_QUOTE_EXP, text => {
+                text = text.replace(PUNCTUATION_EXP, '$1 ')
                 // handle fullwidth character
                 if (commaEN) {
                     const fullwidthArr = CHINESE_SYMBOL.split('')
@@ -285,7 +290,8 @@ export function activate(context: vscode.ExtensionContext) {
             }
 
             result.push(new vscode.TextEdit(range, text));
-            vscode.window.showInformationMessage('format .md successfully!');
+            // const tips = text === textLast ? 'No text to format.' 
+            vscode.window.showInformationMessage('Formatted text succeeded!');
             return result;
         }
     }))

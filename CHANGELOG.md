@@ -6,6 +6,10 @@
 
 ## ChangeLog
 
+#### 0.2.1
+
+- Avoid duplicate formatting
+
 #### 0.2.0
 
 - update readme
@@ -93,6 +97,10 @@
 --- 
 
 ## 开发日志
+
+#### 0.2.1
+
+- 避免重复格式化
 
 #### 0.2.0
 
