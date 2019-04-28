@@ -6,6 +6,14 @@
 
 ## ChangeLog
 
+#### 0.2.3
+
+- update package.json
+
+#### 0.2.2
+
+- fix bug
+
 #### 0.2.1
 
 - Avoid duplicate formatting
@@ -96,7 +104,15 @@
 
 --- 
 
-## 开发日志
+## 更新日志
+
+#### 0.2.3
+
+- 更新 package.json
+
+#### 0.2.2
+
+- 修复bug
 
 #### 0.2.1
 

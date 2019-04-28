@@ -159,7 +159,7 @@ function activate(context) {
     var CHINESE_SYMBOL = "\uFF0C\uFF1A\uFF1B\uFF01\u201C\u201D\u2018\u2019\uFF08\uFF09\uFF1F\u3002";
     var ENGLISH_SYMBOL = ",:;!\"\"''()?.";
     // punctuation which need a space after it
-    var PUNCTUATION_EXP = /([，,。;；！、？：:.])\ */g;
+    var PUNCTUATION_EXP = /([，,。;；！、？：])\ */g;
     // h1 symbol
     var H1_EXP = /^(# [^\n]+)\n*/g;
     // h2,h3,h4... symbol
@@ -203,7 +203,7 @@ function activate(context) {
             var text = document.getText(range);
             if (text === textLast) {
                 vscode.window.showInformationMessage('No text to format.');
-                return;
+                return void 0;
             }
             textLast = text;
             // format \r\n to \n,fix
@@ -265,7 +265,6 @@ function activate(context) {
                 text = text.replace(EXTRALINE_EXP, '\n\n');
             }
             result.push(new vscode.TextEdit(range, text));
-            // const tips = text === textLast ? 'No text to format.' 
             vscode.window.showInformationMessage('Formatted text succeeded!');
             return result;
         }

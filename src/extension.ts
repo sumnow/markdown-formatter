@@ -174,7 +174,7 @@ export function activate(context: vscode.ExtensionContext) {
     const ENGLISH_SYMBOL = `,:;!""''()?.`;
 
     // punctuation which need a space after it
-    const PUNCTUATION_EXP = /([，,。;；！、？：:.])\ */g;
+    const PUNCTUATION_EXP = /([，,。;；！、？：])\ */g;
     // h1 symbol
     const H1_EXP = /^(# [^\n]+)\n*/g;
     // h2,h3,h4... symbol
@@ -222,7 +222,7 @@ export function activate(context: vscode.ExtensionContext) {
             let text = document.getText(range)
             if (text === textLast) {
                 vscode.window.showInformationMessage('No text to format.');
-                return ;
+                return void 0;
             }
             textLast = text;
             // format \r\n to \n,fix
@@ -290,7 +290,6 @@ export function activate(context: vscode.ExtensionContext) {
             }
 
             result.push(new vscode.TextEdit(range, text));
-            // const tips = text === textLast ? 'No text to format.' 
             vscode.window.showInformationMessage('Formatted text succeeded!');
             return result;
         }
