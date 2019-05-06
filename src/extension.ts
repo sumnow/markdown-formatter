@@ -145,12 +145,14 @@ function removeReplace(text: string, reg: RegExp, func: Function): string {
             const _reg = new RegExp(escapeStringRegexp(e), 'g');
             text = text.replace(_reg, _tempArr[i]);
         })
-        return text
+    } else {
+        text = func(text);
     }
+    return text
 }
 
 let config = workspace.getConfiguration('markdownFormatter');
-let commaEN: string = config.get<string>('commaEN', '');
+let charactersTurnHalf: string = config.get<string>('charactersTurnHalf', '');
 let enable: boolean = config.get<boolean>('enable', true);
 let formatOpt: any = config.get<any>('formatOpt', {});
 let codeAreaFormat: boolean = config.get<boolean>('codeAreaFormat', true);
@@ -159,7 +161,7 @@ workspace.onDidChangeConfiguration(e => {
     config = workspace.getConfiguration('markdownFormatter');
     enable = config.get<boolean>('enable', true);
     codeAreaFormat = config.get<boolean>('codeAreaFormat', true);
-    commaEN = config.get<string>('commaEN', '');
+    charactersTurnHalf = config.get<string>('charactersTurnHalf', '');
     formatOpt = config.get<any>('formatOpt', {});
 });
 
@@ -167,7 +169,6 @@ let textLast = ''
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
-
 
     // repalce symbol
     const CHINESE_SYMBOL = `，：；！“”‘’（）？。`;
@@ -227,15 +228,14 @@ export function activate(context: vscode.ExtensionContext) {
             textLast = text;
             // format \r\n to \n,fix
             text = text.replace(LINE_BREAK_EXP, '\n');
-
             // format PUNCTUATION_EXP
             text = removeReplace(text, BACK_QUOTE_EXP, text => {
                 text = text.replace(PUNCTUATION_EXP, '$1 ')
                 // handle fullwidth character
-                if (commaEN) {
+                if (charactersTurnHalf) {
                     const fullwidthArr = CHINESE_SYMBOL.split('')
                     const halfwidthArr = ENGLISH_SYMBOL.split('')
-                    const commaArr = commaEN.split('')
+                    const commaArr = charactersTurnHalf.split('')
                     commaArr.forEach(e => {
                         const _i = fullwidthArr.indexOf(e)
                         if (_i > -1) {
@@ -246,7 +246,6 @@ export function activate(context: vscode.ExtensionContext) {
                 }
                 return text
             })
-
             // handler table
             const _tableArr = extractTables(text)
             if (_tableArr && _tableArr.length > 0) {
@@ -278,7 +277,7 @@ export function activate(context: vscode.ExtensionContext) {
                     })
                 }
 
-                // commaEN = CHINESE_SYMBOL
+                // charactersTurnHalf = CHINESE_SYMBOL
                 text = text.replace(LIST_EXP, '\n' + '$1' + '\n');
                 text = text.replace(BACK_QUOTE_EXP, ' `$1` ')
                 text = text.replace(H_EXP, '\n\n' + '$1' + '\n\n')

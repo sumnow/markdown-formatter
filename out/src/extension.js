@@ -136,11 +136,14 @@ function removeReplace(text, reg, func) {
             var _reg = new RegExp(escapeStringRegexp(e), 'g');
             text = text.replace(_reg, _tempArr_1[i]);
         });
-        return text;
     }
+    else {
+        text = func(text);
+    }
+    return text;
 }
 var config = vscode_1.workspace.getConfiguration('markdownFormatter');
-var commaEN = config.get('commaEN', '');
+var charactersTurnHalf = config.get('charactersTurnHalf', '');
 var enable = config.get('enable', true);
 var formatOpt = config.get('formatOpt', {});
 var codeAreaFormat = config.get('codeAreaFormat', true);
@@ -148,7 +151,7 @@ vscode_1.workspace.onDidChangeConfiguration(function (e) {
     config = vscode_1.workspace.getConfiguration('markdownFormatter');
     enable = config.get('enable', true);
     codeAreaFormat = config.get('codeAreaFormat', true);
-    commaEN = config.get('commaEN', '');
+    charactersTurnHalf = config.get('charactersTurnHalf', '');
     formatOpt = config.get('formatOpt', {});
 });
 var textLast = '';
@@ -212,10 +215,10 @@ function activate(context) {
             text = removeReplace(text, BACK_QUOTE_EXP, function (text) {
                 text = text.replace(PUNCTUATION_EXP, '$1 ');
                 // handle fullwidth character
-                if (commaEN) {
+                if (charactersTurnHalf) {
                     var fullwidthArr_1 = CHINESE_SYMBOL.split('');
                     var halfwidthArr_1 = ENGLISH_SYMBOL.split('');
-                    var commaArr = commaEN.split('');
+                    var commaArr = charactersTurnHalf.split('');
                     commaArr.forEach(function (e) {
                         var _i = fullwidthArr_1.indexOf(e);
                         if (_i > -1) {
@@ -254,7 +257,7 @@ function activate(context) {
                         text = text.replace(re, '\n\n' + beautify(e.replace(CODE_AREA_EXP, '$1'), beautifyOpt) + '\n\n');
                     });
                 }
-                // commaEN = CHINESE_SYMBOL
+                // charactersTurnHalf = CHINESE_SYMBOL
                 text = text.replace(LIST_EXP, '\n' + '$1' + '\n');
                 text = text.replace(BACK_QUOTE_EXP, ' `$1` ');
                 text = text.replace(H_EXP, '\n\n' + '$1' + '\n\n');
