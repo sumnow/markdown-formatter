@@ -6,9 +6,14 @@
 
 ## ChangeLog
 
+#### 0.2.6
+
+- update `package.json`
+- format `?!.` correctly
+
 #### 0.2.5
 
-- update package.json
+- update `package.json`
 
 #### 0.2.4
 
@@ -16,7 +21,7 @@
 
 #### 0.2.3
 
-- update package.json
+- update `package.json`
 
 #### 0.2.2
 
@@ -32,7 +37,7 @@
 
 #### 0.1.9
 
-- can format period normally now!
+- can format period correctly now!
 
 #### 0.1.8
 
@@ -114,9 +119,14 @@
 
 ## 更新日志
 
+#### 0.2.6
+
+- 更新 `package.json`
+- 正确格式化`?!.`
+
 #### 0.2.5
 
-- 更新 package.json
+- 更新 `package.json`
 
 #### 0.2.4
 
@@ -124,7 +134,7 @@
 
 #### 0.2.3
 
-- 更新 package.json
+- 更新 `package.json`
 
 #### 0.2.2
 

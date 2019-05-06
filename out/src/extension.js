@@ -162,7 +162,9 @@ function activate(context) {
     var CHINESE_SYMBOL = "\uFF0C\uFF1A\uFF1B\uFF01\u201C\u201D\u2018\u2019\uFF08\uFF09\uFF1F\u3002";
     var ENGLISH_SYMBOL = ",:;!\"\"''()?.";
     // punctuation which need a space after it
-    var PUNCTUATION_EXP = /([，,。;；！、？：])\ */g;
+    var PUNCTUATION_EXP = /([，,。；;！、？：])\ */g;
+    // period which need a space after it
+    var PERIOD_EXP = /([\.\!\?])([A-Z\u4e00-\u9fa5])/g;
     // h1 symbol
     var H1_EXP = /^(# [^\n]+)\n*/g;
     // h2,h3,h4... symbol
@@ -214,18 +216,21 @@ function activate(context) {
             // format PUNCTUATION_EXP
             text = removeReplace(text, BACK_QUOTE_EXP, function (text) {
                 text = text.replace(PUNCTUATION_EXP, '$1 ');
+                text = text.replace(PERIOD_EXP, '$1 $2');
                 // handle fullwidth character
                 if (charactersTurnHalf) {
                     var fullwidthArr_1 = CHINESE_SYMBOL.split('');
                     var halfwidthArr_1 = ENGLISH_SYMBOL.split('');
-                    var commaArr = charactersTurnHalf.split('');
-                    commaArr.forEach(function (e) {
-                        var _i = fullwidthArr_1.indexOf(e);
-                        if (_i > -1) {
-                            var _reg = new RegExp('\\' + e, 'g');
-                            text = text.replace(_reg, halfwidthArr_1[_i]);
-                        }
-                    });
+                    var _commaArr = charactersTurnHalf.split('');
+                    if (_commaArr && _commaArr.length > 0) {
+                        _commaArr.forEach(function (e) {
+                            var _i = fullwidthArr_1.indexOf(e);
+                            if (_i > -1) {
+                                var _reg = new RegExp('\\' + e, 'g');
+                                text = text.replace(_reg, halfwidthArr_1[_i]);
+                            }
+                        });
+                    }
                 }
                 return text;
             });

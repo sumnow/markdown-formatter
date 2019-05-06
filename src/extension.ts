@@ -175,7 +175,9 @@ export function activate(context: vscode.ExtensionContext) {
     const ENGLISH_SYMBOL = `,:;!""''()?.`;
 
     // punctuation which need a space after it
-    const PUNCTUATION_EXP = /([，,。;；！、？：])\ */g;
+    const PUNCTUATION_EXP = /([，,。；;！、？：])\ */g;
+    // period which need a space after it
+    const PERIOD_EXP = /([\.\!\?])([A-Z\u4e00-\u9fa5])/g;
     // h1 symbol
     const H1_EXP = /^(# [^\n]+)\n*/g;
     // h2,h3,h4... symbol
@@ -230,19 +232,22 @@ export function activate(context: vscode.ExtensionContext) {
             text = text.replace(LINE_BREAK_EXP, '\n');
             // format PUNCTUATION_EXP
             text = removeReplace(text, BACK_QUOTE_EXP, text => {
-                text = text.replace(PUNCTUATION_EXP, '$1 ')
+                text = text.replace(PUNCTUATION_EXP, '$1 ');
+                text = text.replace(PERIOD_EXP, '$1 $2');
                 // handle fullwidth character
                 if (charactersTurnHalf) {
-                    const fullwidthArr = CHINESE_SYMBOL.split('')
-                    const halfwidthArr = ENGLISH_SYMBOL.split('')
-                    const commaArr = charactersTurnHalf.split('')
-                    commaArr.forEach(e => {
-                        const _i = fullwidthArr.indexOf(e)
-                        if (_i > -1) {
-                            const _reg = new RegExp('\\' + e, 'g')
-                            text = text.replace(_reg, halfwidthArr[_i])
-                        }
-                    })
+                    const fullwidthArr = CHINESE_SYMBOL.split('');
+                    const halfwidthArr = ENGLISH_SYMBOL.split('');
+                    const _commaArr = charactersTurnHalf.split('');
+                    if (_commaArr && _commaArr.length > 0) {
+                        _commaArr.forEach(e => {
+                            const _i = fullwidthArr.indexOf(e);
+                            if (_i > -1) {
+                                const _reg = new RegExp('\\' + e, 'g');
+                                text = text.replace(_reg, halfwidthArr[_i]);
+                            }
+                        })
+                    }
                 }
                 return text
             })
