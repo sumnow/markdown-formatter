@@ -1,19 +1,24 @@
 # Log
 
-[EN](#ChangeLog)  or  [中文](#开发日志)
+[EN](#ChangeLog)  or  [中文](#开发日志）
 
 ---
 
 ## ChangeLog
 
+#### 0.2.7
+
+- update `package.json` 
+- Supports converting Chinese symbols into full-width symbols according to context, or converting English into half-width symbols;
+
 #### 0.2.6
 
-- update `package.json`
+- update `package.json` 
 - format `?!.` correctly
 
 #### 0.2.5
 
-- update `package.json`
+- update `package.json` 
 
 #### 0.2.4
 
@@ -21,7 +26,7 @@
 
 #### 0.2.3
 
-- update `package.json`
+- update `package.json` 
 
 #### 0.2.2
 
@@ -119,22 +124,29 @@
 
 ## 更新日志
 
+#### 0.2.7
+
+- 更新 `package.json` 
+- 支持根据上下文将中文中的符号转换为全角符号， 或者将英文中的转化为半角符； 
+
 #### 0.2.6
 
-- 更新 `package.json`
-- 正确格式化`?!.`
+- 更新 `package.json` 
+- 正确格式化 `?!.` 
 
 #### 0.2.5
 
-- 更新 `package.json`
+- 更新 `package.json` 
 
 #### 0.2.4
 
-- 修复小bug: 偶尔格式化失败
+1. 修复小bug: 偶尔格式化失败。 但是会失败。 asd. asd. 阿斯顿。 萨达： asd: asd。 
+2. asdsd
+3. asdas
 
 #### 0.2.3
 
-- 更新 `package.json`
+- 更新 `package.json` 
 
 #### 0.2.2
 
@@ -182,8 +194,8 @@
 
 #### 0.1.1
 
-- 添加功能: 列表格式化
-- 添加功能: 全角, 半角的转换
+- 添加功能： 列表格式化
+- 添加功能： 全角， 半角的转换
 
 #### 0.1.0
 

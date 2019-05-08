@@ -152,7 +152,7 @@ function removeReplace(text: string, reg: RegExp, func: Function): string {
 }
 
 let config = workspace.getConfiguration('markdownFormatter');
-let charactersTurnHalf: string = config.get<string>('charactersTurnHalf', '');
+let charactersTurnHalf: any = config.get<any>('charactersTurnHalf', false);
 let enable: boolean = config.get<boolean>('enable', true);
 let formatOpt: any = config.get<any>('formatOpt', {});
 let codeAreaFormat: boolean = config.get<boolean>('codeAreaFormat', true);
@@ -161,7 +161,7 @@ workspace.onDidChangeConfiguration(e => {
     config = workspace.getConfiguration('markdownFormatter');
     enable = config.get<boolean>('enable', true);
     codeAreaFormat = config.get<boolean>('codeAreaFormat', true);
-    charactersTurnHalf = config.get<string>('charactersTurnHalf', '');
+    charactersTurnHalf = config.get<any>('charactersTurnHalf', false);
     formatOpt = config.get<any>('formatOpt', {});
 });
 
@@ -173,6 +173,10 @@ export function activate(context: vscode.ExtensionContext) {
     // repalce symbol
     const CHINESE_SYMBOL = `，：；！“”‘’（）？。`;
     const ENGLISH_SYMBOL = `,:;!""''()?.`;
+
+    // chinese symbol
+    const CHINESE_CHARCTER_SYMBOL = `([\\u4e00-\\u9fa5])`;
+    const ENGLISH_CHARCTER_SYMBOL = `([A-Za-z])`;
 
     // punctuation which need a space after it
     const PUNCTUATION_EXP = /([，,。；;！、？：])\ */g;
@@ -235,9 +239,9 @@ export function activate(context: vscode.ExtensionContext) {
                 text = text.replace(PUNCTUATION_EXP, '$1 ');
                 text = text.replace(PERIOD_EXP, '$1 $2');
                 // handle fullwidth character
+                const fullwidthArr = CHINESE_SYMBOL.split('');
+                const halfwidthArr = ENGLISH_SYMBOL.split('');
                 if (charactersTurnHalf) {
-                    const fullwidthArr = CHINESE_SYMBOL.split('');
-                    const halfwidthArr = ENGLISH_SYMBOL.split('');
                     const _commaArr = charactersTurnHalf.split('');
                     if (_commaArr && _commaArr.length > 0) {
                         _commaArr.forEach(e => {
@@ -248,6 +252,15 @@ export function activate(context: vscode.ExtensionContext) {
                             }
                         })
                     }
+                } else {
+                    const _replacewithCharcter = (target: string[], judge: string, pad: string[]) => {
+                        target.forEach((e, i) => {
+                            const _reg = new RegExp(`${judge}\\${e}`, 'g')
+                            text = text.replace(_reg, `$1${pad[i]}`);
+                        })
+                    }
+                    _replacewithCharcter(fullwidthArr, ENGLISH_CHARCTER_SYMBOL, halfwidthArr)
+                    _replacewithCharcter(halfwidthArr, CHINESE_CHARCTER_SYMBOL, fullwidthArr)
                 }
                 return text
             })

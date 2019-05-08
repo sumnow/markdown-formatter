@@ -1,19 +1,23 @@
 {
     "name": "markdown-formatter",
     "displayName": "markdown-formatter",
-    "description": "Markdown Format Extension",
-    "version": "0.2.6",
+    "description": " A Markdown Format Plugin for frontend artist",
+    "version": "0.2.7",
     "icon": "icon.png",
     "publisher": "mervin",
     "engines": {
         "vscode": "^1.0.0"
     },
+    "keywords": [
+        "Markdown",
+        "Formatters"
+    ],
     "repository": {
         "type": "git",
         "url": "https://github.com/sumnow/markdown-formatter"
     },
     "categories": [
-        "Snippets"
+        "Formatters"
     ],
     "activationEvents": [
         "onLanguage:markdown"
@@ -30,8 +34,8 @@
                     "description": "Enable/disable markdown-formatter."
                 },
                 "markdownFormatter.charactersTurnHalf": {
-                    "type": "string",
-                    "default": "",
+                    "type": "object",
+                    "default": false,
                     "description": "Unify full-width (，：；！“”‘’（）？。) as a half-width character(,:;!''()?.)."
                 },
                 "markdownFormatter.codeAreaFormat": {

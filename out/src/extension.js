@@ -143,7 +143,7 @@ function removeReplace(text, reg, func) {
     return text;
 }
 var config = vscode_1.workspace.getConfiguration('markdownFormatter');
-var charactersTurnHalf = config.get('charactersTurnHalf', '');
+var charactersTurnHalf = config.get('charactersTurnHalf', false);
 var enable = config.get('enable', true);
 var formatOpt = config.get('formatOpt', {});
 var codeAreaFormat = config.get('codeAreaFormat', true);
@@ -151,7 +151,7 @@ vscode_1.workspace.onDidChangeConfiguration(function (e) {
     config = vscode_1.workspace.getConfiguration('markdownFormatter');
     enable = config.get('enable', true);
     codeAreaFormat = config.get('codeAreaFormat', true);
-    charactersTurnHalf = config.get('charactersTurnHalf', '');
+    charactersTurnHalf = config.get('charactersTurnHalf', false);
     formatOpt = config.get('formatOpt', {});
 });
 var textLast = '';
@@ -161,6 +161,9 @@ function activate(context) {
     // repalce symbol
     var CHINESE_SYMBOL = "\uFF0C\uFF1A\uFF1B\uFF01\u201C\u201D\u2018\u2019\uFF08\uFF09\uFF1F\u3002";
     var ENGLISH_SYMBOL = ",:;!\"\"''()?.";
+    // chinese symbol
+    var CHINESE_CHARCTER_SYMBOL = "([\\u4e00-\\u9fa5])";
+    var ENGLISH_CHARCTER_SYMBOL = "([A-Za-z])";
     // punctuation which need a space after it
     var PUNCTUATION_EXP = /([，,。；;！、？：])\ */g;
     // period which need a space after it
@@ -218,19 +221,29 @@ function activate(context) {
                 text = text.replace(PUNCTUATION_EXP, '$1 ');
                 text = text.replace(PERIOD_EXP, '$1 $2');
                 // handle fullwidth character
+                var fullwidthArr = CHINESE_SYMBOL.split('');
+                var halfwidthArr = ENGLISH_SYMBOL.split('');
                 if (charactersTurnHalf) {
-                    var fullwidthArr_1 = CHINESE_SYMBOL.split('');
-                    var halfwidthArr_1 = ENGLISH_SYMBOL.split('');
                     var _commaArr = charactersTurnHalf.split('');
                     if (_commaArr && _commaArr.length > 0) {
                         _commaArr.forEach(function (e) {
-                            var _i = fullwidthArr_1.indexOf(e);
+                            var _i = fullwidthArr.indexOf(e);
                             if (_i > -1) {
                                 var _reg = new RegExp('\\' + e, 'g');
-                                text = text.replace(_reg, halfwidthArr_1[_i]);
+                                text = text.replace(_reg, halfwidthArr[_i]);
                             }
                         });
                     }
+                }
+                else {
+                    var _replacewithCharcter = function (target, judge, pad) {
+                        target.forEach(function (e, i) {
+                            var _reg = new RegExp(judge + "\\" + e, 'g');
+                            text = text.replace(_reg, "$1" + pad[i]);
+                        });
+                    };
+                    _replacewithCharcter(fullwidthArr, ENGLISH_CHARCTER_SYMBOL, halfwidthArr);
+                    _replacewithCharcter(halfwidthArr, CHINESE_CHARCTER_SYMBOL, fullwidthArr);
                 }
                 return text;
             });
