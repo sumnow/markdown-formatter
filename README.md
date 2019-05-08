@@ -1,6 +1,6 @@
 # markdown-formatter
 
-[EN](#Introduction) or [中文](#介绍）
+[EN](#Introduction) or [中文](#介绍)
 
 ---
 
@@ -14,7 +14,7 @@ After the installation is complete, you will need to restart your vscode.
 
 In any `markdown` standard file with a `.md` suffix, you can use `shift+option+f` to quickly format the code.
 
-![example.gif](https://github.com/sumnow/markdown-formatter/blob/master/images/example.gif)
+![example.gif](https://raw.githubusercontent.com/sumnow/markdown-formatter/master/images/example.gif)
 
 > PS: It does not fix your markdown syntax errors, for example, there is no space after `#` as a title , because in the code # is a usable character that is widely used as a comment or variable declaration.
 
@@ -97,7 +97,7 @@ or
 
 在任何 `.md` 为后缀的 `markdown` 标准文件中， 都可以使用 `shift+option+f` 快速格式化代码。 
 
-![example.gif](https://github.com/sumnow/markdown-formatter/blob/master/images/example.gif)
+![example.gif](https://raw.githubusercontent.com/sumnow/markdown-formatter/master/images/example.gif)
 
 > 它并不会修复你的 `markdown` 语法错误， 例如作为标题， `#` 后没有加空格， 这是因为在代码中#是一个可用字符， 广泛得用作注释或变量声明。 
 
