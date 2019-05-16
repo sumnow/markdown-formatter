@@ -1,10 +1,18 @@
 # Log
 
-[EN](#ChangeLog)  or  [中文](#开发日志）
+[EN](#ChangeLog)  or  [中文](#开发日志)
 
 ---
 
 ## ChangeLog
+
+#### 0.3.0
+
+- fixbug: [error in code](https://github.com/sumnow/markdown-formatter/issues/1)
+
+#### 0.2.9
+
+- update `CHANGLOG.md` 
 
 #### 0.2.8
 
@@ -127,6 +135,14 @@
 --- 
 
 ## 更新日志
+
+#### 0.3.0
+
+- 修复bug： [代码块中格式化错误](https://github.com/sumnow/markdown-formatter/issues/1)
+
+#### 0.2.9
+
+- 更新 `CHANGLOG.md` 
 
 #### 0.2.8
 

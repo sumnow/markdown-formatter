@@ -122,19 +122,23 @@ var tableObj = {
     }
 };
 function removeReplace(text, reg, func) {
-    var _tempRegArr = text.match(reg);
+    var _tempRegArr = [];
+    reg.forEach(function (e) {
+        var _arr = text.match(e);
+        if (_arr)
+            _tempRegArr.push.apply(_tempRegArr, _arr.map(function (e) { return { content: e, isN: e.includes('\n') }; }));
+    });
     if (_tempRegArr && _tempRegArr.length > 0) {
-        var _tempArr_1 = [];
+        // const _tempArr = [];
         _tempRegArr.forEach(function (e, i) {
-            var _reg = new RegExp(escapeStringRegexp(e), 'g');
-            _tempArr_1.push(e);
-            text = text.replace(_reg, "$mdFormatter$" + i + "$mdFormatter$");
+            var _reg = new RegExp(escapeStringRegexp(e.content), 'g');
+            text = text.replace(_reg, e.isN ? "\n\n$mdFormatter$" + i + "$mdFormatter$\n\n" : "$mdFormatter$" + i + "$mdFormatter$");
         });
         text = func(text);
-        var _mdformatterArr = text.match(/\$mdFormatter\$\d+\$mdFormatter\$/g);
-        _mdformatterArr.forEach(function (e, i) {
-            var _reg = new RegExp(escapeStringRegexp(e), 'g');
-            text = text.replace(_reg, _tempArr_1[i]);
+        _tempRegArr.forEach(function (e, i) {
+            var _mdformatter = e.isN ? "\n\n$mdFormatter$" + i + "$mdFormatter$\n\n" : "$mdFormatter$" + i + "$mdFormatter$";
+            var _reg = new RegExp(escapeStringRegexp(_mdformatter), 'g');
+            text = text.replace(_reg, _tempRegArr[i].content);
         });
     }
     else {
@@ -216,8 +220,7 @@ function activate(context) {
             textLast = text;
             // format \r\n to \n,fix
             text = text.replace(LINE_BREAK_EXP, '\n');
-            // format PUNCTUATION_EXP
-            text = removeReplace(text, BACK_QUOTE_EXP, function (text) {
+            text = removeReplace(text, [BACK_QUOTE_EXP, ISCODE_EXP, CODE_AREA_EXP], function (text) {
                 text = text.replace(PUNCTUATION_EXP, '$1 ');
                 text = text.replace(PERIOD_EXP, '$1 $2');
                 // handle fullwidth character
@@ -275,16 +278,17 @@ function activate(context) {
                         text = text.replace(re, '\n\n' + beautify(e.replace(CODE_AREA_EXP, '$1'), beautifyOpt) + '\n\n');
                     });
                 }
-                // charactersTurnHalf = CHINESE_SYMBOL
-                text = text.replace(LIST_EXP, '\n' + '$1' + '\n');
-                text = text.replace(BACK_QUOTE_EXP, ' `$1` ');
-                text = text.replace(H_EXP, '\n\n' + '$1' + '\n\n');
-                text = text.replace(H1_EXP, '$1' + '\n\n');
-                text = text.replace(CODE_EXP, '\n\n```' + '$1' + '```\n\n');
-                text = text.replace(LINK_EXP, '\n\n' + '$1' + '\n\n');
-                text = text.replace(LINK_SPACE_EXP, '\n' + '$1 $2');
-                text = text.replace(EXTRALINE_EXP, '\n\n');
             }
+            // format PUNCTUATION_EXP
+            // charactersTurnHalf = CHINESE_SYMBOL
+            text = text.replace(LIST_EXP, '\n' + '$1' + '\n');
+            text = text.replace(BACK_QUOTE_EXP, ' `$1` ');
+            text = text.replace(H_EXP, '\n\n' + '$1' + '\n\n');
+            text = text.replace(H1_EXP, '$1' + '\n\n');
+            text = text.replace(CODE_EXP, '\n\n```' + '$1' + '```\n\n');
+            text = text.replace(LINK_EXP, '\n\n' + '$1' + '\n\n');
+            text = text.replace(LINK_SPACE_EXP, '\n' + '$1 $2');
+            text = text.replace(EXTRALINE_EXP, '\n\n');
             result.push(new vscode.TextEdit(range, text));
             vscode.window.showInformationMessage('Formatted text succeeded!');
             return result;

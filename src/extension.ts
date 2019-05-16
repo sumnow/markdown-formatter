@@ -130,20 +130,23 @@ const tableObj = {
 }
 
 
-function removeReplace(text: string, reg: RegExp, func: Function): string {
-    const _tempRegArr = text.match(reg)
+function removeReplace(text: string, reg: Array<RegExp>, func: Function): string {
+    const _tempRegArr = [];
+    reg.forEach(e => {
+        const _arr = text.match(e)
+        if (_arr) _tempRegArr.push(..._arr.map(e => { return { content: e, isN: e.includes('\n') } }))
+    })
     if (_tempRegArr && _tempRegArr.length > 0) {
-        const _tempArr = [];
+        // const _tempArr = [];
         _tempRegArr.forEach((e, i) => {
-            const _reg = new RegExp(escapeStringRegexp(e), 'g');
-            _tempArr.push(e);
-            text = text.replace(_reg, `$mdFormatter$${i}$mdFormatter$`);
+            const _reg = new RegExp(escapeStringRegexp(e.content), 'g');
+            text = text.replace(_reg, e.isN ? `\n\n$mdFormatter$${i}$mdFormatter$\n\n` : `$mdFormatter$${i}$mdFormatter$`);
         })
         text = func(text);
-        const _mdformatterArr = text.match(/\$mdFormatter\$\d+\$mdFormatter\$/g)
-        _mdformatterArr.forEach((e, i) => {
-            const _reg = new RegExp(escapeStringRegexp(e), 'g');
-            text = text.replace(_reg, _tempArr[i]);
+        _tempRegArr.forEach((e, i) => {
+            let _mdformatter = e.isN ? `\n\n$mdFormatter$${i}$mdFormatter$\n\n` : `$mdFormatter$${i}$mdFormatter$`
+            const _reg = new RegExp(escapeStringRegexp(_mdformatter), 'g');
+            text = text.replace(_reg, _tempRegArr[i].content);
         })
     } else {
         text = func(text);
@@ -234,8 +237,8 @@ export function activate(context: vscode.ExtensionContext) {
             textLast = text;
             // format \r\n to \n,fix
             text = text.replace(LINE_BREAK_EXP, '\n');
-            // format PUNCTUATION_EXP
-            text = removeReplace(text, BACK_QUOTE_EXP, text => {
+
+            text = removeReplace(text, [BACK_QUOTE_EXP, ISCODE_EXP, CODE_AREA_EXP], text => {
                 text = text.replace(PUNCTUATION_EXP, '$1 ');
                 text = text.replace(PERIOD_EXP, '$1 $2');
                 // handle fullwidth character
@@ -294,17 +297,19 @@ export function activate(context: vscode.ExtensionContext) {
                         text = text.replace(re, '\n\n' + beautify(e.replace(CODE_AREA_EXP, '$1'), beautifyOpt) + '\n\n')
                     })
                 }
-
-                // charactersTurnHalf = CHINESE_SYMBOL
-                text = text.replace(LIST_EXP, '\n' + '$1' + '\n');
-                text = text.replace(BACK_QUOTE_EXP, ' `$1` ')
-                text = text.replace(H_EXP, '\n\n' + '$1' + '\n\n')
-                text = text.replace(H1_EXP, '$1' + '\n\n')
-                text = text.replace(CODE_EXP, '\n\n```' + '$1' + '```\n\n')
-                text = text.replace(LINK_EXP, '\n\n' + '$1' + '\n\n')
-                text = text.replace(LINK_SPACE_EXP, '\n' + '$1 $2')
-                text = text.replace(EXTRALINE_EXP, '\n\n')
             }
+
+            // format PUNCTUATION_EXP
+
+            // charactersTurnHalf = CHINESE_SYMBOL
+            text = text.replace(LIST_EXP, '\n' + '$1' + '\n');
+            text = text.replace(BACK_QUOTE_EXP, ' `$1` ')
+            text = text.replace(H_EXP, '\n\n' + '$1' + '\n\n')
+            text = text.replace(H1_EXP, '$1' + '\n\n')
+            text = text.replace(CODE_EXP, '\n\n```' + '$1' + '```\n\n')
+            text = text.replace(LINK_EXP, '\n\n' + '$1' + '\n\n')
+            text = text.replace(LINK_SPACE_EXP, '\n' + '$1 $2')
+            text = text.replace(EXTRALINE_EXP, '\n\n')
 
             result.push(new vscode.TextEdit(range, text));
             vscode.window.showInformationMessage('Formatted text succeeded!');
