@@ -6,6 +6,12 @@
 
 ## ChangeLog
 
+#### 0.3.1
+
+- optimize code structure
+- update `README.md`
+- update `CHANGELOG.md`
+
 #### 0.3.0
 
 - fixbug: [error in code](https://github.com/sumnow/markdown-formatter/issues/1)
@@ -16,21 +22,21 @@
 
 #### 0.2.8
 
-- update images in `package.json` 
+- update images in `README.md` 
 
 #### 0.2.7
 
-- update `package.json` 
+- update `README.md` 
 - Supports converting Chinese symbols into full-width symbols according to context, or converting English into half-width symbols;
 
 #### 0.2.6
 
-- update `package.json` 
+- update `README.md` 
 - format `?!.` correctly
 
 #### 0.2.5
 
-- update `package.json` 
+- update `README.md` 
 
 #### 0.2.4
 
@@ -38,7 +44,7 @@
 
 #### 0.2.3
 
-- update `package.json` 
+- update `README.md` 
 
 #### 0.2.2
 
@@ -136,6 +142,12 @@
 
 ## 更新日志
 
+#### 0.3.1
+
+- 优化代码结构
+- 更新 `README.md`
+- 更新 `CHANGELOG.md`
+
 #### 0.3.0
 
 - 修复bug： [代码块中格式化错误](https://github.com/sumnow/markdown-formatter/issues/1)
@@ -146,21 +158,21 @@
 
 #### 0.2.8
 
-- 更新 `package.json` 中的图片
+- 更新 `README.md` 中的图片
 
 #### 0.2.7
 
-- 更新 `package.json` 
+- 更新 `README.md` 
 - 支持根据上下文将中文中的符号转换为全角符号， 或者将英文中的转化为半角符 
 
 #### 0.2.6
 
-- 更新 `package.json` 
+- 更新 `README.md` 
 - 正确格式化 `?!.` 
 
 #### 0.2.5
 
-- 更新 `package.json` 
+- 更新 `README.md` 
 
 #### 0.2.4
 
@@ -170,7 +182,7 @@
 
 #### 0.2.3
 
-- 更新 `package.json` 
+- 更新 `README.md` 
 
 #### 0.2.2
 

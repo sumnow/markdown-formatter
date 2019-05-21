@@ -3,7 +3,7 @@
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 import { workspace } from 'vscode';
-// import * as escapeStringRegexp from 'escape-string-regexp'
+import { removeReplace } from "./removeReplace";
 var escapeStringRegexp = require('escape-string-regexp');
 // import beautify from 'js-beautify'
 var beautify = require('js-beautify')
@@ -129,38 +129,13 @@ const tableObj = {
     }
 }
 
-
-function removeReplace(text: string, reg: Array<RegExp>, func: Function): string {
-    const _tempRegArr = [];
-    reg.forEach(e => {
-        const _arr = text.match(e)
-        if (_arr) _tempRegArr.push(..._arr.map(e => { return { content: e, isN: e.includes('\n') } }))
-    })
-    if (_tempRegArr && _tempRegArr.length > 0) {
-        // const _tempArr = [];
-        _tempRegArr.forEach((e, i) => {
-            const _reg = new RegExp(escapeStringRegexp(e.content), 'g');
-            text = text.replace(_reg, e.isN ? `\n\n$mdFormatter$${i}$mdFormatter$\n\n` : `$mdFormatter$${i}$mdFormatter$`);
-        })
-        text = func(text);
-        _tempRegArr.forEach((e, i) => {
-            let _mdformatter = e.isN ? `\n\n$mdFormatter$${i}$mdFormatter$\n\n` : `$mdFormatter$${i}$mdFormatter$`
-            const _reg = new RegExp(escapeStringRegexp(_mdformatter), 'g');
-            text = text.replace(_reg, _tempRegArr[i].content);
-        })
-    } else {
-        text = func(text);
-    }
-    return text
-}
-
 let config = workspace.getConfiguration('markdownFormatter');
 let charactersTurnHalf: any = config.get<any>('charactersTurnHalf', false);
 let enable: boolean = config.get<boolean>('enable', true);
 let formatOpt: any = config.get<any>('formatOpt', {});
 let codeAreaFormat: boolean = config.get<boolean>('codeAreaFormat', true);
 
-workspace.onDidChangeConfiguration(e => {
+workspace.onDidChangeConfiguration(_ => {
     config = workspace.getConfiguration('markdownFormatter');
     enable = config.get<boolean>('enable', true);
     codeAreaFormat = config.get<boolean>('codeAreaFormat', true);
@@ -218,7 +193,7 @@ export function activate(context: vscode.ExtensionContext) {
     }
     context.subscriptions.push(vscode.languages.registerDocumentFormattingEditProvider('markdown', {
         provideDocumentFormattingEdits(document, options, token) {
-            if (!enable) { return }
+            if (!enable) { return void 0 }
 
             let beautifyOpt = {}
             if (formatOpt) {
@@ -238,34 +213,38 @@ export function activate(context: vscode.ExtensionContext) {
             // format \r\n to \n,fix
             text = text.replace(LINE_BREAK_EXP, '\n');
 
-            text = removeReplace(text, [BACK_QUOTE_EXP, ISCODE_EXP, CODE_AREA_EXP], text => {
-                text = text.replace(PUNCTUATION_EXP, '$1 ');
-                text = text.replace(PERIOD_EXP, '$1 $2');
-                // handle fullwidth character
-                const fullwidthArr = CHINESE_SYMBOL.split('');
-                const halfwidthArr = ENGLISH_SYMBOL.split('');
-                if (charactersTurnHalf) {
-                    const _commaArr = charactersTurnHalf.split('');
-                    if (_commaArr && _commaArr.length > 0) {
-                        _commaArr.forEach(e => {
-                            const _i = fullwidthArr.indexOf(e);
-                            if (_i > -1) {
-                                const _reg = new RegExp('\\' + e, 'g');
-                                text = text.replace(_reg, halfwidthArr[_i]);
-                            }
-                        })
+            // format PUNCTUATION_EXP
+            const _replacewithCharcter = ({ target, judge, pad }: { target: string[]; judge: string; pad: string[]; }) => {
+                target.forEach((e, i) => {
+                    const _reg = new RegExp(`${judge}\\${e}`, 'g');
+                    text = text.replace(_reg, `$1${pad[i]}`);
+                });
+            };
+            text = removeReplace({
+                text, reg: [BACK_QUOTE_EXP, ISCODE_EXP, CODE_AREA_EXP], func: (text: string): string => {
+                    text = text.replace(PUNCTUATION_EXP, '$1 ');
+                    text = text.replace(PERIOD_EXP, '$1 $2');
+                    // handle fullwidth character
+                    const fullwidthArr = CHINESE_SYMBOL.split('');
+                    const halfwidthArr = ENGLISH_SYMBOL.split('');
+                    if (charactersTurnHalf) {
+                        const _commaArr = charactersTurnHalf.split('');
+                        if (_commaArr && _commaArr.length > 0) {
+                            _commaArr.forEach(e => {
+                                const _i = fullwidthArr.indexOf(e);
+                                if (_i > -1) {
+                                    const _reg = new RegExp('\\' + e, 'g');
+                                    text = text.replace(_reg, halfwidthArr[_i]);
+                                }
+                            });
+                        }
                     }
-                } else {
-                    const _replacewithCharcter = (target: string[], judge: string, pad: string[]) => {
-                        target.forEach((e, i) => {
-                            const _reg = new RegExp(`${judge}\\${e}`, 'g')
-                            text = text.replace(_reg, `$1${pad[i]}`);
-                        })
+                    else {
+                        _replacewithCharcter({ target: fullwidthArr, judge: ENGLISH_CHARCTER_SYMBOL, pad: halfwidthArr });
+                        _replacewithCharcter({ target: halfwidthArr, judge: CHINESE_CHARCTER_SYMBOL, pad: fullwidthArr });
                     }
-                    _replacewithCharcter(fullwidthArr, ENGLISH_CHARCTER_SYMBOL, halfwidthArr)
-                    _replacewithCharcter(halfwidthArr, CHINESE_CHARCTER_SYMBOL, fullwidthArr)
+                    return text;
                 }
-                return text
             })
             // handler table
             const _tableArr = extractTables(text)
@@ -289,19 +268,21 @@ export function activate(context: vscode.ExtensionContext) {
                         }
                     })
                 }
-                const temp_text = text.replace(ISCODE_EXP, '\n')
-                const _jsArr = temp_text.match(CODE_AREA_EXP)
-                if (codeAreaFormat && _jsArr && _jsArr.length > 0) {
-                    _jsArr.forEach(e => {
-                        const re = new RegExp(escapeStringRegexp(e), 'g')
-                        text = text.replace(re, '\n\n' + beautify(e.replace(CODE_AREA_EXP, '$1'), beautifyOpt) + '\n\n')
-                    })
-                }
+                text = removeReplace({
+                    text, reg: [ISCODE_EXP], func: (text: string): string => {
+                        const _jsArr = text.match(CODE_AREA_EXP);
+                        if (codeAreaFormat && _jsArr && _jsArr.length > 0) {
+                            _jsArr.forEach(e => {
+                                const re = new RegExp(escapeStringRegexp(e), 'g');
+                                text = text.replace(re, '\n\n' + beautify(e.replace(CODE_AREA_EXP, '$1'), beautifyOpt) + '\n\n');
+                            });
+                        }
+                        return text;
+                    }
+                })
             }
 
-            // format PUNCTUATION_EXP
 
-            // charactersTurnHalf = CHINESE_SYMBOL
             text = text.replace(LIST_EXP, '\n' + '$1' + '\n');
             text = text.replace(BACK_QUOTE_EXP, ' `$1` ')
             text = text.replace(H_EXP, '\n\n' + '$1' + '\n\n')
@@ -322,9 +303,9 @@ export function activate(context: vscode.ExtensionContext) {
     // This line of code will only be executed once when your extension is activated
     console.log('Congratulations, your extension "markdown-formatter" is now active!');
 
-    // The command has been defined in the package.json file
+    // The command has been defined in the README.md file
     // Now provide the implementation of the command with  registerCommand
-    // The commandId parameter must match the command field in package.json
+    // The commandId parameter must match the command field in README.md
     // let disposable = vscode.commands.registerCommand('extension.sayHello', () => {
     // The code you place here will be executed every time your command is executed
 

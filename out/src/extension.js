@@ -3,7 +3,7 @@
 // Import the module and reference it with the alias vscode in your code below
 var vscode = require('vscode');
 var vscode_1 = require('vscode');
-// import * as escapeStringRegexp from 'escape-string-regexp'
+var removeReplace_1 = require("./removeReplace");
 var escapeStringRegexp = require('escape-string-regexp');
 // import beautify from 'js-beautify'
 var beautify = require('js-beautify');
@@ -121,37 +121,12 @@ var tableObj = {
         }).join('\n') + '\n';
     }
 };
-function removeReplace(text, reg, func) {
-    var _tempRegArr = [];
-    reg.forEach(function (e) {
-        var _arr = text.match(e);
-        if (_arr)
-            _tempRegArr.push.apply(_tempRegArr, _arr.map(function (e) { return { content: e, isN: e.includes('\n') }; }));
-    });
-    if (_tempRegArr && _tempRegArr.length > 0) {
-        // const _tempArr = [];
-        _tempRegArr.forEach(function (e, i) {
-            var _reg = new RegExp(escapeStringRegexp(e.content), 'g');
-            text = text.replace(_reg, e.isN ? "\n\n$mdFormatter$" + i + "$mdFormatter$\n\n" : "$mdFormatter$" + i + "$mdFormatter$");
-        });
-        text = func(text);
-        _tempRegArr.forEach(function (e, i) {
-            var _mdformatter = e.isN ? "\n\n$mdFormatter$" + i + "$mdFormatter$\n\n" : "$mdFormatter$" + i + "$mdFormatter$";
-            var _reg = new RegExp(escapeStringRegexp(_mdformatter), 'g');
-            text = text.replace(_reg, _tempRegArr[i].content);
-        });
-    }
-    else {
-        text = func(text);
-    }
-    return text;
-}
 var config = vscode_1.workspace.getConfiguration('markdownFormatter');
 var charactersTurnHalf = config.get('charactersTurnHalf', false);
 var enable = config.get('enable', true);
 var formatOpt = config.get('formatOpt', {});
 var codeAreaFormat = config.get('codeAreaFormat', true);
-vscode_1.workspace.onDidChangeConfiguration(function (e) {
+vscode_1.workspace.onDidChangeConfiguration(function (_) {
     config = vscode_1.workspace.getConfiguration('markdownFormatter');
     enable = config.get('enable', true);
     codeAreaFormat = config.get('codeAreaFormat', true);
@@ -202,7 +177,7 @@ function activate(context) {
     context.subscriptions.push(vscode.languages.registerDocumentFormattingEditProvider('markdown', {
         provideDocumentFormattingEdits: function (document, options, token) {
             if (!enable) {
-                return;
+                return void 0;
             }
             var beautifyOpt = {};
             if (formatOpt) {
@@ -220,35 +195,39 @@ function activate(context) {
             textLast = text;
             // format \r\n to \n,fix
             text = text.replace(LINE_BREAK_EXP, '\n');
-            text = removeReplace(text, [BACK_QUOTE_EXP, ISCODE_EXP, CODE_AREA_EXP], function (text) {
-                text = text.replace(PUNCTUATION_EXP, '$1 ');
-                text = text.replace(PERIOD_EXP, '$1 $2');
-                // handle fullwidth character
-                var fullwidthArr = CHINESE_SYMBOL.split('');
-                var halfwidthArr = ENGLISH_SYMBOL.split('');
-                if (charactersTurnHalf) {
-                    var _commaArr = charactersTurnHalf.split('');
-                    if (_commaArr && _commaArr.length > 0) {
-                        _commaArr.forEach(function (e) {
-                            var _i = fullwidthArr.indexOf(e);
-                            if (_i > -1) {
-                                var _reg = new RegExp('\\' + e, 'g');
-                                text = text.replace(_reg, halfwidthArr[_i]);
-                            }
-                        });
+            // format PUNCTUATION_EXP
+            var _replacewithCharcter = function (_a) {
+                var target = _a.target, judge = _a.judge, pad = _a.pad;
+                target.forEach(function (e, i) {
+                    var _reg = new RegExp(judge + "\\" + e, 'g');
+                    text = text.replace(_reg, "$1" + pad[i]);
+                });
+            };
+            text = removeReplace_1.removeReplace({
+                text: text, reg: [BACK_QUOTE_EXP, ISCODE_EXP, CODE_AREA_EXP], func: function (text) {
+                    text = text.replace(PUNCTUATION_EXP, '$1 ');
+                    text = text.replace(PERIOD_EXP, '$1 $2');
+                    // handle fullwidth character
+                    var fullwidthArr = CHINESE_SYMBOL.split('');
+                    var halfwidthArr = ENGLISH_SYMBOL.split('');
+                    if (charactersTurnHalf) {
+                        var _commaArr = charactersTurnHalf.split('');
+                        if (_commaArr && _commaArr.length > 0) {
+                            _commaArr.forEach(function (e) {
+                                var _i = fullwidthArr.indexOf(e);
+                                if (_i > -1) {
+                                    var _reg = new RegExp('\\' + e, 'g');
+                                    text = text.replace(_reg, halfwidthArr[_i]);
+                                }
+                            });
+                        }
                     }
+                    else {
+                        _replacewithCharcter({ target: fullwidthArr, judge: ENGLISH_CHARCTER_SYMBOL, pad: halfwidthArr });
+                        _replacewithCharcter({ target: halfwidthArr, judge: CHINESE_CHARCTER_SYMBOL, pad: fullwidthArr });
+                    }
+                    return text;
                 }
-                else {
-                    var _replacewithCharcter = function (target, judge, pad) {
-                        target.forEach(function (e, i) {
-                            var _reg = new RegExp(judge + "\\" + e, 'g');
-                            text = text.replace(_reg, "$1" + pad[i]);
-                        });
-                    };
-                    _replacewithCharcter(fullwidthArr, ENGLISH_CHARCTER_SYMBOL, halfwidthArr);
-                    _replacewithCharcter(halfwidthArr, CHINESE_CHARCTER_SYMBOL, fullwidthArr);
-                }
-                return text;
             });
             // handler table
             var _tableArr = extractTables(text);
@@ -270,17 +249,19 @@ function activate(context) {
                         }
                     });
                 }
-                var temp_text = text.replace(ISCODE_EXP, '\n');
-                var _jsArr = temp_text.match(CODE_AREA_EXP);
-                if (codeAreaFormat && _jsArr && _jsArr.length > 0) {
-                    _jsArr.forEach(function (e) {
-                        var re = new RegExp(escapeStringRegexp(e), 'g');
-                        text = text.replace(re, '\n\n' + beautify(e.replace(CODE_AREA_EXP, '$1'), beautifyOpt) + '\n\n');
-                    });
-                }
+                text = removeReplace_1.removeReplace({
+                    text: text, reg: [ISCODE_EXP], func: function (text) {
+                        var _jsArr = text.match(CODE_AREA_EXP);
+                        if (codeAreaFormat && _jsArr && _jsArr.length > 0) {
+                            _jsArr.forEach(function (e) {
+                                var re = new RegExp(escapeStringRegexp(e), 'g');
+                                text = text.replace(re, '\n\n' + beautify(e.replace(CODE_AREA_EXP, '$1'), beautifyOpt) + '\n\n');
+                            });
+                        }
+                        return text;
+                    }
+                });
             }
-            // format PUNCTUATION_EXP
-            // charactersTurnHalf = CHINESE_SYMBOL
             text = text.replace(LIST_EXP, '\n' + '$1' + '\n');
             text = text.replace(BACK_QUOTE_EXP, ' `$1` ');
             text = text.replace(H_EXP, '\n\n' + '$1' + '\n\n');
@@ -297,9 +278,9 @@ function activate(context) {
     // Use the console to output diagnostic information (console.log) and errors (console.error)
     // This line of code will only be executed once when your extension is activated
     console.log('Congratulations, your extension "markdown-formatter" is now active!');
-    // The command has been defined in the package.json file
+    // The command has been defined in the README.md file
     // Now provide the implementation of the command with  registerCommand
-    // The commandId parameter must match the command field in package.json
+    // The commandId parameter must match the command field in README.md
     // let disposable = vscode.commands.registerCommand('extension.sayHello', () => {
     // The code you place here will be executed every time your command is executed
     // Display a message box to the user
