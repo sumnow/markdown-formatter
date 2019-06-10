@@ -6,6 +6,13 @@
 
 ## ChangeLog
 
+#### 0.3.2
+
+- optimize code structure
+- update `README.md`
+- Provides the ability to format `CSS` and `HTML`
+- fix bug
+
 #### 0.3.1
 
 - optimize code structure
@@ -142,6 +149,14 @@
 
 ## 更新日志
 
+#### 0.3.2
+
+- 优化代码结构
+- 更新 `README.md`
+- 提供格式化`CSS`和`HTML`
+- 修复bug
+
+
 #### 0.3.1
 
 - 优化代码结构
@@ -176,9 +191,7 @@
 
 #### 0.2.4
 
-1. 修复小bug: 偶尔格式化失败。 但是会失败。 asd. asd. 阿斯顿。 萨达： asd: asd。 
-2. asdsd
-3. asdas
+1. 修复小bug: 偶尔格式化失败。
 
 #### 0.2.3
 

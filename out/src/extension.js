@@ -4,123 +4,12 @@
 var vscode = require('vscode');
 var vscode_1 = require('vscode');
 var removeReplace_1 = require("./removeReplace");
+var Table_1 = require('./Table');
 var escapeStringRegexp = require('escape-string-regexp');
 // import beautify from 'js-beautify'
 var beautify = require('js-beautify');
-// table format object
-var tableObj = {
-    utils: {
-        splitStringToTable: function (str) {
-            return tableObj.utils.trim(String(str)).split('\n').map(function (row) {
-                row = row.replace(/^[\|\s]+/, '');
-                row = row.replace(/[\|\s]+$/, '');
-                return row.split('|').map(tableObj.utils.trim);
-            });
-        },
-        getMaxLengthPerColumn: function (table) {
-            return table[0].map(function (str, column_index) {
-                return tableObj.utils.getMaxLength(tableObj.utils.getColumn(table, column_index));
-            });
-        },
-        getMaxLength: function (array) {
-            // chinese character
-            var reg = /[\u4e00-\u9fa5]/g;
-            return array.reduce(function (max, item) {
-                var _length = item.length;
-                // handler chinese
-                if (!(item instanceof Array) && reg.test(item)) {
-                    _length = _length - item.match(reg).length + Math.floor((item.match(reg).length) / 3 * 5);
-                }
-                return Math.max(max, _length);
-            }, 0);
-        },
-        padHeaderSeparatorString: function (str, len) {
-            switch (tableObj.utils.getAlignment(str)) {
-                case 'l': return tableObj.utils.repeatStr('-', Math.max(3, len));
-                case 'c': return ':' + tableObj.utils.repeatStr('-', Math.max(3, len - 2)) + ':';
-                case 'r': return tableObj.utils.repeatStr('-', Math.max(3, len - 1)) + ':';
-            }
-        },
-        getAlignment: function (str) {
-            if (str[str.length - 1] === ':') {
-                return str[0] === ':' ? 'c' : 'r';
-            }
-            return 'l';
-        },
-        fillInMissingColumns: function (table) {
-            var max = tableObj.utils.getMaxLength(table);
-            table.forEach(function (row, i) {
-                while (row.length < max) {
-                    row.push(i === 1 ? '---' : '');
-                }
-            });
-        },
-        getColumn: function (table, column_index) {
-            return table.map(function (row) {
-                return row[column_index];
-            });
-        },
-        trim: function (str) {
-            return str.trim();
-        },
-        padStringWithAlignment: function (str, len, alignment) {
-            switch (alignment) {
-                case 'l': return tableObj.utils.padRight(str, len);
-                case 'c': return tableObj.utils.padLeftAndRight(str, len);
-                case 'r': return tableObj.utils.padLeft(str, len);
-            }
-        },
-        padLeft: function (str, len) {
-            var reg = /[\u4e00-\u9fa5]/g;
-            var _length = str.length;
-            if (reg.test(str)) {
-                _length = _length - str.match(reg).length + Math.ceil((str.match(reg).length) / 3 * 5);
-            }
-            return tableObj.utils.getPadding(len - _length) + str;
-        },
-        padRight: function (str, len) {
-            var reg = /[\u4e00-\u9fa5]/g;
-            var _length = str.length;
-            if (reg.test(str)) {
-                _length = _length - str.match(reg).length + Math.ceil((str.match(reg).length) / 3 * 5);
-            }
-            return str + tableObj.utils.getPadding(len - _length);
-        },
-        padLeftAndRight: function (str, len) {
-            var reg = /[\u4e00-\u9fa5]/g;
-            var _length = str.length;
-            if (reg.test(str)) {
-                _length = _length - str.match(reg).length + Math.ceil((str.match(reg).length) / 3 * 5);
-            }
-            var l = (len - _length) / 2;
-            return tableObj.utils.getPadding(Math.ceil(l)) + str + tableObj.utils.getPadding(Math.floor(l));
-        },
-        getPadding: function (len) {
-            return tableObj.utils.repeatStr(' ', len);
-        },
-        repeatStr: function (str, count) {
-            return count > 0 ? Array(count + 1).join(str) : '';
-        }
-    },
-    reformat: function (str) {
-        var table = tableObj.utils.splitStringToTable(str), alignments, max_length_per_column;
-        table[1] = table[1].map(function (cell) {
-            return tableObj.utils.padHeaderSeparatorString(cell, 0);
-        });
-        tableObj.utils.fillInMissingColumns(table);
-        alignments = table[1].map(tableObj.utils.getAlignment);
-        max_length_per_column = tableObj.utils.getMaxLengthPerColumn(table);
-        return table.map(function (row, row_index) {
-            return '|' + row.map(function (cell, column_index) {
-                var column_length = max_length_per_column[column_index];
-                if (row_index === 1) {
-                    return tableObj.utils.padHeaderSeparatorString(cell, column_length + 2);
-                }
-                return ' ' + tableObj.utils.padStringWithAlignment(cell, column_length, alignments[column_index]) + ' ';
-            }).join('|') + '|';
-        }).join('\n') + '\n';
-    }
-};
+var beautify_css = require('js-beautify').css;
+var beautify_html = require('js-beautify').html;
 var config = vscode_1.workspace.getConfiguration('markdownFormatter');
 var charactersTurnHalf = config.get('charactersTurnHalf', false);
 var enable = config.get('enable', true);
@@ -133,7 +22,7 @@ vscode_1.workspace.onDidChangeConfiguration(function (_) {
     charactersTurnHalf = config.get('charactersTurnHalf', false);
     formatOpt = config.get('formatOpt', {});
 });
-var textLast = '';
+// let textLast = ''
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 function activate(context) {
@@ -188,11 +77,11 @@ function activate(context) {
             var end = new vscode.Position(document.lineCount - 1, document.lineAt(document.lineCount - 1).text.length);
             var range = new vscode.Range(start, end);
             var text = document.getText(range);
-            if (text === textLast) {
-                vscode.window.showInformationMessage('No text to format.');
-                return void 0;
-            }
-            textLast = text;
+            // if (text === textLast) {
+            //     vscode.window.showInformationMessage('No text to format.');
+            //     return void 0;
+            // }
+            // textLast = text;
             // format \r\n to \n,fix
             text = text.replace(LINE_BREAK_EXP, '\n');
             // format PUNCTUATION_EXP
@@ -234,7 +123,7 @@ function activate(context) {
             if (_tableArr && _tableArr.length > 0) {
                 _tableArr.forEach(function (table) {
                     var re = new RegExp(escapeStringRegexp(String(table)), 'g');
-                    text = text.replace(re, function (substring) { return tableObj.reformat(table); });
+                    text = text.replace(re, function (substring) { return new Table_1.Table().reformat(table); });
                 });
             }
             // handler js
@@ -246,6 +135,14 @@ function activate(context) {
                         if (isJs === 'js' || isJs === 'javascript' || isJs === '') {
                             var re = new RegExp(escapeStringRegexp(e.replace(ISCODE_EXP, '$2')), 'g');
                             text = text.replace(re, '' + beautify(e.replace(ISCODE_EXP, '$2'), beautifyOpt) + '\n');
+                        }
+                        if (isJs === 'html') {
+                            var re = new RegExp(escapeStringRegexp(e.replace(ISCODE_EXP, '$2')), 'g');
+                            text = text.replace(re, '' + beautify_html(e.replace(ISCODE_EXP, '$2'), beautifyOpt) + '\n');
+                        }
+                        if (isJs === 'css') {
+                            var re = new RegExp(escapeStringRegexp(e.replace(ISCODE_EXP, '$2')), 'g');
+                            text = text.replace(re, '' + beautify_css(e.replace(ISCODE_EXP, '$2'), beautifyOpt) + '\n');
                         }
                     });
                 }
