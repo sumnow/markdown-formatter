@@ -10,7 +10,7 @@ This is a developer-oriented markdown development tool that provides a relativel
 
 ## Instructions
 
-After the installation is complete, you will need to restart your vscode.
+After the installation is complete, you may need to restart your vscode.
 
 In any `markdown` standard file with a `.md` suffix, you can use `shift+option+f` to quickly format the code.
 
@@ -30,23 +30,26 @@ In any `markdown` standard file with a `.md` suffix, you can use `shift+option+f
 - The table is aligned automatically; 
 - Empty a line for the link block; 
 - erase dulicated line; 
-- Format the code, by `js-beautify` tool, currently only the `javascript` language; 
+- Format the code, by `js-beautify` tool, currently only the `javascript` , `html` and `css` language; 
 
 ### code area
 
     function sayHello() {
-        console.log('hello')
+      console.log('hello')
     }
 
 Will always be formatted according to js syntax, if `codeAreaFormat` is `true` (default)
 
 ### code block
 
-``` lang
-function sayHello() {console.log('hello')}
-```
+    ```lang
+    function sayHello() {console.log('hello')}
+    ```
 
-If `lang` is `js` or `javascript` or empty, it will be formatted according to js syntax. *You can disable code block or code area autoformat code by setting the parameter `formatOpt` to false*.
+1. If `lang` is `js` or `javascript` or empty, it will be formatted according to js syntax.
+2. If `lang` is `html` , it will be formatted according to html syntax.
+3. If `lang` is `css` , it will be formatted according to css syntax.
+4. If you don't use `js` usually, You can disable code block or code area autoformat code by setting the parameter `formatOpt` to false.
 
 > The js formatting rules can be configured in `settings.json` .
 
@@ -93,7 +96,7 @@ or
 
 ## 使用手册
 
-安装完成以后， 你需要重新启动你的vscode. 
+安装完成以后， 你可能需要重新启动你的vscode. 
 
 在任何 `.md` 为后缀的 `markdown` 标准文件中， 都可以使用 `shift+option+f` 快速格式化代码。 
 
@@ -113,23 +116,27 @@ or
 - 表格自动对齐； 
 - 为引用上下空出一行； 
 - 相邻的空行合并； 
-- 依据配置会格式化代码块中代码， 依据 `js-beautify` 工具， 目前只有 `javascript` 语言； 
+- 依据配置会格式化文章中的代码， 使用 `js-beautify` 工具， 目前只有 `javascript`  `html` 和 `css` 语言； 
 
 ### 代码区
 
     function sayHello() {
-        console.log('hello')
+      console.log('hello')
     }
 
-总是会被按照js语法格式化， 如果 `codeAreaFormat` 为 `true` (默认值）
+ 如果 `codeAreaFormat` 为 `true` (默认值）， 会被格式化。 
 
 ### 代码块
 
-``` lang
-function sayHello() {console.log('hello')}
-```
+    ``` lang
+    function sayHello() {console.log('hello')}
+    ```
 
-如果 `lang` 为 `js` 或者 `javascript` 或者为空， 会按照js语法格式化， 如果你很少写入js代码， *你可以通过配置参数 `formatOpt` 为false来禁止代码块或者代码区的自动格式化代码*. 
+1. 如果 `lang` 为 `js` 或者 `javascript` 或者为空， 会按照js语法格式化 
+
+2. 如果 `lang` 为 `html` , 会按照html语法格式化。 
+3. 如果 `lang` 为 `css` , 会按照css语法格式化。 
+4. 如果你很少写入js代码， *你可以通过配置参数 `formatOpt` 为false来禁止代码块和代码区的自动格式化代码*. 
 
 此外， 还可以通过配置参数 `formatOpt` 更改js格式化规则， 参照[js-beautify](https://github.com/beautify-web/js-beautify).
 
