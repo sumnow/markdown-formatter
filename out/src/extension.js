@@ -44,6 +44,10 @@ function activate(context) {
     var TABLE_EXP = /((?:(?:[^\n]*?\|[^\n]*)\ *)?(?:\r?\n|^))(?:[^|]+)((?:\|\ *(?::?-+:?|::)\ *|\|?(?:\ *(?::?-+:?|::)\ *\|)+)(?:\ *(?::?-+:?|::)\ *)?\ *\r?\n)((?:(?:[^\n]*?\|[^\n]*)\ *(?:\r?\n|$))+)/g;
     //back quote
     var BACK_QUOTE_EXP = /\ *`([^`\n]+)`\ */g;
+    // image link
+    var IMG_EXP = /(\!\[[^\n]+\]\([^\n]+\))/g;
+    // list 
+    var LIST_EXP = /(((?:\n)+(?: {4}|\t)*(?:\d+\.|\-|\*|\+) [^\n]+)+)/g;
     // const NO_PERIOD_BACK_QUOTE_EXP = /\ *`([^.`\n]+)`\ */g;
     // const NO_PERIOD_BACK_QUOTE_EXP1 = /\ *`([^`\n]*\.[^`\n]*)`\ */g;
     // link 
@@ -59,7 +63,6 @@ function activate(context) {
     var ISCODE_EXP = /\n*```(?: *)(\w*)\n([\s\S]+?)```\n*/g;
     // line-break
     var LINE_BREAK_EXP = /\r\n/g;
-    var LIST_EXP = /(((?:\n)+(?: {4}|\t)*(?:\d+\.|\-|\*|\+) [^\n]+)+)/g;
     function extractTables(text) {
         return text.match(TABLE_EXP);
     }
@@ -123,7 +126,7 @@ function activate(context) {
             if (_tableArr && _tableArr.length > 0) {
                 _tableArr.forEach(function (table) {
                     var re = new RegExp(escapeStringRegexp(String(table)), 'g');
-                    text = text.replace(re, function (substring) { return new Table_1.Table().reformat(table); });
+                    text = text.replace(re, function (substring) { return '\n\n' + new Table_1.Table().reformat(table) + '\n\n'; });
                 });
             }
             // handler js
@@ -163,6 +166,7 @@ function activate(context) {
             text = text.replace(BACK_QUOTE_EXP, ' `$1` ');
             text = text.replace(H_EXP, '\n\n' + '$1' + '\n\n');
             text = text.replace(H1_EXP, '$1' + '\n\n');
+            text = text.replace(IMG_EXP, '\n\n' + '$1' + '\n\n');
             text = text.replace(CODE_EXP, '\n\n```' + '$1' + '```\n\n');
             text = text.replace(LINK_EXP, '\n\n' + '$1' + '\n\n');
             text = text.replace(LINK_SPACE_EXP, '\n' + '$1 $2');

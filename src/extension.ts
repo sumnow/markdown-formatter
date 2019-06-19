@@ -50,6 +50,11 @@ export function activate(context: vscode.ExtensionContext) {
     const TABLE_EXP = /((?:(?:[^\n]*?\|[^\n]*)\ *)?(?:\r?\n|^))(?:[^|]+)((?:\|\ *(?::?-+:?|::)\ *|\|?(?:\ *(?::?-+:?|::)\ *\|)+)(?:\ *(?::?-+:?|::)\ *)?\ *\r?\n)((?:(?:[^\n]*?\|[^\n]*)\ *(?:\r?\n|$))+)/g;
     //back quote
     const BACK_QUOTE_EXP = /\ *`([^`\n]+)`\ */g;
+    // image link
+    const IMG_EXP = /(\!\[[^\n]+\]\([^\n]+\))/g;
+    // list 
+    const LIST_EXP = /(((?:\n)+(?: {4}|\t)*(?:\d+\.|\-|\*|\+) [^\n]+)+)/g;
+
     // const NO_PERIOD_BACK_QUOTE_EXP = /\ *`([^.`\n]+)`\ */g;
     // const NO_PERIOD_BACK_QUOTE_EXP1 = /\ *`([^`\n]*\.[^`\n]*)`\ */g;
     // link 
@@ -68,7 +73,6 @@ export function activate(context: vscode.ExtensionContext) {
 
     // line-break
     const LINE_BREAK_EXP = /\r\n/g;
-    const LIST_EXP = /(((?:\n)+(?: {4}|\t)*(?:\d+\.|\-|\*|\+) [^\n]+)+)/g;
 
     function extractTables(text: string): string[] {
         return text.match(TABLE_EXP);
@@ -133,7 +137,7 @@ export function activate(context: vscode.ExtensionContext) {
             if (_tableArr && _tableArr.length > 0) {
                 _tableArr.forEach((table) => {
                     var re = new RegExp(escapeStringRegexp(String(table)), 'g')
-                    text = text.replace(re, (substring: string) => new Table().reformat(table))
+                    text = text.replace(re, (substring: string) => '\n\n' + new Table().reformat(table) + '\n\n')
                 })
             }
 
@@ -177,6 +181,7 @@ export function activate(context: vscode.ExtensionContext) {
             text = text.replace(BACK_QUOTE_EXP, ' `$1` ')
             text = text.replace(H_EXP, '\n\n' + '$1' + '\n\n')
             text = text.replace(H1_EXP, '$1' + '\n\n')
+            text = text.replace(IMG_EXP, '\n\n' + '$1' + '\n\n')
             text = text.replace(CODE_EXP, '\n\n```' + '$1' + '```\n\n')
             text = text.replace(LINK_EXP, '\n\n' + '$1' + '\n\n')
             text = text.replace(LINK_SPACE_EXP, '\n' + '$1 $2')
