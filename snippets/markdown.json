@@ -1,0 +1,58 @@
+{
+    "Create Image": {
+        "prefix": "img",
+        "body": [
+            "![${2:img}](${1:${TM_FILEPATH}})"
+        ],
+        "description": "create image tag"
+    },
+    "Create Table": {
+        "prefix": "tab",
+        "body": [
+            "${1:title}|${2:title}|${3:title}\n-----|-----|-----\n${4:conte}|${5:conte}|${6:conte}"
+        ],
+        "description": "create table tag"
+    },
+    "Create JS": {
+        "prefix": "js",
+        "body": [
+            "```js\n${1:\t// javascript}\n```\n$2"
+        ],
+        "description": "create js code block"
+    },
+    "Create HTML": {
+        "prefix": "html",
+        "body": [
+            "```html\n${1:\t// html}\n```\n$2"
+        ],
+        "description": "create html code block"
+    },
+    "Create CSS": {
+        "prefix": "css",
+        "body": [
+            "```css\n${1:\t// css}\n```\n$2"
+        ],
+        "description": "create css code block"
+    },
+    "Create Code": {
+        "prefix": "code",
+        "body": [
+            "```${1|java,c,python,c++,vb,c#,php,go|}\n\t$2\n```\n$3"
+        ],
+        "description": "create code block"
+    },
+    "Create Unordered List": {
+        "prefix": "ul",
+        "body": [
+            "- ${1:one}\n- ${2:two}\n- ${3:three}"
+        ],
+        "description": "create unordered list"
+    },
+    "Create Ordered List": {
+        "prefix": "ol",
+        "body": [
+            "1. ${1:first}\n2. ${2:second}\n3. ${3:thrid}"
+        ],
+        "description": "create ordered list"
+    }
+}

@@ -4,7 +4,8 @@
 
 ## 介绍
 
-这是个面向开发者的文档（markdown)开发工具， 为 `markdown` 使用者提供了相对统一的格式。 
+这是个提高markdown写作效率的工具，不仅为 `markdown` 使用者提供了相对统一的格式,并且提供了一些快捷功能。
+
 ## 使用手册
 
 安装完成以后， 你可能需要重新启动你的vscode. 
@@ -16,6 +17,34 @@
 > 它并不会修复你的 `markdown` 语法错误， 例如作为标题， `#` 后没有加空格， 这是因为在代码中#是一个可用字符， 广泛得用作注释或变量声明。 
 
 ## 功能
+
+### 代码段部分
+
+#### 插入图片
+
+键入`img`
+
+![img](./images/example-img.gif)
+
+#### 插入表格
+
+键入`tab`
+
+![img](./images/example-tab.gif)
+
+#### 插入代码
+
+键入`js`, `html`, `css` or `code`
+
+![img](./images/example-code.gif)
+
+#### 插入列表
+
+键入`ul`或者`ol`
+
+![img](./images/example-list.gif)
+
+### 格式化部分
 
 - `，,。;；！、？：` 这些符号后添加一个空格； 
 - `，：；！“”‘’（）？。` , 转换为半角符（可选）; 
@@ -29,7 +58,7 @@
 - 相邻的空行合并； 
 - 依据配置会格式化文章中的代码， 使用 `js-beautify` 工具， 目前只有 `javascript`  `html` 和 `css` 语言； 
 
-### 代码区
+#### 代码区
 
     function sayHello() {
       console.log('hello')
@@ -37,14 +66,13 @@
 
  如果 `codeAreaFormat` 为 `true` (默认值）， 会被格式化。 
 
-### 代码块
+#### 代码块
 
     ``` lang
     function sayHello() {console.log('hello')}
     ```
 
 1. 如果 `lang` 为 `js` 或者 `javascript` 或者为空， 会按照js语法格式化 
-
 2. 如果 `lang` 为 `html` , 会按照html语法格式化。 
 3. 如果 `lang` 为 `css` , 会按照css语法格式化。 
 4. 如果你很少写入js代码， *你可以通过配置参数 `formatOpt` 为false来禁止代码块和代码区的自动格式化代码*. 
@@ -69,13 +97,31 @@ formatOpt = config.get <any> ('formatOpt', {});
 你可以参考我的配置方法：
 
 ```js
+  // markdown-formatter conf
   "markdownFormatter.codeAreaFormat:": true,
-  // "markdownFormatter.charactersTurnHalf": false,
-  "markdownFormatter.charactersTurnHalf": "，：；！“”‘’（）？。",
+  "markdownFormatter.charactersTurnHalf": false,
+  // "markdownFormatter.charactersTurnHalf": "，：；！“”‘’（）？。",
   "markdownFormatter.formatOpt": {
       "indent_size": 2
+  },
+  "[markdown]": {
+    // 自动保存
+    "editor.formatOnSave": true,
+    // 显示空格
+    "editor.renderWhitespace": "all",
+    // 快速补全
+    "editor.quickSuggestions": {
+        "other": true,
+        "comments": true,
+        "strings": true
+    },
+    "editor.snippetSuggestions": "top",
+    "editor.tabCompletion": "on",
+    "editor.acceptSuggestionOnEnter": "on"
   }
 ```
+
+  
 
 ## 开发环境
 

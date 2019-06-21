@@ -70,7 +70,7 @@
 
 ## 0.2.0
 
-- update readme
+- update `README.md` 
 
 ## 0.1.9
 

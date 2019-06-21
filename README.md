@@ -4,7 +4,7 @@
 
 ## Introduction
 
-This is a developer-oriented markdown development tool that provides a relatively uniform format for the `markdown` user.
+This is a tool to improve the writing efficiency of markdown, not only provides a relatively uniform format for the `markdown` user, but also provides some snippets.
 
 ## Instructions
 
@@ -14,9 +14,37 @@ In any `markdown` standard file with a `.md` suffix, you can use `shift+option+f
 
 ![example.gif](https://raw.githubusercontent.com/sumnow/markdown-formatter/master/images/example.gif)
 
-> PS: It does not fix your markdown syntax errors, for example, there is no space after `#` as a title , because in the code # is a usable character that is widely used as a comment or variable declaration.
+> PS: It does not fix your markdown syntax errors. for example, there is no space after `#` as a title, because in the code `#` is a usable character that is widely used as a comment or variable declaration.
 
 ## Feature
+
+### Snippets part
+
+#### import image
+
+Typing `img`
+
+![img](./images/example-img.gif)
+
+#### import table
+
+Typing `tab`
+
+![img](./images/example-tab.gif)
+
+#### import code
+
+Typing `js`, `html`, `css` or `code`
+
+![img](./images/example-code.gif)
+
+#### import list
+
+Typing `ul` or `ol`
+
+![img](./images/example-list.gif)
+
+### Formatter part
 
 - For `，,。;；！、？：` add a space after these symbols; 
 - `，：；！“”‘’（）？。` , unify it as a half-width character(Optional); 
@@ -30,7 +58,7 @@ In any `markdown` standard file with a `.md` suffix, you can use `shift+option+f
 - erase dulicated line; 
 - Format the code, by `js-beautify` tool, currently only the `javascript` , `html` and `css` language; 
 
-### code area
+#### code area
 
     function sayHello() {
       console.log('hello')
@@ -38,7 +66,7 @@ In any `markdown` standard file with a `.md` suffix, you can use `shift+option+f
 
 Will always be formatted according to js syntax, if `codeAreaFormat` is `true` (default)
 
-### code block
+#### code block
 
     ```lang
     function sayHello() {console.log('hello')}
@@ -69,11 +97,27 @@ How to config `beautifyjs` , you can click[here](https://github.com/beautify-web
 You can refer to my configuration:
 
 ```js
+  // markdown-formatter conf
   "markdownFormatter.codeAreaFormat:": true,
-  // "markdownFormatter.charactersTurnHalf": false,
-  "markdownFormatter.charactersTurnHalf": "，：；！“”‘’（）？。",
+  "markdownFormatter.charactersTurnHalf": false,
+  // "markdownFormatter.charactersTurnHalf": "，：；！“”‘’（）？。",
   "markdownFormatter.formatOpt": {
       "indent_size": 2
+  },
+  "[markdown]": {
+    // 自动保存
+    "editor.formatOnSave": true,
+    // 显示空格
+    "editor.renderWhitespace": "all",
+    // 快速补全
+    "editor.quickSuggestions": {
+        "other": true,
+        "comments": true,
+        "strings": true
+    },
+    "editor.snippetSuggestions": "top",
+    "editor.tabCompletion": "on",
+    "editor.acceptSuggestionOnEnter": "on"
   }
 ```
 
