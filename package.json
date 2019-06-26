@@ -1,8 +1,8 @@
 {
     "name": "markdown-formatter",
     "displayName": "markdown-formatter",
-    "description": " A Markdown Format Plugin for frontend artist",
-    "version": "0.4.0",
+    "description": " A Markdown Plugin for code artist",
+    "version": "0.4.1",
     "icon": "icon.png",
     "publisher": "mervin",
     "engines": {

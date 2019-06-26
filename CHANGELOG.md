@@ -2,12 +2,23 @@
 
 [中文文档](./CHANGELOG_CN.md)
 
+## 0.4.1
+
+- update `README.md` 
+- update `CHANGELOG.md` 
+
+## 0.4.0
+
+- add feature: Snippets
+- update `README.md` 
+- update `CHANGELOG.md` 
+
 ## 0.3.4
 
 - Empty a line for table; 
 - Empty a line for image tag; 
-- update `README.md`
-- update `CHANGELOG.md`
+- update `README.md` 
+- update `CHANGELOG.md` 
 
 ## 0.3.3
 

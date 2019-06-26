@@ -2,18 +2,23 @@
 
 [English Document](./CHANGELOG.md)
 
+## 0.4.1
+
+- 更新中英文 `README.md` 
+- 更新中英文 `CHANGELOG.md` 
+
 ## 0.4.0
 
 - 添加代码段功能
-- 更新中英文`README.md`
-- 更新中英文 `CHANGELOG.md`
+- 更新中英文 `README.md` 
+- 更新中英文 `CHANGELOG.md` 
 
 ## 0.3.4
 
 - 表格上下空出一行
 - 图片上下空出一行
-- 更新中英文 `README.md`
-- 更新中英文 `CHANGELOG.md`
+- 更新中英文 `README.md` 
+- 更新中英文 `CHANGELOG.md` 
 
 ## 0.3.3
 
@@ -34,7 +39,7 @@
 
 ## 0.3.0
 
-- 修复bug： [代码块中格式化错误](https://github.com/sumnow/markdown-formatter/issues/1)
+- 修复bug: [代码块中格式化错误](https://github.com/sumnow/markdown-formatter/issues/1)
 
 ## 0.2.9
 
@@ -47,7 +52,7 @@
 ## 0.2.7
 
 - 更新 `README.md` 
-- 支持根据上下文将中文中的符号转换为全角符号， 或者将英文中的转化为半角符 
+- 支持根据上下文将中文中的符号转换为全角符号, 或者将英文中的转化为半角符 
 
 ## 0.2.6
 
@@ -60,7 +65,7 @@
 
 ## 0.2.4
 
-1. 修复小bug: 偶尔格式化失败。 
+1. 修复小bug: 偶尔格式化失败. 
 
 ## 0.2.3
 
@@ -96,7 +101,7 @@
 
 ## 0.1.5
 
-- 提高`js-beautify`的显示效果
+- 提高 `js-beautify` 的显示效果
 
 ## 0.1.4
 
@@ -112,8 +117,8 @@
 
 ## 0.1.1
 
-- 添加功能： 列表格式化
-- 添加功能： 全角， 半角的转换
+- 添加功能: 列表格式化
+- 添加功能: 全角, 半角的转换
 
 ## 0.1.0
 
@@ -130,7 +135,7 @@
 ## 0.0.7
 
 - 修复bug: 代码重复格式化
-- 修复bug: `PC/UNIX` 行尾符号
+- 修复bug:  `PC/UNIX` 行尾符号
 - 更新 README.md
 
 ## 0.0.6
@@ -157,3 +162,4 @@
 ## 0.0.1  
 
 - 初始化 `markdown-formatter` 版本
+

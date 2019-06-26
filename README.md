@@ -22,25 +22,25 @@ In any `markdown` standard file with a `.md` suffix, you can use `shift+option+f
 
 #### import image
 
-Typing `img`
+Typing `img` 
 
 ![img](./images/example-img.gif)
 
 #### import table
 
-Typing `tab`
+Typing `tab` 
 
 ![img](./images/example-tab.gif)
 
 #### import code
 
-Typing `js`, `html`, `css` or `code`
+Typing `js` , `html` , `css` or `code` 
 
 ![img](./images/example-code.gif)
 
 #### import list
 
-Typing `ul` or `ol`
+Typing `ul` or `ol` 
 
 ![img](./images/example-list.gif)
 
@@ -68,9 +68,9 @@ Will always be formatted according to js syntax, if `codeAreaFormat` is `true` (
 
 #### code block
 
-    ```lang
-    function sayHello() {console.log('hello')}
-    ```
+```lang
+function sayHello() {console.log('hello')}
+```
 
 1. If `lang` is `js` or `javascript` or empty, it will be formatted according to js syntax.
 2. If `lang` is `html` , it will be formatted according to html syntax.
@@ -102,7 +102,7 @@ You can refer to my configuration:
   "markdownFormatter.charactersTurnHalf": false,
   // "markdownFormatter.charactersTurnHalf": "，：；！“”‘’（）？。",
   "markdownFormatter.formatOpt": {
-      "indent_size": 2
+    "indent_size": 2
   },
   "[markdown]": {
     // 自动保存
@@ -111,9 +111,9 @@ You can refer to my configuration:
     "editor.renderWhitespace": "all",
     // 快速补全
     "editor.quickSuggestions": {
-        "other": true,
-        "comments": true,
-        "strings": true
+      "other": true,
+      "comments": true,
+      "strings": true
     },
     "editor.snippetSuggestions": "top",
     "editor.tabCompletion": "on",
@@ -138,5 +138,4 @@ If you have any ideas, please contact me.
 If you know how to format other languages using front-end libraries, please let me know.
 
 email: mydiamervin@gmail.com  or [here](https://github.com/sumnow/markdown-formatter/issues)
-
 
