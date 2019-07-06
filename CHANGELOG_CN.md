@@ -2,6 +2,13 @@
 
 [English Document](./CHANGELOG.md)
 
+## 0.4.2
+
+- 快捷输入支持更多的语言，例如 `java` , `python` 等
+- 修复在多个代码区中格式化错误的问题
+- 更新中英文 `README.md` 
+- 更新中英文 `CHANGELOG.md` 
+
 ## 0.4.1
 
 - 更新中英文 `README.md` 

@@ -34,7 +34,7 @@
 
 #### 插入代码
 
-键入 `js` , `html` , `css` or `code` 
+键入 `js` , `html` , `css` , `python` , `go` , `java` , or `code` 
 
 ![img](./images/example-code.gif)
 

@@ -34,7 +34,7 @@ Typing `tab`
 
 #### import code
 
-Typing `js` , `html` , `css` or `code` 
+Typing `js` , `html` , `css` , `python` , `go` , `java` , or `code` 
 
 ![img](./images/example-code.gif)
 

@@ -69,7 +69,7 @@ export function activate(context: vscode.ExtensionContext) {
     const CODE_AREA_EXP = /\n+((?:(?: {4}|\t)+(?!\d\.|\+|\-|\*)[^\n]+\n*)+)/g;
     // const CODE_AREA_EXP = /(?:(?: {4}|\t)+[^\n]+\n*)+/g;
     const CODE_EXP = /\n*```([\s\S]+?)```\n*/g;
-    const ISCODE_EXP = /\n*```(?: *)(\w*)\n([\s\S]+?)```\n*/g
+    const ISCODE_EXP = /\n*```(?: *)(\w*)\n([\s\S]+?)(```)+?\n+/g
 
     // line-break
     const LINE_BREAK_EXP = /\r\n/g;
@@ -144,7 +144,6 @@ export function activate(context: vscode.ExtensionContext) {
             // handler js
             if (formatOpt !== false) {
                 const _codeArr = text.match(ISCODE_EXP)
-
                 if (_codeArr && _codeArr.length > 0) {
                     _codeArr.forEach(e => {
                         const isJs = e.replace(ISCODE_EXP, '$1').toLocaleLowerCase()

@@ -16,28 +16,56 @@
     "Create JS": {
         "prefix": "js",
         "body": [
-            "```js\n${1:\t// javascript}\n```\n$2"
+            "``` js\n${1:// javascript}\n```\n$2"
         ],
-        "description": "create js code block"
+        "description": "create  ECMAScript code block"
     },
     "Create HTML": {
         "prefix": "html",
         "body": [
-            "```html\n${1:\t// html}\n```\n$2"
+            "``` html\n${1:<!-- html -->}\n```\n$2"
         ],
-        "description": "create html code block"
+        "description": "create HTML code block"
     },
     "Create CSS": {
         "prefix": "css",
         "body": [
-            "```css\n${1:\t// css}\n```\n$2"
+            "``` css\n${1:/* css */}\n```\n$2"
         ],
-        "description": "create css code block"
+        "description": "create CSS code block"
+    },
+    "Create Java": {
+        "prefix": "java",
+        "body": [
+            "``` java\n${1:// java}\n```\n$2"
+        ],
+        "description": "create Java code block"
+    },
+    "Create Python": {
+        "prefix": "python",
+        "body": [
+            "``` python\n${1:# python}\n```\n$2"
+        ],
+        "description": "create Python code block"
+    },
+    "Create Go": {
+        "prefix": "go",
+        "body": [
+            "``` go\n${1:// go}\n```\n$2"
+        ],
+        "description": "create Go code block"
+    },
+    "Create bash": {
+        "prefix": "bash",
+        "body": [
+            "``` bash\n${1:# bash}\n```\n$2"
+        ],
+        "description": "create Bash code block"
     },
     "Create Code": {
         "prefix": "code",
         "body": [
-            "```${1|java,c,python,c++,vb,c#,php,go|}\n\t$2\n```\n$3"
+            "``` code\n${1:// code}\n```\n$2"
         ],
         "description": "create code block"
     },

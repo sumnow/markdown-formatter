@@ -2,6 +2,13 @@
 
 [中文文档](./CHANGELOG_CN.md)
 
+## 0.4.2
+
+- Snippets supports more languages, such as `java`, `python`, etc.
+- Fix formatting errors in multiple code areas
+- update `README.md` 
+- update `CHANGELOG.md` 
+
 ## 0.4.1
 
 - update `README.md` 
