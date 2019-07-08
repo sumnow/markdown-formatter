@@ -2,6 +2,12 @@
 
 [English Document](./CHANGELOG.md)
 
+## 0.4.3
+
+- 全角符号后的空格现在是可选的了！[搞不懂为什么要把全角符号改成半角的](https://github.com/sumnow/markdown-formatter/issues/3)
+- 更新中英文 `CHANGELOG.md` 
+
+
 ## 0.4.2
 
 - 快捷输入支持更多的语言，例如 `java` , `python` 等

@@ -13,11 +13,13 @@ var beautify_html = require('js-beautify').html;
 var config = vscode_1.workspace.getConfiguration('markdownFormatter');
 var charactersTurnHalf = config.get('charactersTurnHalf', false);
 var enable = config.get('enable', true);
+var spaceAfterFullWidth = config.get('spaceAfterFullWidth', false);
 var formatOpt = config.get('formatOpt', {});
 var codeAreaFormat = config.get('codeAreaFormat', true);
 vscode_1.workspace.onDidChangeConfiguration(function (_) {
     config = vscode_1.workspace.getConfiguration('markdownFormatter');
     enable = config.get('enable', true);
+    spaceAfterFullWidth = config.get('spaceAfterFullWidth', false);
     codeAreaFormat = config.get('codeAreaFormat', true);
     charactersTurnHalf = config.get('charactersTurnHalf', false);
     formatOpt = config.get('formatOpt', {});
@@ -33,9 +35,10 @@ function activate(context) {
     var CHINESE_CHARCTER_SYMBOL = "([\\u4e00-\\u9fa5])";
     var ENGLISH_CHARCTER_SYMBOL = "([A-Za-z])";
     // punctuation which need a space after it
-    var PUNCTUATION_EXP = /([，,。；;！、？：])\ */g;
+    // const PUNCTUATION_EXP = /([，,。；;！、？：])\ */g;
+    var PUNCTUATION_EXP = spaceAfterFullWidth ? /([，,。；;！、？：])\ */g : /([,;])\ */g;
     // period which need a space after it
-    var PERIOD_EXP = /([\.\!\?])([A-Z\u4e00-\u9fa5])/g;
+    var PERIOD_EXP = /([\.\!\?\:])([A-Z\u4e00-\u9fa5])/g;
     // h1 symbol
     var H1_EXP = /^(# [^\n]+)\n*/g;
     // h2,h3,h4... symbol

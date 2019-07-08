@@ -14,12 +14,14 @@ var beautify_html = require('js-beautify').html;
 let config = workspace.getConfiguration('markdownFormatter');
 let charactersTurnHalf: any = config.get<any>('charactersTurnHalf', false);
 let enable: boolean = config.get<boolean>('enable', true);
+let spaceAfterFullWidth: boolean = config.get<boolean>('spaceAfterFullWidth', false);
 let formatOpt: any = config.get<any>('formatOpt', {});
 let codeAreaFormat: boolean = config.get<boolean>('codeAreaFormat', true);
 
 workspace.onDidChangeConfiguration(_ => {
     config = workspace.getConfiguration('markdownFormatter');
     enable = config.get<boolean>('enable', true);
+    spaceAfterFullWidth = config.get<boolean>('spaceAfterFullWidth', false);
     codeAreaFormat = config.get<boolean>('codeAreaFormat', true);
     charactersTurnHalf = config.get<any>('charactersTurnHalf', false);
     formatOpt = config.get<any>('formatOpt', {});
@@ -39,9 +41,10 @@ export function activate(context: vscode.ExtensionContext) {
     const ENGLISH_CHARCTER_SYMBOL = `([A-Za-z])`;
 
     // punctuation which need a space after it
-    const PUNCTUATION_EXP = /([，,。；;！、？：])\ */g;
+    // const PUNCTUATION_EXP = /([，,。；;！、？：])\ */g;
+    const PUNCTUATION_EXP =  spaceAfterFullWidth ? /([，,。；;！、？：])\ */g : /([,;])\ */g;
     // period which need a space after it
-    const PERIOD_EXP = /([\.\!\?])([A-Z\u4e00-\u9fa5])/g;
+    const PERIOD_EXP = /([\.\!\?\:])([A-Z\u4e00-\u9fa5])/g;
     // h1 symbol
     const H1_EXP = /^(# [^\n]+)\n*/g;
     // h2,h3,h4... symbol

@@ -2,7 +2,7 @@
     "name": "markdown-formatter",
     "displayName": "markdown-formatter",
     "description": " A Markdown Plugin for code artist",
-    "version": "0.4.2",
+    "version": "0.4.3",
     "icon": "icon.png",
     "publisher": "mervin",
     "engines": {
@@ -42,6 +42,11 @@
                     "type": "boolean",
                     "default": true,
                     "description": "Enable/disable code area formatter now."
+                },
+                "markdownFormatter.spaceAfterFullWidth": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Whether to insert a space after the full-width symbol"
                 },
                 "markdownFormatter.formatOpt": {
                     "type": "object",
