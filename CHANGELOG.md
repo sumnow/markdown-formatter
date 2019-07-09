@@ -2,6 +2,11 @@
 
 [中文文档](./CHANGELOG_CN.md)
 
+## 0.4.4
+
+- Fix Bug: the third level list is not aligned
+- Update `CHANGELOG.md` 
+
 ## 0.4.3
 
 -The spaces after the full-width symbol are optional now! 

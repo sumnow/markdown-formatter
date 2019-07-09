@@ -42,7 +42,7 @@ export function activate(context: vscode.ExtensionContext) {
 
     // punctuation which need a space after it
     // const PUNCTUATION_EXP = /([，,。；;！、？：])\ */g;
-    const PUNCTUATION_EXP =  spaceAfterFullWidth ? /([，,。；;！、？：])\ */g : /([,;])\ */g;
+    const PUNCTUATION_EXP = spaceAfterFullWidth ? /([，,。；;！、？：])\ */g : /([,;])\ */g;
     // period which need a space after it
     const PERIOD_EXP = /([\.\!\?\:])([A-Z\u4e00-\u9fa5])/g;
     // h1 symbol
@@ -165,7 +165,8 @@ export function activate(context: vscode.ExtensionContext) {
                     })
                 }
                 text = removeReplace({
-                    text, reg: [ISCODE_EXP], func: (text: string): string => {
+                    text, reg: [ISCODE_EXP, LIST_EXP], func: (text: string): string => {
+                        text = text.replace(LIST_EXP, '\n' + '$1' + '\n');
                         const _jsArr = text.match(CODE_AREA_EXP);
                         if (codeAreaFormat && _jsArr && _jsArr.length > 0) {
                             _jsArr.forEach(e => {
@@ -178,8 +179,6 @@ export function activate(context: vscode.ExtensionContext) {
                 })
             }
 
-
-            text = text.replace(LIST_EXP, '\n' + '$1' + '\n');
             text = text.replace(BACK_QUOTE_EXP, ' `$1` ')
             text = text.replace(H_EXP, '\n\n' + '$1' + '\n\n')
             text = text.replace(H1_EXP, '$1' + '\n\n')

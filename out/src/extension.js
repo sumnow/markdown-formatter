@@ -153,7 +153,8 @@ function activate(context) {
                     });
                 }
                 text = removeReplace_1.removeReplace({
-                    text: text, reg: [ISCODE_EXP], func: function (text) {
+                    text: text, reg: [ISCODE_EXP, LIST_EXP], func: function (text) {
+                        text = text.replace(LIST_EXP, '\n' + '$1' + '\n');
                         var _jsArr = text.match(CODE_AREA_EXP);
                         if (codeAreaFormat && _jsArr && _jsArr.length > 0) {
                             _jsArr.forEach(function (e) {
@@ -165,7 +166,6 @@ function activate(context) {
                     }
                 });
             }
-            text = text.replace(LIST_EXP, '\n' + '$1' + '\n');
             text = text.replace(BACK_QUOTE_EXP, ' `$1` ');
             text = text.replace(H_EXP, '\n\n' + '$1' + '\n\n');
             text = text.replace(H1_EXP, '$1' + '\n\n');

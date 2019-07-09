@@ -2,6 +2,11 @@
 
 [English Document](./CHANGELOG.md)
 
+## 0.4.4
+
+- 修复问题：三级列表不对齐
+- 更新 `CHANGELOG.md` 
+
 ## 0.4.3
 
 - 全角符号后的空格现在是可选的了！[搞不懂为什么要把全角符号改成半角的](https://github.com/sumnow/markdown-formatter/issues/3)
