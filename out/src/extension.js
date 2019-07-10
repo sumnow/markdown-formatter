@@ -12,17 +12,19 @@ var beautify_css = require('js-beautify').css;
 var beautify_html = require('js-beautify').html;
 var config = vscode_1.workspace.getConfiguration('markdownFormatter');
 var charactersTurnHalf = config.get('charactersTurnHalf', false);
-var enable = config.get('enable', true);
-var spaceAfterFullWidth = config.get('spaceAfterFullWidth', false);
-var formatOpt = config.get('formatOpt', {});
 var codeAreaFormat = config.get('codeAreaFormat', true);
+var enable = config.get('enable', true);
+var formatOpt = config.get('formatOpt', {});
+var formatULSymbol = config.get('formatULSymbol', true);
+var spaceAfterFullWidth = config.get('spaceAfterFullWidth', false);
 vscode_1.workspace.onDidChangeConfiguration(function (_) {
     config = vscode_1.workspace.getConfiguration('markdownFormatter');
-    enable = config.get('enable', true);
-    spaceAfterFullWidth = config.get('spaceAfterFullWidth', false);
-    codeAreaFormat = config.get('codeAreaFormat', true);
     charactersTurnHalf = config.get('charactersTurnHalf', false);
+    codeAreaFormat = config.get('codeAreaFormat', true);
+    enable = config.get('enable', true);
     formatOpt = config.get('formatOpt', {});
+    formatULSymbol = config.get('formatULSymbol', true);
+    spaceAfterFullWidth = config.get('spaceAfterFullWidth', false);
 });
 // let textLast = ''
 // this method is called when your extension is activated
@@ -50,7 +52,11 @@ function activate(context) {
     // image link
     var IMG_EXP = /(\!\[[^\n]+\]\([^\n]+\))/g;
     // list 
-    var LIST_EXP = /(((?:\n)+(?: {4}|\t)*(?:\d+\.|\-|\*|\+) [^\n]+)+)/g;
+    // const LIST_EXP = /(((?:\n)+(?: {4}|\t)*(?:\d+\.|\-|\*|\+) [^\n]+)+)/g;
+    var LIST_EXP = /((\n(?: {4}|\t)*(?:\d+\.|\-|\*|\+) [^\n]+)+)/g;
+    var LIST_ST_EXP = /\n(?:\-|\*|\+) ([^\n]+)/g;
+    var LIST_ND_EXP = /\n(?: {4}|\t)(?:\-|\*|\+) ([^\n]+)/g;
+    var LIST_TH_EXP = /\n(?: {4}|\t){2}(?:\-|\*|\+) ([^\n]+)/g;
     // const NO_PERIOD_BACK_QUOTE_EXP = /\ *`([^.`\n]+)`\ */g;
     // const NO_PERIOD_BACK_QUOTE_EXP1 = /\ *`([^`\n]*\.[^`\n]*)`\ */g;
     // link 
@@ -100,8 +106,6 @@ function activate(context) {
             };
             text = removeReplace_1.removeReplace({
                 text: text, reg: [BACK_QUOTE_EXP, ISCODE_EXP, CODE_AREA_EXP], func: function (text) {
-                    text = text.replace(PUNCTUATION_EXP, '$1 ');
-                    text = text.replace(PERIOD_EXP, '$1 $2');
                     // handle fullwidth character
                     var fullwidthArr = CHINESE_SYMBOL.split('');
                     var halfwidthArr = ENGLISH_SYMBOL.split('');
@@ -121,6 +125,8 @@ function activate(context) {
                         _replacewithCharcter({ target: fullwidthArr, judge: ENGLISH_CHARCTER_SYMBOL, pad: halfwidthArr });
                         _replacewithCharcter({ target: halfwidthArr, judge: CHINESE_CHARCTER_SYMBOL, pad: fullwidthArr });
                     }
+                    text = text.replace(PUNCTUATION_EXP, '$1 ');
+                    text = text.replace(PERIOD_EXP, '$1 $2');
                     return text;
                 }
             });
@@ -154,18 +160,24 @@ function activate(context) {
                 }
                 text = removeReplace_1.removeReplace({
                     text: text, reg: [ISCODE_EXP, LIST_EXP], func: function (text) {
-                        text = text.replace(LIST_EXP, '\n' + '$1' + '\n');
                         var _jsArr = text.match(CODE_AREA_EXP);
                         if (codeAreaFormat && _jsArr && _jsArr.length > 0) {
                             _jsArr.forEach(function (e) {
                                 var re = new RegExp(escapeStringRegexp(e), 'g');
-                                text = text.replace(re, '\n\n' + beautify(e.replace(CODE_AREA_EXP, '$1'), beautifyOpt) + '\n\n');
+                                text = text.replace(re, '\n\n\n' + beautify(e.replace(CODE_AREA_EXP, '$1'), beautifyOpt) + '\n\n\n');
                             });
                         }
                         return text;
                     }
                 });
             }
+            text = text.replace(LIST_EXP, '\n\n' + '$1' + '\n\n');
+            if (formatULSymbol) {
+                text = text.replace(LIST_ST_EXP, '\n* ' + '$1');
+                text = text.replace(LIST_ND_EXP, '\n    + ' + '$1');
+                text = text.replace(LIST_TH_EXP, '\n        - ' + '$1');
+            }
+            // console.log(text.match(LIST_ST_EXP))
             text = text.replace(BACK_QUOTE_EXP, ' `$1` ');
             text = text.replace(H_EXP, '\n\n' + '$1' + '\n\n');
             text = text.replace(H1_EXP, '$1' + '\n\n');

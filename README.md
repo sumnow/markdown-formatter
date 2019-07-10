@@ -46,17 +46,17 @@ Typing `ul` or `ol`
 
 ### Formatter part
 
-- For `，,。;；！、？：` add a space after these symbols; 
-- `，：；！“”‘’（）？。` , unify it as a half-width character(Optional); 
-- Supports converting Chinese symbols into full-width symbols according to context, or converting English into half-width symbols; 
-- `.!?` add a space after these symbols, if before uppercases or chineses; 
-- a space before and after the back-quote, which wrapped by back-quote will not be formatted; 
-- Empty a line for the title; 
-- Empty a line for the code block; 
-- The table is aligned automatically; 
-- Empty a line for the link block; 
-- erase dulicated line; 
-- Format the code, by `js-beautify` tool, currently only the `javascript` , `html` and `css` language; 
+* For `，,。;；！、？：` add a space after these symbols; 
+* `，：；！“”‘’（）？。` , unify it as a half-width character(Optional); 
+* Supports converting Chinese symbols into full-width symbols according to context, or converting English into half-width symbols; 
+* `.!?` add a space after these symbols, if before uppercases or chineses; 
+* a space before and after the back-quote, which wrapped by back-quote will not be formatted; 
+* Empty a line for the title; 
+* Empty a line for the code block; 
+* The table is aligned automatically; 
+* Empty a line for the link block; 
+* erase dulicated line; 
+* Format the code, by `js-beautify` tool, currently only the `javascript` , `html` and `css` language; 
 
 #### code area
 
@@ -87,9 +87,14 @@ enable = config.get <boolean> ('enable', true);
 // automatically format the code area or not
 codeAreaFormat = config.get<boolean>('codeAreaFormat', true); 
 // fullwidth character translate into halfwidth character. Automatically convert symbols based on context when set to false
-charactersTurnHalf = config.get<any>('charactersTurnHalf', false); 
+charactersTurnHalf = config.get<any>('charactersTurnHalf', false);
 // enable/disable format code or config beautifyjs(false: disable format code , {}: config beautifyjs)
 formatOpt = config.get <any> ('formatOpt', {}); 
+// Format the symbols of the unordered list
+// * > + > -
+formatULSymbol = config.get<boolean>('formatULSymbol', true);
+// Whether a space is required after the full-width symbol
+spaceAfterFullWidth = config.get<boolean>('spaceAfterFullWidth', false);
 ```
 
 How to config `beautifyjs` , you can click[here](https://github.com/beautify-web/js-beautify)

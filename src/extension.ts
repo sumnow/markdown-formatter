@@ -13,18 +13,20 @@ var beautify_html = require('js-beautify').html;
 
 let config = workspace.getConfiguration('markdownFormatter');
 let charactersTurnHalf: any = config.get<any>('charactersTurnHalf', false);
-let enable: boolean = config.get<boolean>('enable', true);
-let spaceAfterFullWidth: boolean = config.get<boolean>('spaceAfterFullWidth', false);
-let formatOpt: any = config.get<any>('formatOpt', {});
 let codeAreaFormat: boolean = config.get<boolean>('codeAreaFormat', true);
+let enable: boolean = config.get<boolean>('enable', true);
+let formatOpt: any = config.get<any>('formatOpt', {});
+let formatULSymbol: boolean = config.get<boolean>('formatULSymbol', true)
+let spaceAfterFullWidth: boolean = config.get<boolean>('spaceAfterFullWidth', false);
 
 workspace.onDidChangeConfiguration(_ => {
     config = workspace.getConfiguration('markdownFormatter');
-    enable = config.get<boolean>('enable', true);
-    spaceAfterFullWidth = config.get<boolean>('spaceAfterFullWidth', false);
-    codeAreaFormat = config.get<boolean>('codeAreaFormat', true);
     charactersTurnHalf = config.get<any>('charactersTurnHalf', false);
+    codeAreaFormat = config.get<boolean>('codeAreaFormat', true);
+    enable = config.get<boolean>('enable', true);
     formatOpt = config.get<any>('formatOpt', {});
+    formatULSymbol = config.get<boolean>('formatULSymbol', true);
+    spaceAfterFullWidth = config.get<boolean>('spaceAfterFullWidth', false);
 });
 
 // let textLast = ''
@@ -55,8 +57,13 @@ export function activate(context: vscode.ExtensionContext) {
     const BACK_QUOTE_EXP = /\ *`([^`\n]+)`\ */g;
     // image link
     const IMG_EXP = /(\!\[[^\n]+\]\([^\n]+\))/g;
+
     // list 
-    const LIST_EXP = /(((?:\n)+(?: {4}|\t)*(?:\d+\.|\-|\*|\+) [^\n]+)+)/g;
+    // const LIST_EXP = /(((?:\n)+(?: {4}|\t)*(?:\d+\.|\-|\*|\+) [^\n]+)+)/g;
+    const LIST_EXP = /((\n(?: {4}|\t)*(?:\d+\.|\-|\*|\+) [^\n]+)+)/g
+    const LIST_ST_EXP = /\n(?:\-|\*|\+) ([^\n]+)/g;
+    const LIST_ND_EXP = /\n(?: {4}|\t)(?:\-|\*|\+) ([^\n]+)/g;
+    const LIST_TH_EXP = /\n(?: {4}|\t){2}(?:\-|\*|\+) ([^\n]+)/g;
 
     // const NO_PERIOD_BACK_QUOTE_EXP = /\ *`([^.`\n]+)`\ */g;
     // const NO_PERIOD_BACK_QUOTE_EXP1 = /\ *`([^`\n]*\.[^`\n]*)`\ */g;
@@ -99,6 +106,7 @@ export function activate(context: vscode.ExtensionContext) {
             //     return void 0;
             // }
             // textLast = text;
+
             // format \r\n to \n,fix
             text = text.replace(LINE_BREAK_EXP, '\n');
 
@@ -109,10 +117,10 @@ export function activate(context: vscode.ExtensionContext) {
                     text = text.replace(_reg, `$1${pad[i]}`);
                 });
             };
+
             text = removeReplace({
                 text, reg: [BACK_QUOTE_EXP, ISCODE_EXP, CODE_AREA_EXP], func: (text: string): string => {
-                    text = text.replace(PUNCTUATION_EXP, '$1 ');
-                    text = text.replace(PERIOD_EXP, '$1 $2');
+
                     // handle fullwidth character
                     const fullwidthArr = CHINESE_SYMBOL.split('');
                     const halfwidthArr = ENGLISH_SYMBOL.split('');
@@ -132,9 +140,12 @@ export function activate(context: vscode.ExtensionContext) {
                         _replacewithCharcter({ target: fullwidthArr, judge: ENGLISH_CHARCTER_SYMBOL, pad: halfwidthArr });
                         _replacewithCharcter({ target: halfwidthArr, judge: CHINESE_CHARCTER_SYMBOL, pad: fullwidthArr });
                     }
+                    text = text.replace(PUNCTUATION_EXP, '$1 ');
+                    text = text.replace(PERIOD_EXP, '$1 $2');
                     return text;
                 }
             })
+
             // handler table
             const _tableArr = extractTables(text)
             if (_tableArr && _tableArr.length > 0) {
@@ -164,14 +175,14 @@ export function activate(context: vscode.ExtensionContext) {
                         }
                     })
                 }
+
                 text = removeReplace({
                     text, reg: [ISCODE_EXP, LIST_EXP], func: (text: string): string => {
-                        text = text.replace(LIST_EXP, '\n' + '$1' + '\n');
                         const _jsArr = text.match(CODE_AREA_EXP);
                         if (codeAreaFormat && _jsArr && _jsArr.length > 0) {
                             _jsArr.forEach(e => {
                                 const re = new RegExp(escapeStringRegexp(e), 'g');
-                                text = text.replace(re, '\n\n' + beautify(e.replace(CODE_AREA_EXP, '$1'), beautifyOpt) + '\n\n');
+                                text = text.replace(re, '\n\n\n' + beautify(e.replace(CODE_AREA_EXP, '$1'), beautifyOpt) + '\n\n\n');
                             });
                         }
                         return text;
@@ -179,6 +190,13 @@ export function activate(context: vscode.ExtensionContext) {
                 })
             }
 
+            text = text.replace(LIST_EXP, '\n\n' + '$1' + '\n\n');
+            if (formatULSymbol) {
+                text = text.replace(LIST_ST_EXP, '\n* ' + '$1');
+                text = text.replace(LIST_ND_EXP, '\n    + ' + '$1');
+                text = text.replace(LIST_TH_EXP, '\n        - ' + '$1');
+            }
+            // console.log(text.match(LIST_ST_EXP))
             text = text.replace(BACK_QUOTE_EXP, ' `$1` ')
             text = text.replace(H_EXP, '\n\n' + '$1' + '\n\n')
             text = text.replace(H1_EXP, '$1' + '\n\n')

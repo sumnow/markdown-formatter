@@ -46,17 +46,17 @@
 
 ### 格式化部分
 
-- `，,。;；！、？：` 这些符号后添加一个空格; 
-- `，：；！“”‘’（）？。` , 转换为半角符(可选); 
-- 支持根据上下文将中文后的符号转换为全角符号, 或者将英文后的转化为半角符; 
-- `.!?` 后如果是大写的英文字母或者中文会添加一个空格; 
-- 反逗号前后空一格, 反逗号内的内容不会被格式化; 
-- 标题上下空出一行; 
-- 代码块上下空出一行; 
-- 表格自动对齐; 
-- 为引用上下空出一行; 
-- 相邻的空行合并; 
-- 依据配置会格式化文章中的代码, 使用 `js-beautify` 工具, 目前只有 `javascript`  `html` 和 `css` 语言; 
+* `，,。;；！、？：` 这些符号后添加一个空格; 
+* `，：；！“”‘’（）？。` , 转换为半角符(可选); 
+* 支持根据上下文将中文后的符号转换为全角符号, 或者将英文后的转化为半角符; 
+* `.!?` 后如果是大写的英文字母或者中文会添加一个空格; 
+* 反逗号前后空一格, 反逗号内的内容不会被格式化; 
+* 标题上下空出一行; 
+* 代码块上下空出一行; 
+* 表格自动对齐; 
+* 为引用上下空出一行; 
+* 相邻的空行合并; 
+* 依据配置会格式化文章中的代码, 使用 `js-beautify` 工具, 目前只有 `javascript` , `html` 和 `css` 语言; 
 
 #### 代码区
 
@@ -90,6 +90,11 @@ codeAreaFormat = config.get<boolean>('codeAreaFormat', true);
 charactersTurnHalf = config.get<any>('charactersTurnHalf', false); 
 // 是否格式化代码或者配置js-beautify(false: 不格式化代码, {}: 配置beautifyjs)
 formatOpt = config.get <any> ('formatOpt', {}); 
+// 格式化无序列表的符号 
+// * > + > -
+formatULSymbol = config.get<boolean>('formatULSymbol', true);
+// 全角符号后是否需要空格
+spaceAfterFullWidth = config.get<boolean>('spaceAfterFullWidth', false);
 ```
 
 配置 `js-beautify` , 可以参考[这里](https://github.com/beautify-web/js-beautify)

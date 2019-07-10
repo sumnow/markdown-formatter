@@ -2,10 +2,15 @@
 
 [English Document](./CHANGELOG.md)
 
+## 0.4.5
+
+- 可以格式化无序列表的符号，如 * > + > -
+- 更新中英文 `CHANGELOG.md` 
+
 ## 0.4.4
 
 - 修复问题：三级列表不对齐
-- 更新 `CHANGELOG.md` 
+- 更新中英文 `CHANGELOG.md` 
 
 ## 0.4.3
 
