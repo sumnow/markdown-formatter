@@ -79,7 +79,7 @@ export function activate(context: vscode.ExtensionContext) {
     const CODE_AREA_EXP = /\n+((?:(?: {4}|\t)+(?!\d\.|\+|\-|\*)[^\n]+\n*)+)/g;
     // const CODE_AREA_EXP = /(?:(?: {4}|\t)+[^\n]+\n*)+/g;
     const CODE_EXP = /\n*```([\s\S]+?)```\n*/g;
-    const ISCODE_EXP = /\n*```(?: *)(\w*)\n([\s\S]+?)(```)+?\n+/g
+    const ISCODE_EXP = /\n*```(?: *)(\w*)\n([\s\S]+)(```)+?\n+/g
 
     // line-break
     const LINE_BREAK_EXP = /\r\n/g;
@@ -100,7 +100,7 @@ export function activate(context: vscode.ExtensionContext) {
             const start = new vscode.Position(0, 0);
             const end = new vscode.Position(document.lineCount - 1, document.lineAt(document.lineCount - 1).text.length);
             const range = new vscode.Range(start, end);
-            let text = document.getText(range)
+            let text = document.getText(range) + '\n'
             // if (text === textLast) {
             //     vscode.window.showInformationMessage('No text to format.');
             //     return void 0;
@@ -179,6 +179,8 @@ export function activate(context: vscode.ExtensionContext) {
                 text = removeReplace({
                     text, reg: [ISCODE_EXP, LIST_EXP], func: (text: string): string => {
                         const _jsArr = text.match(CODE_AREA_EXP);
+                        // console.log(_jsArr);
+                        // console.log(text)
                         if (codeAreaFormat && _jsArr && _jsArr.length > 0) {
                             _jsArr.forEach(e => {
                                 const re = new RegExp(escapeStringRegexp(e), 'g');

@@ -2,6 +2,11 @@
 
 [English Document](./CHANGELOG.md)
 
+## 0.4.6
+
+- 修复bug: 在最后一行的代码块不会正确格式化
+- 更新中英文 `CHANGELOG.md` 
+
 ## 0.4.5
 
 - 可以格式化无序列表的符号，如 * > + > -

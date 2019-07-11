@@ -2,6 +2,12 @@
 
 [中文文档](./CHANGELOG_CN.md)
 
+## 0.4.6
+
+- Fix bug: Code area in the end will not be formatted as expected
+ as except
+- Update `CHANGELOG.md` 
+
 ## 0.4.5
 
 - Formatted unordered list symbol, as * > + > -
