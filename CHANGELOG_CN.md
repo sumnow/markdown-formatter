@@ -2,6 +2,11 @@
 
 [English Document](./CHANGELOG.md)
 
+## 0.4.7
+
+- 更新中英文 `README.md` 
+- 更新中英文 `CHANGELOG.md`
+
 ## 0.4.6
 
 - 修复bug: 在最后一行的代码块不会正确格式化

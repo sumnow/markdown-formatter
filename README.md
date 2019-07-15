@@ -46,19 +46,46 @@ Typing `ul` or `ol`
 
 ### Formatter part
 
+#### symbols
+
 * For `，,。;；！、？：` add a space after these symbols; 
 * `，：；！“”‘’（）？。` , unify it as a half-width character(Optional); 
-* Supports converting Chinese symbols into full-width symbols according to context, or converting English into half-width symbols; 
 * `.!?` add a space after these symbols, if before uppercases or chineses; 
+* Supports converting Chinese symbols into full-width symbols according to context, or converting English into half-width symbols; 
 * a space before and after the back-quote, which wrapped by back-quote will not be formatted; 
+
+#### line
+
 * Empty a line for the title; 
 * Empty a line for the code block; 
 * The table is aligned automatically; 
 * Empty a line for the link block; 
 * erase dulicated line; 
-* Format the code, by `js-beautify` tool, currently only the `javascript` , `html` and `css` language; 
 
-#### code area
+#### table
+
+![alt](./images/example-tab_format.gif)
+
+#### list
+
+##### unordered list
+
+``` markdown
+
+* 大标题
+    + 中标题
+        - 小标题
+
+```
+
+![alt](./images/example-list_format.gif)
+
+
+#### code
+
+Format the code, by `js-beautify` tool, currently only the `javascript` , `html` and `css` language; 
+
+##### code area
 
     function sayHello() {
       console.log('hello')
@@ -66,7 +93,7 @@ Typing `ul` or `ol`
 
 Will always be formatted according to js syntax, if `codeAreaFormat` is `true` (default)
 
-#### code block
+##### code block
 
 ```lang
 function sayHello() {console.log('hello')}

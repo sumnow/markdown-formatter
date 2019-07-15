@@ -46,27 +46,56 @@
 
 ### 格式化部分
 
+#### 标点符号
+
 * `，,。;；！、？：` 这些符号后添加一个空格; 
 * `，：；！“”‘’（）？。` , 转换为半角符(可选); 
 * 支持根据上下文将中文后的符号转换为全角符号, 或者将英文后的转化为半角符; 
 * `.!?` 后如果是大写的英文字母或者中文会添加一个空格; 
 * 反逗号前后空一格, 反逗号内的内容不会被格式化; 
+
+#### 空行
+
 * 标题上下空出一行; 
 * 代码块上下空出一行; 
-* 表格自动对齐; 
 * 为引用上下空出一行; 
 * 相邻的空行合并; 
+
+#### 表格
+
+表格自动对齐
+
+![alt](./images/example-tab_format.gif)
+
+#### 列表
+
+##### 无序列表符号格式化
+
+将 `*` , `+` , `-` 按照层级关系标记
+
+``` markdown
+
+* 大标题
+    + 中标题
+        - 小标题
+
+```
+
+![alt](./images/example-list_format.gif)
+
+#### 代码格式化
+
 * 依据配置会格式化文章中的代码, 使用 `js-beautify` 工具, 目前只有 `javascript` , `html` 和 `css` 语言; 
 
-#### 代码区
+##### 代码区
 
-    function sayHello() {
-      console.log('hello')
-    }
+function sayHello() {
+  console.log('hello')
+}
 
- 如果 `codeAreaFormat` 为 `true` (默认值), 会被格式化. 
+如果 `codeAreaFormat` 为 `true` (默认值), 会被格式化. 
 
-#### 代码块
+##### 代码块
 
 ``` lang
 function sayHello() {console.log('hello')}
@@ -92,9 +121,9 @@ charactersTurnHalf = config.get<any>('charactersTurnHalf', false);
 formatOpt = config.get <any> ('formatOpt', {}); 
 // 格式化无序列表的符号 
 // * > + > -
-formatULSymbol = config.get<boolean>('formatULSymbol', true);
+formatULSymbol = config.get<boolean>('formatULSymbol', true); 
 // 全角符号后是否需要空格
-spaceAfterFullWidth = config.get<boolean>('spaceAfterFullWidth', false);
+spaceAfterFullWidth = config.get<boolean>('spaceAfterFullWidth', false); 
 ```
 
 配置 `js-beautify` , 可以参考[这里](https://github.com/beautify-web/js-beautify)
@@ -102,28 +131,28 @@ spaceAfterFullWidth = config.get<boolean>('spaceAfterFullWidth', false);
 你可以参考我的配置方法: 
 
 ```js
-  // markdown-formatter conf
-  "markdownFormatter.codeAreaFormat:": true,
-  "markdownFormatter.charactersTurnHalf": false,
-  // "markdownFormatter.charactersTurnHalf": "，：；！“”‘’（）？。",
-  "markdownFormatter.formatOpt": {
-    "indent_size": 2
+// markdown-formatter conf
+"markdownFormatter.codeAreaFormat:": true,
+"markdownFormatter.charactersTurnHalf": false,
+// "markdownFormatter.charactersTurnHalf": "，：；！“”‘’（）？。",
+"markdownFormatter.formatOpt": {
+  "indent_size": 2
+},
+"[markdown]": {
+  // 自动保存
+  "editor.formatOnSave": true,
+  // 显示空格
+  "editor.renderWhitespace": "all",
+  // 快速补全
+  "editor.quickSuggestions": {
+    "other": true,
+    "comments": true,
+    "strings": true
   },
-  "[markdown]": {
-    // 自动保存
-    "editor.formatOnSave": true,
-    // 显示空格
-    "editor.renderWhitespace": "all",
-    // 快速补全
-    "editor.quickSuggestions": {
-      "other": true,
-      "comments": true,
-      "strings": true
-    },
-    "editor.snippetSuggestions": "top",
-    "editor.tabCompletion": "on",
-    "editor.acceptSuggestionOnEnter": "on"
-  }
+  "editor.snippetSuggestions": "top",
+  "editor.tabCompletion": "on",
+  "editor.acceptSuggestionOnEnter": "on"
+}
 ```
 
 ## 开发环境

@@ -2,6 +2,11 @@
 
 [中文文档](./CHANGELOG_CN.md)
 
+## 0.4.7
+
+- Update `README.md` 
+- Update `CHANGELOG.md`
+
 ## 0.4.6
 
 - Fix bug: Code area in the end will not be formatted as expected
