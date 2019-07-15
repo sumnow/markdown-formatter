@@ -68,8 +68,8 @@ function activate(context) {
     // const CODE_AREA_EXP = /\n+((?:(?: {4}|\t)+[^\n\-\+\*][^\n]+\n*)+)/g;
     var CODE_AREA_EXP = /\n+((?:(?: {4}|\t)+(?!\d\.|\+|\-|\*)[^\n]+\n*)+)/g;
     // const CODE_AREA_EXP = /(?:(?: {4}|\t)+[^\n]+\n*)+/g;
-    var CODE_EXP = /\n*```([\s\S]+?)```\n*/g;
-    var ISCODE_EXP = /\n*```(?: *)(\w*)\n([\s\S]+)(```)+?\n+/g;
+    // const CODE_EXP = /\n*```([\s\S]+?)```\n*/g;
+    var CODE_BLOCK_EXP = /\n*```(?: *)(\w*)\n([\s\S]+)(```)+?\n+/g;
     // line-break
     var LINE_BREAK_EXP = /\r\n/g;
     function extractTables(text) {
@@ -105,7 +105,7 @@ function activate(context) {
                 });
             };
             text = removeReplace_1.removeReplace({
-                text: text, reg: [BACK_QUOTE_EXP, ISCODE_EXP, CODE_AREA_EXP], func: function (text) {
+                text: text, reg: [BACK_QUOTE_EXP, CODE_BLOCK_EXP, CODE_AREA_EXP], func: function (text) {
                     // handle fullwidth character
                     var fullwidthArr = CHINESE_SYMBOL.split('');
                     var halfwidthArr = ENGLISH_SYMBOL.split('');
@@ -140,26 +140,26 @@ function activate(context) {
             }
             // handler js
             if (formatOpt !== false) {
-                var _codeArr = text.match(ISCODE_EXP);
+                var _codeArr = text.match(CODE_BLOCK_EXP);
                 if (_codeArr && _codeArr.length > 0) {
                     _codeArr.forEach(function (e) {
-                        var isJs = e.replace(ISCODE_EXP, '$1').toLocaleLowerCase();
+                        var isJs = e.replace(CODE_BLOCK_EXP, '$1').toLocaleLowerCase();
                         if (isJs === 'js' || isJs === 'javascript' || isJs === '') {
-                            var re = new RegExp(escapeStringRegexp(e.replace(ISCODE_EXP, '$2')), 'g');
-                            text = text.replace(re, '' + beautify(e.replace(ISCODE_EXP, '$2'), beautifyOpt) + '\n');
+                            var re = new RegExp(escapeStringRegexp(e.replace(CODE_BLOCK_EXP, '$2')), 'g');
+                            text = text.replace(re, '' + beautify(e.replace(CODE_BLOCK_EXP, '$2'), beautifyOpt) + '\n');
                         }
                         if (isJs === 'html') {
-                            var re = new RegExp(escapeStringRegexp(e.replace(ISCODE_EXP, '$2')), 'g');
-                            text = text.replace(re, '' + beautify_html(e.replace(ISCODE_EXP, '$2'), beautifyOpt) + '\n');
+                            var re = new RegExp(escapeStringRegexp(e.replace(CODE_BLOCK_EXP, '$2')), 'g');
+                            text = text.replace(re, '' + beautify_html(e.replace(CODE_BLOCK_EXP, '$2'), beautifyOpt) + '\n');
                         }
                         if (isJs === 'css') {
-                            var re = new RegExp(escapeStringRegexp(e.replace(ISCODE_EXP, '$2')), 'g');
-                            text = text.replace(re, '' + beautify_css(e.replace(ISCODE_EXP, '$2'), beautifyOpt) + '\n');
+                            var re = new RegExp(escapeStringRegexp(e.replace(CODE_BLOCK_EXP, '$2')), 'g');
+                            text = text.replace(re, '' + beautify_css(e.replace(CODE_BLOCK_EXP, '$2'), beautifyOpt) + '\n');
                         }
                     });
                 }
                 text = removeReplace_1.removeReplace({
-                    text: text, reg: [ISCODE_EXP, LIST_EXP], func: function (text) {
+                    text: text, reg: [CODE_BLOCK_EXP, LIST_EXP], func: function (text) {
                         var _jsArr = text.match(CODE_AREA_EXP);
                         // console.log(_jsArr);
                         // console.log(text)
@@ -184,7 +184,7 @@ function activate(context) {
             text = text.replace(H_EXP, '\n\n' + '$1' + '\n\n');
             text = text.replace(H1_EXP, '$1' + '\n\n');
             text = text.replace(IMG_EXP, '\n\n' + '$1' + '\n\n');
-            text = text.replace(CODE_EXP, '\n\n```' + '$1' + '```\n\n');
+            text = text.replace(CODE_BLOCK_EXP, '\n\n``` ' + '$1\n$2' + '```\n\n');
             text = text.replace(LINK_EXP, '\n\n' + '$1' + '\n\n');
             text = text.replace(LINK_SPACE_EXP, '\n' + '$1 $2');
             text = text.replace(EXTRALINE_EXP, '\n\n');

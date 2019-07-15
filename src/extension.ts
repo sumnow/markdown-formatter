@@ -78,8 +78,8 @@ export function activate(context: vscode.ExtensionContext) {
     // const CODE_AREA_EXP = /\n+((?:(?: {4}|\t)+[^\n\-\+\*][^\n]+\n*)+)/g;
     const CODE_AREA_EXP = /\n+((?:(?: {4}|\t)+(?!\d\.|\+|\-|\*)[^\n]+\n*)+)/g;
     // const CODE_AREA_EXP = /(?:(?: {4}|\t)+[^\n]+\n*)+/g;
-    const CODE_EXP = /\n*```([\s\S]+?)```\n*/g;
-    const ISCODE_EXP = /\n*```(?: *)(\w*)\n([\s\S]+)(```)+?\n+/g
+    // const CODE_EXP = /\n*```([\s\S]+?)```\n*/g;
+    const CODE_BLOCK_EXP = /\n*```(?: *)(\w*)\n([\s\S]+)(```)+?\n+/g
 
     // line-break
     const LINE_BREAK_EXP = /\r\n/g;
@@ -119,7 +119,7 @@ export function activate(context: vscode.ExtensionContext) {
             };
 
             text = removeReplace({
-                text, reg: [BACK_QUOTE_EXP, ISCODE_EXP, CODE_AREA_EXP], func: (text: string): string => {
+                text, reg: [BACK_QUOTE_EXP, CODE_BLOCK_EXP, CODE_AREA_EXP], func: (text: string): string => {
 
                     // handle fullwidth character
                     const fullwidthArr = CHINESE_SYMBOL.split('');
@@ -157,27 +157,27 @@ export function activate(context: vscode.ExtensionContext) {
 
             // handler js
             if (formatOpt !== false) {
-                const _codeArr = text.match(ISCODE_EXP)
+                const _codeArr = text.match(CODE_BLOCK_EXP)
                 if (_codeArr && _codeArr.length > 0) {
                     _codeArr.forEach(e => {
-                        const isJs = e.replace(ISCODE_EXP, '$1').toLocaleLowerCase()
+                        const isJs = e.replace(CODE_BLOCK_EXP, '$1').toLocaleLowerCase()
                         if (isJs === 'js' || isJs === 'javascript' || isJs === '') {
-                            const re = new RegExp(escapeStringRegexp(e.replace(ISCODE_EXP, '$2')), 'g')
-                            text = text.replace(re, '' + beautify(e.replace(ISCODE_EXP, '$2'), beautifyOpt) + '\n')
+                            const re = new RegExp(escapeStringRegexp(e.replace(CODE_BLOCK_EXP, '$2')), 'g')
+                            text = text.replace(re, '' + beautify(e.replace(CODE_BLOCK_EXP, '$2'), beautifyOpt) + '\n')
                         }
                         if (isJs === 'html') {
-                            const re = new RegExp(escapeStringRegexp(e.replace(ISCODE_EXP, '$2')), 'g')
-                            text = text.replace(re, '' + beautify_html(e.replace(ISCODE_EXP, '$2'), beautifyOpt) + '\n')
+                            const re = new RegExp(escapeStringRegexp(e.replace(CODE_BLOCK_EXP, '$2')), 'g')
+                            text = text.replace(re, '' + beautify_html(e.replace(CODE_BLOCK_EXP, '$2'), beautifyOpt) + '\n')
                         }
                         if (isJs === 'css') {
-                            const re = new RegExp(escapeStringRegexp(e.replace(ISCODE_EXP, '$2')), 'g')
-                            text = text.replace(re, '' + beautify_css(e.replace(ISCODE_EXP, '$2'), beautifyOpt) + '\n')
+                            const re = new RegExp(escapeStringRegexp(e.replace(CODE_BLOCK_EXP, '$2')), 'g')
+                            text = text.replace(re, '' + beautify_css(e.replace(CODE_BLOCK_EXP, '$2'), beautifyOpt) + '\n')
                         }
                     })
                 }
 
                 text = removeReplace({
-                    text, reg: [ISCODE_EXP, LIST_EXP], func: (text: string): string => {
+                    text, reg: [CODE_BLOCK_EXP, LIST_EXP], func: (text: string): string => {
                         const _jsArr = text.match(CODE_AREA_EXP);
                         // console.log(_jsArr);
                         // console.log(text)
@@ -203,7 +203,7 @@ export function activate(context: vscode.ExtensionContext) {
             text = text.replace(H_EXP, '\n\n' + '$1' + '\n\n')
             text = text.replace(H1_EXP, '$1' + '\n\n')
             text = text.replace(IMG_EXP, '\n\n' + '$1' + '\n\n')
-            text = text.replace(CODE_EXP, '\n\n```' + '$1' + '```\n\n')
+            text = text.replace(CODE_BLOCK_EXP, '\n\n``` ' + '$1\n$2' + '```\n\n')
             text = text.replace(LINK_EXP, '\n\n' + '$1' + '\n\n')
             text = text.replace(LINK_SPACE_EXP, '\n' + '$1 $2')
             text = text.replace(EXTRALINE_EXP, '\n\n')

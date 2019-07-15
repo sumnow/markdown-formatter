@@ -2,6 +2,12 @@
 
 [English Document](./CHANGELOG.md)
 
+## 0.4.8
+
+- 格式化代码块的代码类型
+- 更新中英文 `README.md` 
+- 更新中英文 `CHANGELOG.md`
+
 ## 0.4.7
 
 - 更新中英文 `README.md` 
