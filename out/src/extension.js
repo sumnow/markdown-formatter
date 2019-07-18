@@ -13,6 +13,7 @@ var beautify_html = require('js-beautify').html;
 var config = vscode_1.workspace.getConfiguration('markdownFormatter');
 var charactersTurnHalf = config.get('charactersTurnHalf', false);
 var codeAreaFormat = config.get('codeAreaFormat', true);
+var codeAreaToBlock = config.get('codeAreaToBlock', '');
 var enable = config.get('enable', true);
 var formatOpt = config.get('formatOpt', {});
 var formatULSymbol = config.get('formatULSymbol', true);
@@ -21,6 +22,7 @@ vscode_1.workspace.onDidChangeConfiguration(function (_) {
     config = vscode_1.workspace.getConfiguration('markdownFormatter');
     charactersTurnHalf = config.get('charactersTurnHalf', false);
     codeAreaFormat = config.get('codeAreaFormat', true);
+    codeAreaToBlock = config.get('codeAreaToBlock', '');
     enable = config.get('enable', true);
     formatOpt = config.get('formatOpt', {});
     formatULSymbol = config.get('formatULSymbol', true);
@@ -72,6 +74,9 @@ function activate(context) {
     var CODE_BLOCK_EXP = /\n*```(?: *)(\w*)\n([\s\S]+)(```)+?\n+/g;
     // line-break
     var LINE_BREAK_EXP = /\r\n/g;
+    var TAG_START_EXP = /<(?:[^\/])(?:[^"'>]|"[^"]*"|'[^']*')*>/g;
+    // const TAG_SINGLE_EXP = /<(?:[^\/])(?:[^"'>]|"[^"]*"|'[^']*')*\/>/g
+    var TAG_END_EXP = /<\/(?:[^"'>]|"[^"]*"|'[^']*')*>/g;
     function extractTables(text) {
         return text.match(TABLE_EXP);
     }
@@ -161,13 +166,32 @@ function activate(context) {
                 text = removeReplace_1.removeReplace({
                     text: text, reg: [CODE_BLOCK_EXP, LIST_EXP], func: function (text) {
                         var _jsArr = text.match(CODE_AREA_EXP);
-                        // console.log(_jsArr);
                         // console.log(text)
+                        codeAreaToBlock = codeAreaToBlock.toLowerCase();
                         if (codeAreaFormat && _jsArr && _jsArr.length > 0) {
-                            _jsArr.forEach(function (e) {
-                                var re = new RegExp(escapeStringRegexp(e), 'g');
-                                text = text.replace(re, '\n\n\n' + beautify(e.replace(CODE_AREA_EXP, '$1'), beautifyOpt) + '\n\n\n');
-                            });
+                            if (codeAreaToBlock === '') {
+                                _jsArr.forEach(function (e) {
+                                    var re = new RegExp(escapeStringRegexp(e), 'g');
+                                    // text = text.replace(re, '\n\n\n' + beautify(e.replace(CODE_AREA_EXP, '$1'), beautifyOpt) + '\n\n\n');
+                                    text = text.replace(re, '\n\n\n' + e.replace(CODE_AREA_EXP, '$1') + '\n\n\n');
+                                });
+                            }
+                            else {
+                                if (codeAreaToBlock === 'js' || codeAreaToBlock === 'javascript') {
+                                    _jsArr.forEach(function (e) {
+                                        var re = new RegExp(escapeStringRegexp(e), 'g');
+                                        // text = text.replace(re, '\n\n\n' + beautify(e.replace(CODE_AREA_EXP, '$1'), beautifyOpt) + '\n\n\n');
+                                        text = text.replace(re, '\n\n\n```' + codeAreaToBlock + '\n' + beautify(e.replace(CODE_AREA_EXP, '$1').replace(/(\ {4}|\t)/g, ''), beautifyOpt) + '\n```\n\n\n');
+                                    });
+                                }
+                                else {
+                                    _jsArr.forEach(function (e) {
+                                        var re = new RegExp(escapeStringRegexp(e), 'g');
+                                        // text = text.replace(re, '\n\n\n' + beautify(e.replace(CODE_AREA_EXP, '$1'), beautifyOpt) + '\n\n\n');
+                                        text = text.replace(re, '\n\n\n``` ' + codeAreaToBlock + '\n' + e.replace(CODE_AREA_EXP, '$1').replace(/(\ {4}|\t)/g, '') + '```\n\n\n');
+                                    });
+                                }
+                            }
                         }
                         return text;
                     }

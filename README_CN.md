@@ -106,7 +106,9 @@ function sayHello() {console.log('hello')}
 3. 如果 `lang` 为 `css` , 会按照css语法格式化. 
 4. 如果你很少写入js代码, *你可以通过配置参数 `formatOpt` 为false来禁止代码块和代码区的自动格式化代码*. 
 
-此外, 还可以通过配置参数 `formatOpt` 更改js格式化规则, 参照[js-beautify](https://github.com/beautify-web/js-beautify).
+> 可以通过配置参数 `formatOpt` 更改js格式化规则, 参照[js-beautify](https://github.com/beautify-web/js-beautify).
+
+> 代码块可以清晰标记出语言的类型，因此推荐使用代码块，可以配置 `codeAreaToBlock` 来设置转换方式
 
 ## 配置
 
@@ -116,6 +118,8 @@ enable = config.get <boolean> ('enable', true);
 // 是否自动格式化代码区
 codeAreaFormat = config.get<boolean>('codeAreaFormat', true); 
 // 将配置里的全角符号转化为半角符号, 例如 `，：；！“”‘’（）？。` , 当设置为false的时候, 自动根据上下文转换符号
+codeAreaToBlock = config.get<string>('codeAreaToBlock', '');
+// 转换代码块为代码区，默认不转换，例如设置成js，就会按照js语言语法格式化
 charactersTurnHalf = config.get<any>('charactersTurnHalf', false); 
 // 是否格式化代码或者配置js-beautify(false: 不格式化代码, {}: 配置beautifyjs)
 formatOpt = config.get <any> ('formatOpt', {}); 

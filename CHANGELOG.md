@@ -2,6 +2,12 @@
 
 [中文文档](./CHANGELOG_CN.md)
 
+## 0.4.9
+
+- Convert code block to code area
+- Update `README.md` 
+- Update `CHANGELOG.md`
+
 ## 0.4.8
 
 - Format code block's languages' types 

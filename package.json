@@ -2,7 +2,7 @@
     "name": "markdown-formatter",
     "displayName": "markdown-formatter",
     "description": " A Markdown Plugin for code artist",
-    "version": "0.4.8",
+    "version": "0.4.9",
     "icon": "icon.png",
     "publisher": "mervin",
     "engines": {
@@ -37,6 +37,11 @@
                     "type": "boolean",
                     "default": true,
                     "description": "Enable/disable code area formatter now."
+                },
+                "markdownFormatter.codeAreaToBlock": {
+                    "type": "string",
+                    "default": "",
+                    "description": "Convert code area to code block"
                 },
                 "markdownFormatter.enable": {
                     "type": "boolean",

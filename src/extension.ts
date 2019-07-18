@@ -14,6 +14,7 @@ var beautify_html = require('js-beautify').html;
 let config = workspace.getConfiguration('markdownFormatter');
 let charactersTurnHalf: any = config.get<any>('charactersTurnHalf', false);
 let codeAreaFormat: boolean = config.get<boolean>('codeAreaFormat', true);
+let codeAreaToBlock: string = config.get<string>('codeAreaToBlock', '')
 let enable: boolean = config.get<boolean>('enable', true);
 let formatOpt: any = config.get<any>('formatOpt', {});
 let formatULSymbol: boolean = config.get<boolean>('formatULSymbol', true)
@@ -23,6 +24,7 @@ workspace.onDidChangeConfiguration(_ => {
     config = workspace.getConfiguration('markdownFormatter');
     charactersTurnHalf = config.get<any>('charactersTurnHalf', false);
     codeAreaFormat = config.get<boolean>('codeAreaFormat', true);
+    codeAreaToBlock = config.get<string>('codeAreaToBlock', '');
     enable = config.get<boolean>('enable', true);
     formatOpt = config.get<any>('formatOpt', {});
     formatULSymbol = config.get<boolean>('formatULSymbol', true);
@@ -84,6 +86,10 @@ export function activate(context: vscode.ExtensionContext) {
     // line-break
     const LINE_BREAK_EXP = /\r\n/g;
 
+    const TAG_START_EXP = /<(?:[^\/])(?:[^"'>]|"[^"]*"|'[^']*')*>/g
+    // const TAG_SINGLE_EXP = /<(?:[^\/])(?:[^"'>]|"[^"]*"|'[^']*')*\/>/g
+    const TAG_END_EXP = /<\/(?:[^"'>]|"[^"]*"|'[^']*')*>/g
+
     function extractTables(text: string): string[] {
         return text.match(TABLE_EXP);
     }
@@ -120,7 +126,6 @@ export function activate(context: vscode.ExtensionContext) {
 
             text = removeReplace({
                 text, reg: [BACK_QUOTE_EXP, CODE_BLOCK_EXP, CODE_AREA_EXP], func: (text: string): string => {
-
                     // handle fullwidth character
                     const fullwidthArr = CHINESE_SYMBOL.split('');
                     const halfwidthArr = ENGLISH_SYMBOL.split('');
@@ -179,13 +184,31 @@ export function activate(context: vscode.ExtensionContext) {
                 text = removeReplace({
                     text, reg: [CODE_BLOCK_EXP, LIST_EXP], func: (text: string): string => {
                         const _jsArr = text.match(CODE_AREA_EXP);
-                        // console.log(_jsArr);
+
                         // console.log(text)
+                        codeAreaToBlock = codeAreaToBlock.toLowerCase()
                         if (codeAreaFormat && _jsArr && _jsArr.length > 0) {
-                            _jsArr.forEach(e => {
-                                const re = new RegExp(escapeStringRegexp(e), 'g');
-                                text = text.replace(re, '\n\n\n' + beautify(e.replace(CODE_AREA_EXP, '$1'), beautifyOpt) + '\n\n\n');
-                            });
+                            if (codeAreaToBlock === '') {
+                                _jsArr.forEach(e => {
+                                    const re = new RegExp(escapeStringRegexp(e), 'g');
+                                    // text = text.replace(re, '\n\n\n' + beautify(e.replace(CODE_AREA_EXP, '$1'), beautifyOpt) + '\n\n\n');
+                                    text = text.replace(re, '\n\n\n' + e.replace(CODE_AREA_EXP, '$1') + '\n\n\n');
+                                });
+                            } else {
+                                if (codeAreaToBlock === 'js' || codeAreaToBlock === 'javascript') {
+                                    _jsArr.forEach(e => {
+                                        const re = new RegExp(escapeStringRegexp(e), 'g');
+                                        // text = text.replace(re, '\n\n\n' + beautify(e.replace(CODE_AREA_EXP, '$1'), beautifyOpt) + '\n\n\n');
+                                        text = text.replace(re, '\n\n\n```' + codeAreaToBlock + '\n' + beautify(e.replace(CODE_AREA_EXP, '$1').replace(/(\ {4}|\t)/g, ''), beautifyOpt) + '\n```\n\n\n');
+                                    });
+                                } else {
+                                    _jsArr.forEach(e => {
+                                        const re = new RegExp(escapeStringRegexp(e), 'g');
+                                        // text = text.replace(re, '\n\n\n' + beautify(e.replace(CODE_AREA_EXP, '$1'), beautifyOpt) + '\n\n\n');
+                                        text = text.replace(re, '\n\n\n``` ' + codeAreaToBlock + '\n' + e.replace(CODE_AREA_EXP, '$1').replace(/(\ {4}|\t)/g, '') + '```\n\n\n');
+                                    });
+                                }
+                            }
                         }
                         return text;
                     }

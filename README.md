@@ -106,6 +106,8 @@ function sayHello() {console.log('hello')}
 
 > The js formatting rules can be configured in `settings.json` .
 
+> Code blocks can clearly mark the type of language, so it is recommended to use code blocks, you can configure `codeAreaToBlock` to set the conversion method.
+
 ## Config
 
 ```typescript
@@ -114,6 +116,8 @@ enable = config.get <boolean> ('enable', true);
 // automatically format the code area or not
 codeAreaFormat = config.get<boolean>('codeAreaFormat', true); 
 // fullwidth character translate into halfwidth character. Automatically convert symbols based on context when set to false
+codeAreaToBlock = config.get<string>('codeAreaToBlock', '');
+// Convert code block to code area, and the default is not converted. For example, if it is set to js, it will be formatted according to the js language syntax.
 charactersTurnHalf = config.get<any>('charactersTurnHalf', false);
 // enable/disable format code or config beautifyjs(false: disable format code , {}: config beautifyjs)
 formatOpt = config.get <any> ('formatOpt', {}); 
