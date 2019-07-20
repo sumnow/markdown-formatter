@@ -2,6 +2,11 @@
 
 [中文文档](./CHANGELOG_CN.md)
 
+## 0.5.0
+
+- fix bug: code area next to each other will be formatted error
+- Update `CHANGELOG.md`
+
 ## 0.4.9
 
 - Convert code block to code area

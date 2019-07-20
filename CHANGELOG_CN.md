@@ -2,6 +2,11 @@
 
 [English Document](./CHANGELOG.md)
 
+## 0.5.0
+
+- 修复bug： 连续代码区格式化错误
+- 更新中英文 `CHANGELOG.md`
+
 ## 0.4.9
 
 - 转化代码区为代码块
