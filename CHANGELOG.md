@@ -2,14 +2,20 @@
 
 [中文文档](./CHANGELOG_CN.md)
 
+## 0.5.1
+
+- New feature: Convert full-width symbols to half-width symbols by config `fullWidthTurnHalfWidth`
+- Update `README.md` 
+- Update `CHANGELOG.md`
+
 ## 0.5.0
 
-- fix bug: code area next to each other will be formatted error
+- Fix bug: code area next to each other will be formatted error
 - Update `CHANGELOG.md`
 
 ## 0.4.9
 
-- Convert code block to code area
+- New feature: Convert code block to code area 
 - Update `README.md` 
 - Update `CHANGELOG.md`
 

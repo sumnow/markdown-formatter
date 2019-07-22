@@ -2,6 +2,13 @@
 
 [English Document](./CHANGELOG.md)
 
+
+## 0.5.1
+
+- 新功能: 配置`fullWidthTurnHalfWidth`, 转换全角符号为半角符号 
+- 更新中英文 `README.md` 
+- 更新中英文 `CHANGELOG.md`
+
 ## 0.5.0
 
 - 修复bug： 连续代码区格式化错误
@@ -9,7 +16,7 @@
 
 ## 0.4.9
 
-- 转化代码区为代码块
+- 提供转化代码区为代码块的功能
 - 更新中英文 `README.md` 
 - 更新中英文 `CHANGELOG.md`
 

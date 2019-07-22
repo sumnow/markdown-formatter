@@ -115,11 +115,17 @@ function sayHello() {console.log('hello')}
 enable = config.get <boolean> ('enable', true); 
 // automatically format the code area or not
 codeAreaFormat = config.get<boolean>('codeAreaFormat', true); 
-// fullwidth character translate into halfwidth character. Automatically convert symbols based on context when set to false
+// fullwidth character translate into halfwidth character, such as `，：；！“”‘’（）？。`
+// Automatically convert symbols based on context when set to 'auto'
+// Don't convert symbols based on context when set to '_' or ''
+fullWidthTurnHalfWidth = config.get<string>('fullWidthTurnHalfWidth', 'auto');
+// Convert code block to code area, and the default is not converted. 
+// You can set it by any meaningful strings
+// if it is set to js, it will be formatted according to the js language syntax.
 codeAreaToBlock = config.get<string>('codeAreaToBlock', '');
-// Convert code block to code area, and the default is not converted. For example, if it is set to js, it will be formatted according to the js language syntax.
-charactersTurnHalf = config.get<any>('charactersTurnHalf', false);
-// enable/disable format code or config beautifyjs(false: disable format code , {}: config beautifyjs)
+// enable/disable format code or config beautifyjs
+// false: disable format code 
+// {}: config beautifyjs
 formatOpt = config.get <any> ('formatOpt', {}); 
 // Format the symbols of the unordered list
 // * > + > -
@@ -135,8 +141,8 @@ You can refer to my configuration:
 ```js
   // markdown-formatter conf
   "markdownFormatter.codeAreaFormat:": true,
-  "markdownFormatter.charactersTurnHalf": false,
-  // "markdownFormatter.charactersTurnHalf": "，：；！“”‘’（）？。",
+  "markdownFormatter.fullWidthTurnHalfWidth": "auto",
+  // "markdownFormatter.fullWidthTurnHalfWidth": "，：；！“”‘’（）？。",
   "markdownFormatter.formatOpt": {
     "indent_size": 2
   },

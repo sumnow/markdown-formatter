@@ -117,11 +117,17 @@ function sayHello() {console.log('hello')}
 enable = config.get <boolean> ('enable', true); 
 // 是否自动格式化代码区
 codeAreaFormat = config.get<boolean>('codeAreaFormat', true); 
-// 将配置里的全角符号转化为半角符号, 例如 `，：；！“”‘’（）？。` , 当设置为false的时候, 自动根据上下文转换符号
+// 将配置里的全角符号转化为半角符号, 例如 `，：；！“”‘’（）？。` 
+// 当设置为 'auto' 的时候, 自动根据上下文转换符号
+// 当设置为 '_' 或者 '' 的时候, 不转换符号
+fullWidthTurnHalfWidth = config.get<string>('fullWidthTurnHalfWidth', 'auto'); 
+// 转换代码块为代码区，默认为''（空字符）,不转换
+// 可以设置为任意合法字符串
+// 只有设置成js或者javascript，才会按照js语言语法格式化
 codeAreaToBlock = config.get<string>('codeAreaToBlock', '');
-// 转换代码块为代码区，默认不转换，例如设置成js，就会按照js语言语法格式化
-charactersTurnHalf = config.get<any>('charactersTurnHalf', false); 
-// 是否格式化代码或者配置js-beautify(false: 不格式化代码, {}: 配置beautifyjs)
+// 是否格式化代码或者配置js-beautify
+// false: 不格式化代码
+// {}: beautifyjs的配置设置
 formatOpt = config.get <any> ('formatOpt', {}); 
 // 格式化无序列表的符号 
 // * > + > -
@@ -137,8 +143,8 @@ spaceAfterFullWidth = config.get<boolean>('spaceAfterFullWidth', false);
 ```js
 // markdown-formatter conf
 "markdownFormatter.codeAreaFormat:": true,
-"markdownFormatter.charactersTurnHalf": false,
-// "markdownFormatter.charactersTurnHalf": "，：；！“”‘’（）？。",
+"markdownFormatter.fullWidthTurnHalfWidth": "auto",
+// "markdownFormatter.fullWidthTurnHalfWidth": "，：；！“”‘’（）？。",
 "markdownFormatter.formatOpt": {
   "indent_size": 2
 },
