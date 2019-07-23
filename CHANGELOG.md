@@ -2,6 +2,12 @@
 
 [中文文档](./CHANGELOG_CN.md)
 
+
+## 0.5.2
+
+- Fix bug: Code area will not formatted as excepted.
+- Update `CHANGELOG.md`
+
 ## 0.5.1
 
 - New feature: Convert full-width symbols to half-width symbols by config `fullWidthTurnHalfWidth`

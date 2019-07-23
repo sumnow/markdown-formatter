@@ -81,7 +81,8 @@ export function activate(context: vscode.ExtensionContext) {
     const CODE_AREA_EXP = /\n+((?:(?: {4}|\t)+(?!\d\.|\+|\-|\*)[^\n]+\n)+)/g;
     // const CODE_AREA_EXP = /(?:(?: {4}|\t)+[^\n]+\n*)+/g;
     // const CODE_EXP = /\n*```([\s\S]+?)```\n*/g;
-    const CODE_BLOCK_EXP = /\n*```(?: *)(\w*)\n([\s\S]+)(```)+?\n+/g
+    const CODE_BLOCK_EXP = /\n*```(?: *)(\w*)\n([^```]+)(```)+?\n+/g
+    // const CODE_BLOCK_EXP = /\n*```(?: *)(\w*)\n([\s\S]+)(```)+?\n+/g
 
     // line-break
     const LINE_BREAK_EXP = /\r\n/g;
@@ -165,12 +166,16 @@ export function activate(context: vscode.ExtensionContext) {
                 // handler js
                 if (formatOpt !== false) {
                     const _codeArr = text.match(CODE_BLOCK_EXP)
+                    console.log(_codeArr)
                     if (_codeArr && _codeArr.length > 0) {
                         _codeArr.forEach(e => {
                             const isJs = e.replace(CODE_BLOCK_EXP, '$1').toLocaleLowerCase()
+                            const isJs1 = e.replace(CODE_BLOCK_EXP, '$2')
+                            console.log(isJs, isJs1)
                             if (isJs === 'js' || isJs === 'javascript' || isJs === '') {
                                 const re = new RegExp(escapeStringRegexp(e.replace(CODE_BLOCK_EXP, '$2')), 'g')
                                 text = text.replace(re, '' + beautify(e.replace(CODE_BLOCK_EXP, '$2'), beautifyOpt) + '\n')
+                                console.log(text)
                             }
                             if (isJs === 'html') {
                                 const re = new RegExp(escapeStringRegexp(e.replace(CODE_BLOCK_EXP, '$2')), 'g')
@@ -200,7 +205,7 @@ export function activate(context: vscode.ExtensionContext) {
                                         _jsArr.forEach(e => {
                                             const re = new RegExp(escapeStringRegexp(e), 'g');
                                             // text = text.replace(re, '\n\n\n' + beautify(e.replace(CODE_AREA_EXP, '$1'), beautifyOpt) + '\n\n\n');
-                                            text = text.replace(re, '\n\n\n```' + codeAreaToBlock + '\n' + beautify(e.replace(CODE_AREA_EXP, '$1').replace(/(\ {4}|\t)/g, ''), beautifyOpt) + '\n```\n\n\n');
+                                            text = text.replace(re, '\n\n\n``` ' + codeAreaToBlock + '\n' + beautify(e.replace(CODE_AREA_EXP, '$1').replace(/(\ {4}|\t)/g, ''), beautifyOpt) + '\n```\n\n\n');
                                         });
                                     } else {
                                         _jsArr.forEach(e => {

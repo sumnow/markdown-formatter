@@ -2,6 +2,10 @@
 
 [English Document](./CHANGELOG.md)
 
+## 0.5.2
+
+- 修复bug: 特殊情况下， 代码块格式化出现错误。 
+- 更新中英文 `CHANGELOG.md`
 
 ## 0.5.1
 
