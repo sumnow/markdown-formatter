@@ -2,6 +2,11 @@
 
 [English Document](./CHANGELOG.md)
 
+## 0.5.3
+
+- 修复bug: 格式化代码区里的HTML和CSS
+- 更新中英文 `CHANGELOG.md`
+
 ## 0.5.2
 
 - 修复bug: 特殊情况下， 代码块格式化出现错误。 

@@ -2,15 +2,16 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 var vscode = require('vscode');
-var vscode_1 = require('vscode');
+// import { vscode.workspace } from 'vscode';
 var removeReplace_1 = require("./removeReplace");
 var Table_1 = require('./Table');
 var escapeStringRegexp = require('escape-string-regexp');
 // import beautify from 'js-beautify'
 var beautify = require('js-beautify');
+var beautify_js = require('js-beautify').js;
 var beautify_css = require('js-beautify').css;
 var beautify_html = require('js-beautify').html;
-var config = vscode_1.workspace.getConfiguration('markdownFormatter');
+var config = vscode.workspace.getConfiguration('markdownFormatter');
 var fullWidthTurnHalfWidth = config.get('fullWidthTurnHalfWidth', 'auto');
 var codeAreaFormat = config.get('codeAreaFormat', true);
 var codeAreaToBlock = config.get('codeAreaToBlock', '');
@@ -18,8 +19,8 @@ var enable = config.get('enable', true);
 var formatOpt = config.get('formatOpt', {});
 var formatULSymbol = config.get('formatULSymbol', true);
 var spaceAfterFullWidth = config.get('spaceAfterFullWidth', false);
-vscode_1.workspace.onDidChangeConfiguration(function (_) {
-    config = vscode_1.workspace.getConfiguration('markdownFormatter');
+vscode.workspace.onDidChangeConfiguration(function (_) {
+    config = vscode.workspace.getConfiguration('markdownFormatter');
     fullWidthTurnHalfWidth = config.get('fullWidthTurnHalfWidth', 'auto');
     codeAreaFormat = config.get('codeAreaFormat', true);
     codeAreaToBlock = config.get('codeAreaToBlock', '');
@@ -100,8 +101,8 @@ function activate(context) {
             //     return void 0;
             // }
             // textLast = text;
-            // format \r\n to \n,fix
             var textLast = text;
+            // format \r\n to \n,fix
             text = text.replace(LINE_BREAK_EXP, '\n');
             try {
                 // format PUNCTUATION_EXP
@@ -151,16 +152,12 @@ function activate(context) {
                 // handler js
                 if (formatOpt !== false) {
                     var _codeArr = text.match(CODE_BLOCK_EXP);
-                    console.log(_codeArr);
                     if (_codeArr && _codeArr.length > 0) {
                         _codeArr.forEach(function (e) {
                             var isJs = e.replace(CODE_BLOCK_EXP, '$1').toLocaleLowerCase();
-                            var isJs1 = e.replace(CODE_BLOCK_EXP, '$2');
-                            console.log(isJs, isJs1);
                             if (isJs === 'js' || isJs === 'javascript' || isJs === '') {
                                 var re = new RegExp(escapeStringRegexp(e.replace(CODE_BLOCK_EXP, '$2')), 'g');
-                                text = text.replace(re, '' + beautify(e.replace(CODE_BLOCK_EXP, '$2'), beautifyOpt) + '\n');
-                                console.log(text);
+                                text = text.replace(re, '' + beautify_js(e.replace(CODE_BLOCK_EXP, '$2'), beautifyOpt) + '\n');
                             }
                             if (isJs === 'html') {
                                 var re = new RegExp(escapeStringRegexp(e.replace(CODE_BLOCK_EXP, '$2')), 'g');
@@ -188,8 +185,19 @@ function activate(context) {
                                     if (codeAreaToBlock === 'js' || codeAreaToBlock === 'javascript') {
                                         _jsArr.forEach(function (e) {
                                             var re = new RegExp(escapeStringRegexp(e), 'g');
-                                            // text = text.replace(re, '\n\n\n' + beautify(e.replace(CODE_AREA_EXP, '$1'), beautifyOpt) + '\n\n\n');
-                                            text = text.replace(re, '\n\n\n``` ' + codeAreaToBlock + '\n' + beautify(e.replace(CODE_AREA_EXP, '$1').replace(/(\ {4}|\t)/g, ''), beautifyOpt) + '\n```\n\n\n');
+                                            text = text.replace(re, '\n\n\n``` ' + codeAreaToBlock + '\n' + beautify_js(e.replace(CODE_AREA_EXP, '$1').replace(/(\ {4}|\t)/g, ''), beautifyOpt) + '\n```\n\n\n');
+                                        });
+                                    }
+                                    else if (codeAreaToBlock === 'html') {
+                                        _jsArr.forEach(function (e) {
+                                            var re = new RegExp(escapeStringRegexp(e), 'g');
+                                            text = text.replace(re, '\n\n\n``` ' + codeAreaToBlock + '\n' + beautify_html(e.replace(CODE_AREA_EXP, '$1').replace(/(\ {4}|\t)/g, ''), beautifyOpt) + '\n```\n\n\n');
+                                        });
+                                    }
+                                    else if (codeAreaToBlock === 'css') {
+                                        _jsArr.forEach(function (e) {
+                                            var re = new RegExp(escapeStringRegexp(e), 'g');
+                                            text = text.replace(re, '\n\n\n``` ' + codeAreaToBlock + '\n' + beautify_css(e.replace(CODE_AREA_EXP, '$1').replace(/(\ {4}|\t)/g, ''), beautifyOpt) + '\n```\n\n\n');
                                         });
                                     }
                                     else {

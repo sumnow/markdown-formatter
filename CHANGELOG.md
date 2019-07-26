@@ -2,6 +2,10 @@
 
 [中文文档](./CHANGELOG_CN.md)
 
+## 0.5.3
+
+- Fix bug: Format HTML and CSS in code block
+- Update `CHANGELOG.md`
 
 ## 0.5.2
 

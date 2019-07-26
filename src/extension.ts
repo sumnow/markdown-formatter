@@ -2,16 +2,17 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
-import { workspace } from 'vscode';
+// import { vscode.workspace } from 'vscode';
 import { removeReplace } from "./removeReplace";
 import { Table } from './Table';
 var escapeStringRegexp = require('escape-string-regexp');
 // import beautify from 'js-beautify'
 var beautify = require('js-beautify')
+var beautify_js = require('js-beautify').js;
 var beautify_css = require('js-beautify').css;
 var beautify_html = require('js-beautify').html;
 
-let config = workspace.getConfiguration('markdownFormatter');
+let config = vscode.workspace.getConfiguration('markdownFormatter');
 let fullWidthTurnHalfWidth: string = config.get<string>('fullWidthTurnHalfWidth', 'auto');
 let codeAreaFormat: boolean = config.get<boolean>('codeAreaFormat', true);
 let codeAreaToBlock: string = config.get<string>('codeAreaToBlock', '')
@@ -20,8 +21,8 @@ let formatOpt: any = config.get<any>('formatOpt', {});
 let formatULSymbol: boolean = config.get<boolean>('formatULSymbol', true)
 let spaceAfterFullWidth: boolean = config.get<boolean>('spaceAfterFullWidth', false);
 
-workspace.onDidChangeConfiguration(_ => {
-    config = workspace.getConfiguration('markdownFormatter');
+vscode.workspace.onDidChangeConfiguration(_ => {
+    config = vscode.workspace.getConfiguration('markdownFormatter');
     fullWidthTurnHalfWidth = config.get<string>('fullWidthTurnHalfWidth', 'auto');
     codeAreaFormat = config.get<boolean>('codeAreaFormat', true);
     codeAreaToBlock = config.get<string>('codeAreaToBlock', '');
@@ -35,7 +36,6 @@ workspace.onDidChangeConfiguration(_ => {
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
-
     // repalce symbol
     const CHINESE_SYMBOL = `，：；！“”‘’（）？。`;
     const ENGLISH_SYMBOL = `,:;!""''()?.`;
@@ -112,10 +112,13 @@ export function activate(context: vscode.ExtensionContext) {
             //     vscode.window.showInformationMessage('No text to format.');
             //     return void 0;
             // }
+
             // textLast = text;
-            // format \r\n to \n,fix
             const textLast = text
+
+            // format \r\n to \n,fix
             text = text.replace(LINE_BREAK_EXP, '\n');
+
             try {
                 // format PUNCTUATION_EXP
                 const _replacewithCharcter = ({ target, judge, pad }: { target: string[]; judge: string; pad: string[]; }) => {
@@ -166,16 +169,14 @@ export function activate(context: vscode.ExtensionContext) {
                 // handler js
                 if (formatOpt !== false) {
                     const _codeArr = text.match(CODE_BLOCK_EXP)
-                    console.log(_codeArr)
+
                     if (_codeArr && _codeArr.length > 0) {
                         _codeArr.forEach(e => {
                             const isJs = e.replace(CODE_BLOCK_EXP, '$1').toLocaleLowerCase()
-                            const isJs1 = e.replace(CODE_BLOCK_EXP, '$2')
-                            console.log(isJs, isJs1)
+
                             if (isJs === 'js' || isJs === 'javascript' || isJs === '') {
                                 const re = new RegExp(escapeStringRegexp(e.replace(CODE_BLOCK_EXP, '$2')), 'g')
-                                text = text.replace(re, '' + beautify(e.replace(CODE_BLOCK_EXP, '$2'), beautifyOpt) + '\n')
-                                console.log(text)
+                                text = text.replace(re, '' + beautify_js(e.replace(CODE_BLOCK_EXP, '$2'), beautifyOpt) + '\n')
                             }
                             if (isJs === 'html') {
                                 const re = new RegExp(escapeStringRegexp(e.replace(CODE_BLOCK_EXP, '$2')), 'g')
@@ -204,8 +205,17 @@ export function activate(context: vscode.ExtensionContext) {
                                     if (codeAreaToBlock === 'js' || codeAreaToBlock === 'javascript') {
                                         _jsArr.forEach(e => {
                                             const re = new RegExp(escapeStringRegexp(e), 'g');
-                                            // text = text.replace(re, '\n\n\n' + beautify(e.replace(CODE_AREA_EXP, '$1'), beautifyOpt) + '\n\n\n');
-                                            text = text.replace(re, '\n\n\n``` ' + codeAreaToBlock + '\n' + beautify(e.replace(CODE_AREA_EXP, '$1').replace(/(\ {4}|\t)/g, ''), beautifyOpt) + '\n```\n\n\n');
+                                            text = text.replace(re, '\n\n\n``` ' + codeAreaToBlock + '\n' + beautify_js(e.replace(CODE_AREA_EXP, '$1').replace(/(\ {4}|\t)/g, ''), beautifyOpt) + '\n```\n\n\n');
+                                        });
+                                    } else if (codeAreaToBlock === 'html') {
+                                        _jsArr.forEach(e => {
+                                            const re = new RegExp(escapeStringRegexp(e), 'g');
+                                            text = text.replace(re, '\n\n\n``` ' + codeAreaToBlock + '\n' + beautify_html(e.replace(CODE_AREA_EXP, '$1').replace(/(\ {4}|\t)/g, ''), beautifyOpt) + '\n```\n\n\n');
+                                        });
+                                    } else if (codeAreaToBlock === 'css') {
+                                        _jsArr.forEach(e => {
+                                            const re = new RegExp(escapeStringRegexp(e), 'g');
+                                            text = text.replace(re, '\n\n\n``` ' + codeAreaToBlock + '\n' + beautify_css(e.replace(CODE_AREA_EXP, '$1').replace(/(\ {4}|\t)/g, ''), beautifyOpt) + '\n```\n\n\n');
                                         });
                                     } else {
                                         _jsArr.forEach(e => {
