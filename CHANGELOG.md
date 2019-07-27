@@ -2,6 +2,12 @@
 
 [中文文档](./CHANGELOG_CN.md)
 
+## 0.5.4
+
+- Fix bug: [关于嵌套的连接的格式化问题](https://github.com/sumnow/markdown-formatter/issues/7)
+- Fix bug: [对于引用区域的格式化是否可以控制不要添加多余的行？](https://github.com/sumnow/markdown-formatter/issues/6)
+- Update `CHANGELOG.md`
+
 ## 0.5.3
 
 - Fix bug: Format HTML and CSS in code block

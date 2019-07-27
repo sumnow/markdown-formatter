@@ -53,7 +53,7 @@ function activate(context) {
     //back quote
     var BACK_QUOTE_EXP = /\ *`([^`\n]+)`\ */g;
     // image link
-    var IMG_EXP = /(\!\[[^\n]+\]\([^\n]+\))/g;
+    var IMG_EXP = /([^[])(\!\[[^\n]+\]\([^\n]+\))/g;
     // list 
     // const LIST_EXP = /(((?:\n)+(?: {4}|\t)*(?:\d+\.|\-|\*|\+) [^\n]+)+)/g;
     var LIST_EXP = /((\n(?: {4}|\t)*(?:\d+\.|\-|\*|\+) [^\n]+)+)/g;
@@ -64,7 +64,7 @@ function activate(context) {
     // const NO_PERIOD_BACK_QUOTE_EXP1 = /\ *`([^`\n]*\.[^`\n]*)`\ */g;
     // link 
     var LINK_SPACE_EXP = /\n(>+) *([^\n]+)/g;
-    var LINK_EXP = /\n((>+[^\n]+\n)+)/g;
+    var LINK_EXP = /\n((>+[^\n]*\n)+)/g;
     // duplicated line
     var EXTRALINE_EXP = /\n\n+/g;
     // code block
@@ -222,7 +222,7 @@ function activate(context) {
                 text = text.replace(BACK_QUOTE_EXP, ' `$1` ');
                 text = text.replace(H_EXP, '\n\n' + '$1' + '\n\n');
                 text = text.replace(H1_EXP, '$1' + '\n\n');
-                text = text.replace(IMG_EXP, '\n\n' + '$1' + '\n\n');
+                text = text.replace(IMG_EXP, '$1\n\n' + '$2' + '\n\n');
                 text = text.replace(CODE_BLOCK_EXP, '\n\n``` ' + '$1\n$2' + '```\n\n');
                 text = text.replace(LINK_EXP, '\n\n' + '$1' + '\n\n');
                 text = text.replace(LINK_SPACE_EXP, '\n' + '$1 $2');
