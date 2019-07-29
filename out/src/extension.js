@@ -56,20 +56,23 @@ function activate(context) {
     var IMG_EXP = /([^[])(\!\[[^\n]+\]\([^\n]+\))/g;
     // list 
     // const LIST_EXP = /(((?:\n)+(?: {4}|\t)*(?:\d+\.|\-|\*|\+) [^\n]+)+)/g;
-    var LIST_EXP = /((\n(?: {4}|\t)*(?:\d+\.|\-|\*|\+) [^\n]+)+)/g;
+    var LIST_EXP = /((\n(?: {2}|\t)*(?:\d+\.|\-|\*|\+) [^\n]+)+)/g;
     var LIST_ST_EXP = /\n(?:\-|\*|\+) ([^\n]+)/g;
-    var LIST_ND_EXP = /\n(?: {4}|\t)(?:\-|\*|\+) ([^\n]+)/g;
-    var LIST_TH_EXP = /\n(?: {4}|\t){2}(?:\-|\*|\+) ([^\n]+)/g;
+    var LIST_ND_EXP = /\n(?: {2}|\t)(?:\-|\*|\+) ([^\n]+)/g;
+    var LIST_TH_EXP = /\n(?: {2}|\t){2}(?:\-|\*|\+) ([^\n]+)/g;
     // const NO_PERIOD_BACK_QUOTE_EXP = /\ *`([^.`\n]+)`\ */g;
     // const NO_PERIOD_BACK_QUOTE_EXP1 = /\ *`([^`\n]*\.[^`\n]*)`\ */g;
     // link 
     var LINK_SPACE_EXP = /\n(>+) *([^\n]+)/g;
     var LINK_EXP = /\n((>+[^\n]*\n)+)/g;
+    //href
+    var HREF_EXP = /(?:http|https|file|ftp):\/\/[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\*\+,;=.]+/g;
     // duplicated line
     var EXTRALINE_EXP = /\n\n+/g;
     // code block
     // const CODE_AREA_EXP = /\n+((?:(?: {4}|\t)+[^\n\-\+\*][^\n]+\n*)+)/g;
-    var CODE_AREA_EXP = /\n+((?:(?: {4}|\t)+(?!\d\.|\+|\-|\*)[^\n]+\n)+)/g;
+    // const CODE_AREA_EXP = /\n+((?:(?: {4}|\t)+(?!\d\.|\+|\-|\*)[^\n]+\n)+)/g;
+    var CODE_AREA_EXP = /\n+((?:(?: {4}|\t)+([^\+\d\.\-\*])[^\n]+\n)+)/g;
     // const CODE_AREA_EXP = /(?:(?: {4}|\t)+[^\n]+\n*)+/g;
     // const CODE_EXP = /\n*```([\s\S]+?)```\n*/g;
     var CODE_BLOCK_EXP = /\n*```(?: *)(\w*)\n([^```]+)(```)+?\n+/g;
@@ -114,7 +117,7 @@ function activate(context) {
                     });
                 };
                 text = removeReplace_1.removeReplace({
-                    text: text, reg: [BACK_QUOTE_EXP, CODE_BLOCK_EXP, CODE_AREA_EXP], func: function (text) {
+                    text: text, reg: [BACK_QUOTE_EXP, CODE_BLOCK_EXP, CODE_AREA_EXP, HREF_EXP], func: function (text) {
                         // handle fullwidth character
                         var fullwidthArr = CHINESE_SYMBOL.split('');
                         var halfwidthArr = ENGLISH_SYMBOL.split('');
@@ -216,8 +219,8 @@ function activate(context) {
                 text = text.replace(LIST_EXP, '\n\n' + '$1' + '\n\n');
                 if (formatULSymbol) {
                     text = text.replace(LIST_ST_EXP, '\n* ' + '$1');
-                    text = text.replace(LIST_ND_EXP, '\n    + ' + '$1');
-                    text = text.replace(LIST_TH_EXP, '\n        - ' + '$1');
+                    text = text.replace(LIST_ND_EXP, '\n  + ' + '$1');
+                    text = text.replace(LIST_TH_EXP, '\n    - ' + '$1');
                 }
                 text = text.replace(BACK_QUOTE_EXP, ' `$1` ');
                 text = text.replace(H_EXP, '\n\n' + '$1' + '\n\n');

@@ -3,6 +3,13 @@
 [English Document](./CHANGELOG.md)
 
 
+## 0.5.5
+
+- 修复bug: [半角符号不能转换](https://github.com/sumnow/markdown-formatter/issues/5)
+- 修复bug: [格式化操作会破坏`markdown-all-in-one`插件生成的目录](https://github.com/sumnow/markdown-formatter/issues/8)
+- 修复bug: [格式化操作会破坏原有链接](https://github.com/sumnow/markdown-formatter/issues/9)
+- 更新中英文 `CHANGELOG.md`
+
 ## 0.5.4
 
 - 修复bug: [关于嵌套的连接的格式化问题](https://github.com/sumnow/markdown-formatter/issues/7)
