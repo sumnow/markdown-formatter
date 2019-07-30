@@ -4,6 +4,7 @@
 import * as vscode from 'vscode';
 // import { vscode.workspace } from 'vscode';
 import { removeReplace } from "./removeReplace";
+import { FormatList } from './formatList'
 import { Table } from './Table';
 var escapeStringRegexp = require('escape-string-regexp');
 // import beautify from 'js-beautify'
@@ -36,6 +37,8 @@ vscode.workspace.onDidChangeConfiguration(_ => {
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
+
+    console.log(vscode.window.activeTextEditor.options.tabSize)
     // repalce symbol
     const CHINESE_SYMBOL = `，：；！“”‘’（）？。`;
     const ENGLISH_SYMBOL = `,:;!""''()?.`;
@@ -63,9 +66,11 @@ export function activate(context: vscode.ExtensionContext) {
     // list 
     // const LIST_EXP = /(((?:\n)+(?: {4}|\t)*(?:\d+\.|\-|\*|\+) [^\n]+)+)/g;
     const LIST_EXP = /((\n(?: {2}|\t)*(?:\d+\.|\-|\*|\+) [^\n]+)+)/g
-    const LIST_ST_EXP = /\n(?:\-|\*|\+) ([^\n]+)/g;
-    const LIST_ND_EXP = /\n(?: {2}|\t)(?:\-|\*|\+) ([^\n]+)/g;
-    const LIST_TH_EXP = /\n(?: {2}|\t){2}(?:\-|\*|\+) ([^\n]+)/g;
+    // const LIST_OL_EXP = /((\n(?: {2}|\t)*(\d+)\. [^\n]+)+)/g
+    const LIST_OL_LI_EXP = /(\n(?: {2}|\t)*)(\d+)(\. [^\n]+)/g
+    const LIST_UL_ST_EXP = /\n(?:\-|\*|\+) ([^\n]+)/g;
+    const LIST_UL_ND_EXP = /\n(?: {2}|\t)(?:\-|\*|\+) ([^\n]+)/g;
+    const LIST_UL_TH_EXP = /\n(?: {2}|\t){2}(?:\-|\*|\+) ([^\n]+)/g;
 
     // const NO_PERIOD_BACK_QUOTE_EXP = /\ *`([^.`\n]+)`\ */g;
     // const NO_PERIOD_BACK_QUOTE_EXP1 = /\ *`([^`\n]*\.[^`\n]*)`\ */g;
@@ -121,6 +126,7 @@ export function activate(context: vscode.ExtensionContext) {
 
             // format \r\n to \n,fix
             text = text.replace(LINE_BREAK_EXP, '\n');
+
             try {
                 // format PUNCTUATION_EXP
                 const _replacewithCharcter = ({ target, judge, pad }: { target: string[]; judge: string; pad: string[]; }) => {
@@ -129,6 +135,7 @@ export function activate(context: vscode.ExtensionContext) {
                         text = text.replace(_reg, `$1${pad[i]}`);
                     });
                 };
+
                 text = removeReplace({
                     text, reg: [BACK_QUOTE_EXP, CODE_BLOCK_EXP, CODE_AREA_EXP, HREF_EXP], func: (text: string): string => {
                         // handle fullwidth character
@@ -232,12 +239,9 @@ export function activate(context: vscode.ExtensionContext) {
                     })
                 }
 
-                text = text.replace(LIST_EXP, '\n\n' + '$1' + '\n\n');
-                if (formatULSymbol) {
-                    text = text.replace(LIST_ST_EXP, '\n* ' + '$1');
-                    text = text.replace(LIST_ND_EXP, '\n  + ' + '$1');
-                    text = text.replace(LIST_TH_EXP, '\n    - ' + '$1');
-                }
+                text = new FormatList(text).formatted({ formatULSymbol, LIST_EXP, LIST_UL_ST_EXP, LIST_UL_ND_EXP, LIST_UL_TH_EXP, LIST_OL_LI_EXP })
+
+                // text = formatList({ text })
                 text = text.replace(BACK_QUOTE_EXP, ' `$1` ')
                 text = text.replace(H_EXP, '\n\n' + '$1' + '\n\n')
                 text = text.replace(H1_EXP, '$1' + '\n\n')

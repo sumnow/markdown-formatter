@@ -2,6 +2,10 @@
 
 [English Document](./CHANGELOG.md)
 
+## 0.5.6
+
+- 功能: 有序列表序号对齐
+- 更新中英文 `CHANGELOG.md`
 
 ## 0.5.5
 

@@ -2,6 +2,11 @@
 
 [中文文档](./CHANGELOG_CN.md)
 
+## 0.5.6
+
+- New feature: Serial number alignment in ordered list
+- Update `CHANGELOG.md`
+
 ## 0.5.5
 
 - Fix bug: [半角符号不能转换](https://github.com/sumnow/markdown-formatter/issues/5)
@@ -61,7 +66,7 @@
 
 ## 0.4.5
 
-- Formatted unordered list symbol, as * > + > -
+- Formatted uneded list symbol, as * > + > -
 - Update `CHANGELOG.md` 
 
 ## 0.4.4

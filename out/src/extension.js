@@ -4,6 +4,7 @@
 var vscode = require('vscode');
 // import { vscode.workspace } from 'vscode';
 var removeReplace_1 = require("./removeReplace");
+var formatList_1 = require('./formatList');
 var Table_1 = require('./Table');
 var escapeStringRegexp = require('escape-string-regexp');
 // import beautify from 'js-beautify'
@@ -33,6 +34,7 @@ vscode.workspace.onDidChangeConfiguration(function (_) {
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 function activate(context) {
+    console.log(vscode.window.activeTextEditor.options.tabSize);
     // repalce symbol
     var CHINESE_SYMBOL = "\uFF0C\uFF1A\uFF1B\uFF01\u201C\u201D\u2018\u2019\uFF08\uFF09\uFF1F\u3002";
     var ENGLISH_SYMBOL = ",:;!\"\"''()?.";
@@ -57,9 +59,11 @@ function activate(context) {
     // list 
     // const LIST_EXP = /(((?:\n)+(?: {4}|\t)*(?:\d+\.|\-|\*|\+) [^\n]+)+)/g;
     var LIST_EXP = /((\n(?: {2}|\t)*(?:\d+\.|\-|\*|\+) [^\n]+)+)/g;
-    var LIST_ST_EXP = /\n(?:\-|\*|\+) ([^\n]+)/g;
-    var LIST_ND_EXP = /\n(?: {2}|\t)(?:\-|\*|\+) ([^\n]+)/g;
-    var LIST_TH_EXP = /\n(?: {2}|\t){2}(?:\-|\*|\+) ([^\n]+)/g;
+    // const LIST_OL_EXP = /((\n(?: {2}|\t)*(\d+)\. [^\n]+)+)/g
+    var LIST_OL_LI_EXP = /(\n(?: {2}|\t)*)(\d+)(\. [^\n]+)/g;
+    var LIST_UL_ST_EXP = /\n(?:\-|\*|\+) ([^\n]+)/g;
+    var LIST_UL_ND_EXP = /\n(?: {2}|\t)(?:\-|\*|\+) ([^\n]+)/g;
+    var LIST_UL_TH_EXP = /\n(?: {2}|\t){2}(?:\-|\*|\+) ([^\n]+)/g;
     // const NO_PERIOD_BACK_QUOTE_EXP = /\ *`([^.`\n]+)`\ */g;
     // const NO_PERIOD_BACK_QUOTE_EXP1 = /\ *`([^`\n]*\.[^`\n]*)`\ */g;
     // link 
@@ -216,12 +220,8 @@ function activate(context) {
                         }
                     });
                 }
-                text = text.replace(LIST_EXP, '\n\n' + '$1' + '\n\n');
-                if (formatULSymbol) {
-                    text = text.replace(LIST_ST_EXP, '\n* ' + '$1');
-                    text = text.replace(LIST_ND_EXP, '\n  + ' + '$1');
-                    text = text.replace(LIST_TH_EXP, '\n    - ' + '$1');
-                }
+                text = new formatList_1.FormatList(text).formatted({ formatULSymbol: formatULSymbol, LIST_EXP: LIST_EXP, LIST_UL_ST_EXP: LIST_UL_ST_EXP, LIST_UL_ND_EXP: LIST_UL_ND_EXP, LIST_UL_TH_EXP: LIST_UL_TH_EXP, LIST_OL_LI_EXP: LIST_OL_LI_EXP });
+                // text = formatList({ text })
                 text = text.replace(BACK_QUOTE_EXP, ' `$1` ');
                 text = text.replace(H_EXP, '\n\n' + '$1' + '\n\n');
                 text = text.replace(H1_EXP, '$1' + '\n\n');
