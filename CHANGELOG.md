@@ -2,6 +2,12 @@
 
 [中文文档](./CHANGELOG_CN.md)
 
+
+## 0.5.7
+
+- Fix bug：Convert code block to code area will failed sometimes
+- Update `CHANGELOG.md`
+
 ## 0.5.6
 
 - New feature: Serial number alignment in ordered list

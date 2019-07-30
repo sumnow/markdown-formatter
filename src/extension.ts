@@ -86,7 +86,8 @@ export function activate(context: vscode.ExtensionContext) {
     // code block
     // const CODE_AREA_EXP = /\n+((?:(?: {4}|\t)+[^\n\-\+\*][^\n]+\n*)+)/g;
     // const CODE_AREA_EXP = /\n+((?:(?: {4}|\t)+(?!\d\.|\+|\-|\*)[^\n]+\n)+)/g;
-    const CODE_AREA_EXP = /\n+((?:(?: {4}|\t)+([^\+\d\.\-\*])[^\n]+\n)+)/g
+    // const CODE_AREA_EXP = /\n+((?:(?: {4}|\t)+([^\+\d\.\-\*])[^\n]+\n)+)/g
+    const CODE_AREA_EXP = /\n+((?:(?: {4}|\t)[^\n]+\n)+)/g;
     // const CODE_AREA_EXP = /(?:(?: {4}|\t)+[^\n]+\n*)+/g;
     // const CODE_EXP = /\n*```([\s\S]+?)```\n*/g;
     const CODE_BLOCK_EXP = /\n*```(?: *)(\w*)\n([^```]+)(```)+?\n+/g
@@ -200,7 +201,6 @@ export function activate(context: vscode.ExtensionContext) {
                     text = removeReplace({
                         text, reg: [CODE_BLOCK_EXP, LIST_EXP], func: (text: string): string => {
                             const _jsArr = text.match(CODE_AREA_EXP);
-
                             codeAreaToBlock = codeAreaToBlock.toLowerCase()
                             if (codeAreaFormat && _jsArr && _jsArr.length > 0) {
                                 if (codeAreaToBlock === '') {

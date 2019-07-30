@@ -2,6 +2,11 @@
 
 [English Document](./CHANGELOG.md)
 
+## 0.5.7
+
+- 修复bug： 代码块转代码区的偶发bug
+- 更新中英文 `CHANGELOG.md`
+
 ## 0.5.6
 
 - 功能: 有序列表序号对齐

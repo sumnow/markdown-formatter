@@ -41,7 +41,7 @@ export class FormatList extends FormatComponent {
         }
     }
     public formatted({ formatULSymbol, LIST_EXP, LIST_UL_ST_EXP, LIST_UL_ND_EXP, LIST_UL_TH_EXP, LIST_OL_LI_EXP }): string {
-        this.outputBeforeInfo()
+        // this.outputBeforeInfo()
 
         // format list
         this.formatLineBetween({ LIST_EXP })
@@ -50,7 +50,7 @@ export class FormatList extends FormatComponent {
         // format ol
         this.formatOL({ LIST_OL_LI_EXP })
 
-        this.outputAfterInfo()
+        // this.outputAfterInfo()
         return this.text
     }
 }

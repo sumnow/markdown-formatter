@@ -2,7 +2,7 @@
     "name": "markdown-formatter",
     "displayName": "markdown-formatter",
     "description": " A Markdown Plugin for code artist",
-    "version": "0.5.6",
+    "version": "0.5.7",
     "icon": "icon.png",
     "publisher": "mervin",
     "engines": {
@@ -84,7 +84,6 @@
     },
     "dependencies": {
         "escape-string-regexp": "^1.0.5",
-        "reformat-markdown-table": "^1.1.0",
         "js-beautify": "^1.8.8"
     }
 }

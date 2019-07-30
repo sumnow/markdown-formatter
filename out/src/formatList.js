@@ -55,15 +55,15 @@ var FormatList = (function (_super) {
         }
     };
     FormatList.prototype.formatted = function (_a) {
+        // this.outputBeforeInfo()
         var formatULSymbol = _a.formatULSymbol, LIST_EXP = _a.LIST_EXP, LIST_UL_ST_EXP = _a.LIST_UL_ST_EXP, LIST_UL_ND_EXP = _a.LIST_UL_ND_EXP, LIST_UL_TH_EXP = _a.LIST_UL_TH_EXP, LIST_OL_LI_EXP = _a.LIST_OL_LI_EXP;
-        this.outputBeforeInfo();
         // format list
         this.formatLineBetween({ LIST_EXP: LIST_EXP });
         // format ul
         this.formatUL({ formatULSymbol: formatULSymbol, LIST_UL_ST_EXP: LIST_UL_ST_EXP, LIST_UL_ND_EXP: LIST_UL_ND_EXP, LIST_UL_TH_EXP: LIST_UL_TH_EXP });
         // format ol
         this.formatOL({ LIST_OL_LI_EXP: LIST_OL_LI_EXP });
-        this.outputAfterInfo();
+        // this.outputAfterInfo()
         return this.text;
     };
     return FormatList;
