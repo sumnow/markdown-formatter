@@ -1,3 +1,4 @@
+
 export class FormatComponent {
     public text: string;
     protected name: string;

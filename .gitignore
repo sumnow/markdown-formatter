@@ -1,6 +1,5 @@
 .vscode
 .vscodeignore
-out
-out/src
+out/
 todo
 node_modules

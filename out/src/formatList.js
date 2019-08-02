@@ -4,7 +4,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var formatComponent_1 = require('./formatComponent');
+var FormatComponent_1 = require('./FormatComponent');
 var escapeStringRegexp = require('escape-string-regexp');
 var FormatList = (function (_super) {
     __extends(FormatList, _super);
@@ -67,6 +67,6 @@ var FormatList = (function (_super) {
         return this.text;
     };
     return FormatList;
-}(formatComponent_1.FormatComponent));
+}(FormatComponent_1.FormatComponent));
 exports.FormatList = FormatList;
-//# sourceMappingURL=formatList.js.map
+//# sourceMappingURL=FormatList.js.map

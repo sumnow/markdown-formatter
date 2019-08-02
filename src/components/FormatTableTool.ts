@@ -1,4 +1,4 @@
-export class Table {
+export class FormatTableTool {
     constructor() {
     }
     splitStringToTable(str) {

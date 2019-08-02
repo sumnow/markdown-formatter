@@ -89,7 +89,8 @@ var Table = (function () {
         return this.getPadding(Math.ceil(l)) + str + this.getPadding(Math.floor(l));
     };
     Table.prototype.getPadding = function (len) {
-        return this.repeatStr(' ', len);
+        // return this.repeatStr(' ', len);
+        return this.repeatStr('&emsp;', len);
     };
     Table.prototype.repeatStr = function (str, count) {
         return count > 0 ? Array(count + 1).join(str) : '';

@@ -2,10 +2,10 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 var vscode = require('vscode');
-// import { vscode.workspace } from 'vscode';
-var removeReplace_1 = require("./removeReplace");
-var formatList_1 = require('./formatList');
-var Table_1 = require('./Table');
+var FormatList_1 = require('./components/FormatList');
+var FormatTable_1 = require('./components/FormatTable');
+var FormatPunctuation_1 = require('./components/FormatPunctuation');
+var FormatCode_1 = require('./components/FormatCode');
 var escapeStringRegexp = require('escape-string-regexp');
 // import beautify from 'js-beautify'
 var beautify = require('js-beautify');
@@ -34,7 +34,7 @@ vscode.workspace.onDidChangeConfiguration(function (_) {
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 function activate(context) {
-    console.log(vscode.window.activeTextEditor.options.tabSize);
+    // console.log(vscode.window.activeTextEditor.options.tabSize)
     // repalce symbol
     var CHINESE_SYMBOL = "\uFF0C\uFF1A\uFF1B\uFF01\u201C\u201D\u2018\u2019\uFF08\uFF09\uFF1F\u3002";
     var ENGLISH_SYMBOL = ",:;!\"\"''()?.";
@@ -84,144 +84,30 @@ function activate(context) {
     // const CODE_BLOCK_EXP = /\n*```(?: *)(\w*)\n([\s\S]+)(```)+?\n+/g
     // line-break
     var LINE_BREAK_EXP = /\r\n/g;
-    // const TAG_START_EXP = /<(?:[^\/])(?:[^"'>]|"[^"]*"|'[^']*')*>/g
+    // const TAG_START_EXP = /<(?:[^\/])(?:[^"'>]|"[^"]*"|'[^']*')*[^\/]>/g
     // const TAG_SINGLE_EXP = /<(?:[^\/])(?:[^"'>]|"[^"]*"|'[^']*')*\/>/g
     // const TAG_END_EXP = /<\/(?:[^"'>]|"[^"]*"|'[^']*')*>/g
-    function extractTables(text) {
-        return text.match(TABLE_EXP);
-    }
     context.subscriptions.push(vscode.languages.registerDocumentFormattingEditProvider('markdown', {
         provideDocumentFormattingEdits: function (document, options, token) {
             if (!enable) {
                 return void 0;
-            }
-            var beautifyOpt = {};
-            if (formatOpt) {
-                beautifyOpt = Object.assign(beautify, formatOpt);
             }
             var result = [];
             var start = new vscode.Position(0, 0);
             var end = new vscode.Position(document.lineCount - 1, document.lineAt(document.lineCount - 1).text.length);
             var range = new vscode.Range(start, end);
             var text = document.getText(range) + '\n';
-            // if (text === textLast) {
-            //     vscode.window.showInformationMessage('No text to format.');
-            //     return void 0;
-            // }
-            // textLast = text;
             var textLast = text;
             // format \r\n to \n,fix
             text = text.replace(LINE_BREAK_EXP, '\n');
             try {
                 // format PUNCTUATION_EXP
-                var _replacewithCharcter_1 = function (_a) {
-                    var target = _a.target, judge = _a.judge, pad = _a.pad;
-                    target.forEach(function (e, i) {
-                        var _reg = new RegExp(judge + "\\" + e, 'g');
-                        text = text.replace(_reg, "$1" + pad[i]);
-                    });
-                };
-                text = removeReplace_1.removeReplace({
-                    text: text, reg: [BACK_QUOTE_EXP, CODE_BLOCK_EXP, CODE_AREA_EXP, HREF_EXP], func: function (text) {
-                        // handle fullwidth character
-                        var fullwidthArr = CHINESE_SYMBOL.split('');
-                        var halfwidthArr = ENGLISH_SYMBOL.split('');
-                        if (fullWidthTurnHalfWidth === 'auto') {
-                            _replacewithCharcter_1({ target: fullwidthArr, judge: ENGLISH_CHARCTER_SYMBOL, pad: halfwidthArr });
-                            _replacewithCharcter_1({ target: halfwidthArr, judge: CHINESE_CHARCTER_SYMBOL, pad: fullwidthArr });
-                        }
-                        else {
-                            if (fullWidthTurnHalfWidth !== '' && fullWidthTurnHalfWidth !== '_') {
-                                var _commaArr = fullWidthTurnHalfWidth.split('');
-                                if (_commaArr && _commaArr.length > 0) {
-                                    _commaArr.forEach(function (e) {
-                                        var _i = fullwidthArr.indexOf(e);
-                                        if (_i > -1) {
-                                            var _reg = new RegExp('\\' + e, 'g');
-                                            text = text.replace(_reg, halfwidthArr[_i]);
-                                        }
-                                    });
-                                }
-                            }
-                        }
-                        text = text.replace(PUNCTUATION_EXP, '$1 ');
-                        text = text.replace(PERIOD_EXP, '$1 $2');
-                        return text;
-                    }
-                });
+                text = new FormatPunctuation_1.FormatPunctuation(text).formatted({ fullWidthTurnHalfWidth: fullWidthTurnHalfWidth, BACK_QUOTE_EXP: BACK_QUOTE_EXP, CODE_BLOCK_EXP: CODE_BLOCK_EXP, CODE_AREA_EXP: CODE_AREA_EXP, HREF_EXP: HREF_EXP, PUNCTUATION_EXP: PUNCTUATION_EXP, PERIOD_EXP: PERIOD_EXP, CHINESE_SYMBOL: CHINESE_SYMBOL, ENGLISH_SYMBOL: ENGLISH_SYMBOL, ENGLISH_CHARCTER_SYMBOL: ENGLISH_CHARCTER_SYMBOL, CHINESE_CHARCTER_SYMBOL: CHINESE_CHARCTER_SYMBOL });
                 // handler table
-                var _tableArr = extractTables(text);
-                if (_tableArr && _tableArr.length > 0) {
-                    _tableArr.forEach(function (table) {
-                        var re = new RegExp(escapeStringRegexp(String(table)), 'g');
-                        text = text.replace(re, function (substring) { return '\n\n' + new Table_1.Table().reformat(table) + '\n\n'; });
-                    });
-                }
+                text = new FormatTable_1.FormatTable(text).formatted(TABLE_EXP);
                 // handler js
-                if (formatOpt !== false) {
-                    var _codeArr = text.match(CODE_BLOCK_EXP);
-                    if (_codeArr && _codeArr.length > 0) {
-                        _codeArr.forEach(function (e) {
-                            var isJs = e.replace(CODE_BLOCK_EXP, '$1').toLocaleLowerCase();
-                            if (isJs === 'js' || isJs === 'javascript' || isJs === '') {
-                                var re = new RegExp(escapeStringRegexp(e.replace(CODE_BLOCK_EXP, '$2')), 'g');
-                                text = text.replace(re, '' + beautify_js(e.replace(CODE_BLOCK_EXP, '$2'), beautifyOpt) + '\n');
-                            }
-                            if (isJs === 'html') {
-                                var re = new RegExp(escapeStringRegexp(e.replace(CODE_BLOCK_EXP, '$2')), 'g');
-                                text = text.replace(re, '' + beautify_html(e.replace(CODE_BLOCK_EXP, '$2'), beautifyOpt) + '\n');
-                            }
-                            if (isJs === 'css') {
-                                var re = new RegExp(escapeStringRegexp(e.replace(CODE_BLOCK_EXP, '$2')), 'g');
-                                text = text.replace(re, '' + beautify_css(e.replace(CODE_BLOCK_EXP, '$2'), beautifyOpt) + '\n');
-                            }
-                        });
-                    }
-                    text = removeReplace_1.removeReplace({
-                        text: text, reg: [CODE_BLOCK_EXP, LIST_EXP], func: function (text) {
-                            var _jsArr = text.match(CODE_AREA_EXP);
-                            codeAreaToBlock = codeAreaToBlock.toLowerCase();
-                            if (codeAreaFormat && _jsArr && _jsArr.length > 0) {
-                                if (codeAreaToBlock === '') {
-                                    _jsArr.forEach(function (e) {
-                                        var re = new RegExp(escapeStringRegexp(e), 'g');
-                                        // text = text.replace(re, '\n\n\n' + beautify(e.replace(CODE_AREA_EXP, '$1'), beautifyOpt) + '\n\n\n');
-                                        text = text.replace(re, '\n\n\n' + e.replace(CODE_AREA_EXP, '$1') + '\n\n\n');
-                                    });
-                                }
-                                else {
-                                    if (codeAreaToBlock === 'js' || codeAreaToBlock === 'javascript') {
-                                        _jsArr.forEach(function (e) {
-                                            var re = new RegExp(escapeStringRegexp(e), 'g');
-                                            text = text.replace(re, '\n\n\n``` ' + codeAreaToBlock + '\n' + beautify_js(e.replace(CODE_AREA_EXP, '$1').replace(/(\ {4}|\t)/g, ''), beautifyOpt) + '\n```\n\n\n');
-                                        });
-                                    }
-                                    else if (codeAreaToBlock === 'html') {
-                                        _jsArr.forEach(function (e) {
-                                            var re = new RegExp(escapeStringRegexp(e), 'g');
-                                            text = text.replace(re, '\n\n\n``` ' + codeAreaToBlock + '\n' + beautify_html(e.replace(CODE_AREA_EXP, '$1').replace(/(\ {4}|\t)/g, ''), beautifyOpt) + '\n```\n\n\n');
-                                        });
-                                    }
-                                    else if (codeAreaToBlock === 'css') {
-                                        _jsArr.forEach(function (e) {
-                                            var re = new RegExp(escapeStringRegexp(e), 'g');
-                                            text = text.replace(re, '\n\n\n``` ' + codeAreaToBlock + '\n' + beautify_css(e.replace(CODE_AREA_EXP, '$1').replace(/(\ {4}|\t)/g, ''), beautifyOpt) + '\n```\n\n\n');
-                                        });
-                                    }
-                                    else {
-                                        _jsArr.forEach(function (e) {
-                                            var re = new RegExp(escapeStringRegexp(e), 'g');
-                                            // text = text.replace(re, '\n\n\n' + beautify(e.replace(CODE_AREA_EXP, '$1'), beautifyOpt) + '\n\n\n');
-                                            text = text.replace(re, '\n\n\n``` ' + codeAreaToBlock + '\n' + e.replace(CODE_AREA_EXP, '$1').replace(/(\ {4}|\t)/g, '') + '```\n\n\n');
-                                        });
-                                    }
-                                }
-                            }
-                            return text;
-                        }
-                    });
-                }
-                text = new formatList_1.FormatList(text).formatted({ formatULSymbol: formatULSymbol, LIST_EXP: LIST_EXP, LIST_UL_ST_EXP: LIST_UL_ST_EXP, LIST_UL_ND_EXP: LIST_UL_ND_EXP, LIST_UL_TH_EXP: LIST_UL_TH_EXP, LIST_OL_LI_EXP: LIST_OL_LI_EXP });
+                text = new FormatCode_1.FormatCode(text).formatted({ formatOpt: formatOpt, codeAreaToBlock: codeAreaToBlock, codeAreaFormat: codeAreaFormat, CODE_BLOCK_EXP: CODE_BLOCK_EXP, LIST_EXP: LIST_EXP, CODE_AREA_EXP: CODE_AREA_EXP });
+                text = new FormatList_1.FormatList(text).formatted({ formatULSymbol: formatULSymbol, LIST_EXP: LIST_EXP, LIST_UL_ST_EXP: LIST_UL_ST_EXP, LIST_UL_ND_EXP: LIST_UL_ND_EXP, LIST_UL_TH_EXP: LIST_UL_TH_EXP, LIST_OL_LI_EXP: LIST_OL_LI_EXP });
                 // text = formatList({ text })
                 text = text.replace(BACK_QUOTE_EXP, ' `$1` ');
                 text = text.replace(H_EXP, '\n\n' + '$1' + '\n\n');

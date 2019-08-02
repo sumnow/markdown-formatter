@@ -14,4 +14,4 @@ var FormatComponent = (function () {
     return FormatComponent;
 }());
 exports.FormatComponent = FormatComponent;
-//# sourceMappingURL=formatComponent.js.map
+//# sourceMappingURL=FormatComponent.js.map

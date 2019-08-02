@@ -1,4 +1,4 @@
-import { FormatComponent } from './formatComponent'
+import { FormatComponent } from './FormatComponent'
 var escapeStringRegexp = require('escape-string-regexp');
 
 export class FormatList extends FormatComponent {

@@ -2,6 +2,10 @@
 
 [中文文档](./CHANGELOG_CN.md)
 
+## 0.5.8
+
+- Optimization
+- Update `CHANGELOG.md`
 
 ## 0.5.7
 
