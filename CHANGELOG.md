@@ -2,6 +2,12 @@
 
 [中文文档](./CHANGELOG_CN.md)
 
+## 0.5.9
+
+- Fix bug: Code area will not formatted as excepted.
+- Optimization
+- Update `CHANGELOG.md`
+
 ## 0.5.8
 
 - Optimization

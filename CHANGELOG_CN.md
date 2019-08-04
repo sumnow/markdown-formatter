@@ -2,6 +2,12 @@
 
 [English Document](./CHANGELOG.md)
 
+## 0.5.9
+
+- 修复bug: 代码块转化偶发的bug
+- 优化代码结构
+- 更新中英文 `CHANGELOG.md`
+
 ## 0.5.8
 
 - 优化代码结构

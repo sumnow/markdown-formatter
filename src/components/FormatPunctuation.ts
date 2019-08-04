@@ -19,7 +19,7 @@ export class FormatPunctuation extends FormatComponent {
         };
 
         this.text = removeReplace({
-            text: this.text, reg: [BACK_QUOTE_EXP, CODE_BLOCK_EXP, CODE_AREA_EXP, HREF_EXP], func: (text: string): string => {
+            text: this.text, reg: [CODE_BLOCK_EXP, CODE_AREA_EXP, BACK_QUOTE_EXP, HREF_EXP], func: (text: string): string => {
                 // handle fullwidth character
                 const fullwidthArr = CHINESE_SYMBOL.split('');
                 const halfwidthArr = ENGLISH_SYMBOL.split('');

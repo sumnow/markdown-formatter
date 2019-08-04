@@ -1,9 +1,10 @@
 var escapeStringRegexp = require('escape-string-regexp');
 
-export function removeReplace({ text, reg, func }: {
+export function removeReplace({ text, reg, func, type }: {
     text: string;
     reg: Array<RegExp>;
     func: Function;
+    type?: string;
 }): string {
     const _tempRegArr = [];
     reg.forEach(e => {
@@ -16,6 +17,10 @@ export function removeReplace({ text, reg, func }: {
             const _reg = new RegExp(escapeStringRegexp(e.content), 'g');
             text = text.replace(_reg, e.hasN ? `\n\n$mdFormatter$${i}$mdFormatter$\n\n` : `$mdFormatter$${i}$mdFormatter$`);
         });
+        if (type) {
+            console.log(`handler ${type} before:`)
+            console.log(text)
+        }
         text = func(text);
         _tempRegArr.forEach((e, i) => {
             let _mdformatter = e.hasN ? `\n\n$mdFormatter$${i}$mdFormatter$\n\n` : `$mdFormatter$${i}$mdFormatter$`;

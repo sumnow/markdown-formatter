@@ -41,7 +41,9 @@ export class FormatCode extends FormatComponent {
             }
 
             this.text = removeReplace({
-                text: this.text, reg: [CODE_BLOCK_EXP, LIST_EXP], func: (text: string): string => {
+                text: this.text,
+                reg: [CODE_BLOCK_EXP, LIST_EXP],
+                func: (text: string): string => {
                     const _jsArr = text.match(CODE_AREA_EXP);
                     codeAreaToBlock = codeAreaToBlock.toLowerCase()
                     if (codeAreaFormat && _jsArr && _jsArr.length > 0) {
@@ -77,7 +79,8 @@ export class FormatCode extends FormatComponent {
                         }
                     }
                     return text;
-                }
+                },
+                type: 'code'
             })
         }
         return this.text

@@ -1,20 +1,10 @@
 'use strict';
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
+
 import * as vscode from 'vscode';
-// import { vscode.workspace } from 'vscode';
-import { removeReplace } from "./components/removeReplace";
 import { FormatList } from './components/FormatList'
 import { FormatTable } from './components/FormatTable';
 import { FormatPunctuation } from './components/FormatPunctuation';
 import { FormatCode } from './components/FormatCode';
-
-var escapeStringRegexp = require('escape-string-regexp');
-// import beautify from 'js-beautify'
-var beautify = require('js-beautify')
-var beautify_js = require('js-beautify').js;
-var beautify_css = require('js-beautify').css;
-var beautify_html = require('js-beautify').html;
 
 let config = vscode.workspace.getConfiguration('markdownFormatter');
 let fullWidthTurnHalfWidth: string = config.get<string>('fullWidthTurnHalfWidth', 'auto');
@@ -90,7 +80,7 @@ export function activate(context: vscode.ExtensionContext) {
     // const CODE_AREA_EXP = /\n+((?:(?: {4}|\t)+[^\n\-\+\*][^\n]+\n*)+)/g;
     // const CODE_AREA_EXP = /\n+((?:(?: {4}|\t)+(?!\d\.|\+|\-|\*)[^\n]+\n)+)/g;
     // const CODE_AREA_EXP = /\n+((?:(?: {4}|\t)+([^\+\d\.\-\*])[^\n]+\n)+)/g
-    const CODE_AREA_EXP = /\n+((?:(?: {4}|\t)[^\n]+\n)+)/g;
+    const CODE_AREA_EXP = /\n+((?:(?: {4}|\t)[^\n]*\n)+)/g;
     // const CODE_AREA_EXP = /(?:(?: {4}|\t)+[^\n]+\n*)+/g;
     // const CODE_EXP = /\n*```([\s\S]+?)```\n*/g;
     const CODE_BLOCK_EXP = /\n*```(?: *)(\w*)\n([^```]+)(```)+?\n+/g
