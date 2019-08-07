@@ -85,14 +85,6 @@ Typing `ul` or `ol`
 
 Format the code, by `js-beautify` tool, currently only the `javascript` , `html` and `css` language; 
 
-##### code area
-
-    function sayHello() {
-      console.log('hello')
-    }
-
-Will always be formatted according to js syntax, if `codeAreaFormat` is `true` (default)
-
 ##### code block
 
 ```lang
@@ -108,13 +100,18 @@ function sayHello() {console.log('hello')}
 
 > Code blocks can clearly mark the type of language, so it is recommended to use code blocks, you can configure `codeAreaToBlock` to set the conversion method.
 
+##### code area
+
+The default is not formatted. If `codeAreaToBlock` is any language name, such as `js` or `go`, it will be converted into a code block and then formatted.
+
+
+![img](./images/example-code_area.gif)
+
 ## Config
 
 ```typescript
 // enable/disable markdown-formatter
 enable = config.get <boolean> ('enable', true); 
-// automatically format the code area or not
-codeAreaFormat = config.get<boolean>('codeAreaFormat', true); 
 // fullwidth character translate into halfwidth character, such as `，：；！“”‘’（）？。`
 // Automatically convert symbols based on context when set to 'auto'
 // Don't convert symbols based on context when set to '_' or ''
@@ -140,7 +137,6 @@ You can refer to my configuration:
 
 ```js
   // markdown-formatter conf
-  "markdownFormatter.codeAreaFormat:": true,
   "markdownFormatter.fullWidthTurnHalfWidth": "auto",
   // "markdownFormatter.fullWidthTurnHalfWidth": "，：；！“”‘’（）？。",
   "markdownFormatter.formatOpt": {

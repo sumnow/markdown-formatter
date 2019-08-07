@@ -6,7 +6,6 @@ var FormatPunctuation_1 = require('./components/FormatPunctuation');
 var FormatCode_1 = require('./components/FormatCode');
 var config = vscode.workspace.getConfiguration('markdownFormatter');
 var fullWidthTurnHalfWidth = config.get('fullWidthTurnHalfWidth', 'auto');
-var codeAreaFormat = config.get('codeAreaFormat', true);
 var codeAreaToBlock = config.get('codeAreaToBlock', '');
 var enable = config.get('enable', true);
 var formatOpt = config.get('formatOpt', {});
@@ -15,7 +14,6 @@ var spaceAfterFullWidth = config.get('spaceAfterFullWidth', false);
 vscode.workspace.onDidChangeConfiguration(function (_) {
     config = vscode.workspace.getConfiguration('markdownFormatter');
     fullWidthTurnHalfWidth = config.get('fullWidthTurnHalfWidth', 'auto');
-    codeAreaFormat = config.get('codeAreaFormat', true);
     codeAreaToBlock = config.get('codeAreaToBlock', '');
     enable = config.get('enable', true);
     formatOpt = config.get('formatOpt', {});
@@ -72,8 +70,7 @@ function activate(context) {
     var CODE_AREA_EXP = /\n+((?:(?: {4}|\t)[^\n]*\n)+)/g;
     // const CODE_AREA_EXP = /(?:(?: {4}|\t)+[^\n]+\n*)+/g;
     // const CODE_EXP = /\n*```([\s\S]+?)```\n*/g;
-    var CODE_BLOCK_EXP = /\n*```(?: *)(\w*)\n([^```]+)(```)+?\n+/g;
-    // const CODE_BLOCK_EXP = /\n*```(?: *)(\w*)\n([\s\S]+)(```)+?\n+/g
+    var CODE_BLOCK_EXP = /\n*```(?: *)(\w*)\n([\s\S]+?)(```)+\n+/g;
     // line-break
     var LINE_BREAK_EXP = /\r\n/g;
     // const TAG_START_EXP = /<(?:[^\/])(?:[^"'>]|"[^"]*"|'[^']*')*[^\/]>/g
@@ -98,7 +95,7 @@ function activate(context) {
                 // handler table
                 text = new FormatTable_1.FormatTable(text).formatted(TABLE_EXP);
                 // handler js
-                text = new FormatCode_1.FormatCode(text).formatted({ formatOpt: formatOpt, codeAreaToBlock: codeAreaToBlock, codeAreaFormat: codeAreaFormat, CODE_BLOCK_EXP: CODE_BLOCK_EXP, LIST_EXP: LIST_EXP, CODE_AREA_EXP: CODE_AREA_EXP });
+                text = new FormatCode_1.FormatCode(text).formatted({ formatOpt: formatOpt, codeAreaToBlock: codeAreaToBlock, CODE_BLOCK_EXP: CODE_BLOCK_EXP, LIST_EXP: LIST_EXP, CODE_AREA_EXP: CODE_AREA_EXP });
                 text = new FormatList_1.FormatList(text).formatted({ formatULSymbol: formatULSymbol, LIST_EXP: LIST_EXP, LIST_UL_ST_EXP: LIST_UL_ST_EXP, LIST_UL_ND_EXP: LIST_UL_ND_EXP, LIST_UL_TH_EXP: LIST_UL_TH_EXP, LIST_OL_LI_EXP: LIST_OL_LI_EXP });
                 // text = formatList({ text })
                 text = text.replace(BACK_QUOTE_EXP, ' `$1` ');

@@ -2,6 +2,12 @@
 
 [English Document](./CHANGELOG.md)
 
+## 0.6.0
+
+- 删除配置属性 `codeAreaFormat` 
+- 更新中英文 `README.md` 
+- 更新中英文 `CHANGELOG.md`
+
 ## 0.5.9
 
 - 修复bug: 代码块转化偶发的bug

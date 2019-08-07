@@ -1,5 +1,6 @@
+.DS_Store
 .vscode
 .vscodeignore
-out/
+out/**
 todo
 node_modules

@@ -2,7 +2,7 @@
     "name": "markdown-formatter",
     "displayName": "markdown-formatter",
     "description": " A Markdown Plugin for code artist",
-    "version": "0.5.9",
+    "version": "0.6.0",
     "icon": "icon.png",
     "publisher": "mervin",
     "engines": {
@@ -32,11 +32,6 @@
                     "type": "string",
                     "default": "auto",
                     "description": "Unify full-width (，：；！“”‘’（）？。) as a half-width character(,:;!''()?.)."
-                },
-                "markdownFormatter.codeAreaFormat": {
-                    "type": "boolean",
-                    "default": true,
-                    "description": "Enable/disable code area formatter now."
                 },
                 "markdownFormatter.codeAreaToBlock": {
                     "type": "string",

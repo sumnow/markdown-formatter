@@ -8,7 +8,6 @@ import { FormatCode } from './components/FormatCode';
 
 let config = vscode.workspace.getConfiguration('markdownFormatter');
 let fullWidthTurnHalfWidth: string = config.get<string>('fullWidthTurnHalfWidth', 'auto');
-let codeAreaFormat: boolean = config.get<boolean>('codeAreaFormat', true);
 let codeAreaToBlock: string = config.get<string>('codeAreaToBlock', '')
 let enable: boolean = config.get<boolean>('enable', true);
 let formatOpt: any = config.get<any>('formatOpt', {});
@@ -18,7 +17,6 @@ let spaceAfterFullWidth: boolean = config.get<boolean>('spaceAfterFullWidth', fa
 vscode.workspace.onDidChangeConfiguration(_ => {
     config = vscode.workspace.getConfiguration('markdownFormatter');
     fullWidthTurnHalfWidth = config.get<string>('fullWidthTurnHalfWidth', 'auto');
-    codeAreaFormat = config.get<boolean>('codeAreaFormat', true);
     codeAreaToBlock = config.get<string>('codeAreaToBlock', '');
     enable = config.get<boolean>('enable', true);
     formatOpt = config.get<any>('formatOpt', {});
@@ -83,8 +81,8 @@ export function activate(context: vscode.ExtensionContext) {
     const CODE_AREA_EXP = /\n+((?:(?: {4}|\t)[^\n]*\n)+)/g;
     // const CODE_AREA_EXP = /(?:(?: {4}|\t)+[^\n]+\n*)+/g;
     // const CODE_EXP = /\n*```([\s\S]+?)```\n*/g;
-    const CODE_BLOCK_EXP = /\n*```(?: *)(\w*)\n([^```]+)(```)+?\n+/g
-    // const CODE_BLOCK_EXP = /\n*```(?: *)(\w*)\n([\s\S]+)(```)+?\n+/g
+
+    const CODE_BLOCK_EXP = /\n*```(?: *)(\w*)\n([\s\S]+?)(```)+\n+/g
 
     // line-break
     const LINE_BREAK_EXP = /\r\n/g;
@@ -119,7 +117,7 @@ export function activate(context: vscode.ExtensionContext) {
                 text = new FormatTable(text).formatted(TABLE_EXP)
 
                 // handler js
-                text = new FormatCode(text).formatted({ formatOpt, codeAreaToBlock, codeAreaFormat, CODE_BLOCK_EXP, LIST_EXP, CODE_AREA_EXP })
+                text = new FormatCode(text).formatted({ formatOpt, codeAreaToBlock, CODE_BLOCK_EXP, LIST_EXP, CODE_AREA_EXP })
 
 
                 text = new FormatList(text).formatted({ formatULSymbol, LIST_EXP, LIST_UL_ST_EXP, LIST_UL_ND_EXP, LIST_UL_TH_EXP, LIST_OL_LI_EXP })

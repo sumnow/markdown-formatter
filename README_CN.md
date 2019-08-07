@@ -87,14 +87,6 @@
 
 * 依据配置会格式化文章中的代码, 使用 `js-beautify` 工具, 目前只有 `javascript` , `html` 和 `css` 语言; 
 
-##### 代码区
-
-function sayHello() {
-  console.log('hello')
-}
-
-如果 `codeAreaFormat` 为 `true` (默认值), 会被格式化. 
-
 ##### 代码块
 
 ``` lang
@@ -110,19 +102,23 @@ function sayHello() {console.log('hello')}
 
 > 代码块可以清晰标记出语言的类型，因此推荐使用代码块，可以配置 `codeAreaToBlock` 来设置转换方式
 
+##### 代码区
+
+默认是不格式化的, 如果 `codeAreaToBlock` 为任意语言名,如`js`或者`go`, 会被转换成代码块,然后格式化.
+
+![img](./images/example-code_area.gif)
+
 ## 配置
 
 ```typescript
 // 是否启用格式化
 enable = config.get <boolean> ('enable', true); 
-// 是否自动格式化代码区
-codeAreaFormat = config.get<boolean>('codeAreaFormat', true); 
 // 将配置里的全角符号转化为半角符号, 例如 `，：；！“”‘’（）？。` 
 // 当设置为 'auto' 的时候, 自动根据上下文转换符号
 // 当设置为 '_' 或者 '' 的时候, 不转换符号
 fullWidthTurnHalfWidth = config.get<string>('fullWidthTurnHalfWidth', 'auto'); 
 // 转换代码块为代码区，默认为''（空字符）,不转换
-// 可以设置为任意合法字符串
+// 可以设置为任意合法英文
 // 只有设置成js或者javascript，才会按照js语言语法格式化
 codeAreaToBlock = config.get<string>('codeAreaToBlock', '');
 // 是否格式化代码或者配置js-beautify
@@ -142,7 +138,6 @@ spaceAfterFullWidth = config.get<boolean>('spaceAfterFullWidth', false);
 
 ```js
 // markdown-formatter conf
-"markdownFormatter.codeAreaFormat:": true,
 "markdownFormatter.fullWidthTurnHalfWidth": "auto",
 // "markdownFormatter.fullWidthTurnHalfWidth": "，：；！“”‘’（）？。",
 "markdownFormatter.formatOpt": {
