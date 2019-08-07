@@ -6,7 +6,6 @@ export class ParseHTML {
     }
 
     init(): string {
-        console.log()
         return this.text
     }
 }

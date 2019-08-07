@@ -2,6 +2,12 @@
 
 [English Document](./CHANGELOG.md)
 
+## 0.6.1
+
+- 如果`codeAreaToBlock` 是默认值, 不会格式化代码区的内容
+- 更新中英文 `README.md` 
+- 更新中英文 `CHANGELOG.md`
+
 ## 0.6.0
 
 - 删除配置属性 `codeAreaFormat` 

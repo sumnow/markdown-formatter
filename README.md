@@ -104,8 +104,10 @@ function sayHello() {console.log('hello')}
 
 The default is not formatted. If `codeAreaToBlock` is any language name, such as `js` or `go`, it will be converted into a code block and then formatted.
 
-
 ![img](./images/example-code_area.gif)
+
+**Tips: blank lines in the code area should also start with 4 spaces.**
+
 
 ## Config
 

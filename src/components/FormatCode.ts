@@ -40,21 +40,18 @@ export class FormatCode extends FormatComponent {
                         }
                     }
                     return text;
-                },
-                type: 'code'
+                }
             })
         }
-        console.log(this.text)
 
         const _codeArr = this.text.match(CODE_BLOCK_EXP)
-        
-        console.log(_codeArr)
+
 
         if (_codeArr && _codeArr.length > 0) {
             _codeArr.forEach(e => {
                 const isJs = e.replace(CODE_BLOCK_EXP, '$1').toLocaleLowerCase()
 
-                if (isJs === 'js' || isJs === 'javascript' || isJs === '') {
+                if (isJs === 'js' || isJs === 'javascript') {
                     const re = new RegExp(escapeStringRegexp(e.replace(CODE_BLOCK_EXP, '$2')), 'g')
                     this.text = this.text.replace(re, '' + beautify_js(e.replace(CODE_BLOCK_EXP, '$2'), beautifyOpt) + '\n')
                 }

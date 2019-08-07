@@ -89,9 +89,9 @@
 
 ##### 代码块
 
-``` lang
-function sayHello() {console.log('hello')}
-```
+    ``` lang
+    function sayHello() {console.log('hello')}
+    ```
 
 1. 如果 `lang` 为 `js` 或者 `javascript` 或者为空, 会按照js语法格式化 
 2. 如果 `lang` 为 `html` , 会按照html语法格式化. 
@@ -107,6 +107,8 @@ function sayHello() {console.log('hello')}
 默认是不格式化的, 如果 `codeAreaToBlock` 为任意语言名,如`js`或者`go`, 会被转换成代码块,然后格式化.
 
 ![img](./images/example-code_area.gif)
+
+**注意:代码区里的空行也应当以4个空格开头**
 
 ## 配置
 

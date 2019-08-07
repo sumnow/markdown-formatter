@@ -2,6 +2,12 @@
 
 [中文文档](./CHANGELOG_CN.md)
 
+## 0.6.1
+
+- Code area will not formatted if `codeAreaToBlock` as default 
+- Update `README.md` 
+- Update `CHANGELOG.md`
+
 ## 0.6.0
 
 - Remove property `codeAreaFormat` 
