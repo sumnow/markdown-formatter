@@ -2,6 +2,11 @@
 
 [English Document](./CHANGELOG.md)
 
+## 0.6.2
+
+- 行首的反逗号不会空出一格了.
+- 更新中英文 `CHANGELOG.md`
+
 ## 0.6.1
 
 - 如果`codeAreaToBlock` 是默认值, 不会格式化代码区的内容

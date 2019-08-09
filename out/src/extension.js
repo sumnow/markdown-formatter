@@ -44,6 +44,7 @@ function activate(context) {
     var TABLE_EXP = /((?:(?:[^\n]*?\|[^\n]*)\ *)?(?:\r?\n|^))(?:[^|]+)((?:\|\ *(?::?-+:?|::)\ *|\|?(?:\ *(?::?-+:?|::)\ *\|)+)(?:\ *(?::?-+:?|::)\ *)?\ *\r?\n)((?:(?:[^\n]*?\|[^\n]*)\ *(?:\r?\n|$))+)/g;
     //back quote
     var BACK_QUOTE_EXP = /\ *`([^`\n]+)`\ */g;
+    var BACK_QUOTE_AFTER_BREAKLINE_EXP = /\n\ `([^`\n]+)`\ /g;
     // image link
     var IMG_EXP = /([^[])(\!\[[^\n]+\]\([^\n]+\))/g;
     // list 
@@ -99,6 +100,7 @@ function activate(context) {
                 text = new FormatList_1.FormatList(text).formatted({ formatULSymbol: formatULSymbol, LIST_EXP: LIST_EXP, LIST_UL_ST_EXP: LIST_UL_ST_EXP, LIST_UL_ND_EXP: LIST_UL_ND_EXP, LIST_UL_TH_EXP: LIST_UL_TH_EXP, LIST_OL_LI_EXP: LIST_OL_LI_EXP });
                 // text = formatList({ text })
                 text = text.replace(BACK_QUOTE_EXP, ' `$1` ');
+                text = text.replace(BACK_QUOTE_AFTER_BREAKLINE_EXP, '\n`$1` ');
                 text = text.replace(H_EXP, '\n\n' + '$1' + '\n\n');
                 text = text.replace(H1_EXP, '$1' + '\n\n');
                 text = text.replace(IMG_EXP, '$1\n\n' + '$2' + '\n\n');

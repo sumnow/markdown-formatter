@@ -51,6 +51,7 @@ export function activate(context: vscode.ExtensionContext) {
     const TABLE_EXP = /((?:(?:[^\n]*?\|[^\n]*)\ *)?(?:\r?\n|^))(?:[^|]+)((?:\|\ *(?::?-+:?|::)\ *|\|?(?:\ *(?::?-+:?|::)\ *\|)+)(?:\ *(?::?-+:?|::)\ *)?\ *\r?\n)((?:(?:[^\n]*?\|[^\n]*)\ *(?:\r?\n|$))+)/g;
     //back quote
     const BACK_QUOTE_EXP = /\ *`([^`\n]+)`\ */g;
+    const BACK_QUOTE_AFTER_BREAKLINE_EXP = /\n\ `([^`\n]+)`\ /g;
     // image link
     const IMG_EXP = /([^[])(\!\[[^\n]+\]\([^\n]+\))/g;
 
@@ -124,6 +125,7 @@ export function activate(context: vscode.ExtensionContext) {
 
                 // text = formatList({ text })
                 text = text.replace(BACK_QUOTE_EXP, ' `$1` ')
+                text = text.replace(BACK_QUOTE_AFTER_BREAKLINE_EXP, '\n`$1` ')
                 text = text.replace(H_EXP, '\n\n' + '$1' + '\n\n')
                 text = text.replace(H1_EXP, '$1' + '\n\n')
                 text = text.replace(IMG_EXP, '$1\n\n' + '$2' + '\n\n')

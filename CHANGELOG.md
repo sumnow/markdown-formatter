@@ -2,6 +2,11 @@
 
 [中文文档](./CHANGELOG_CN.md)
 
+## 0.6.2
+
+- Back quote after breakline will not after a space now.
+- Update `CHANGELOG.md`
+
 ## 0.6.1
 
 - Code area will not formatted if `codeAreaToBlock` as default 
