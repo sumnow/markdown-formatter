@@ -4,6 +4,7 @@ import { FormatTableTool } from './FormatTableTool'
 var escapeStringRegexp = require('escape-string-regexp');
 
 export class FormatTable extends FormatComponent {
+    name: string = 'table'
     text: string;
     super(text: string) {
         this.text = text

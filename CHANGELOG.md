@@ -2,6 +2,11 @@
 
 [中文文档](./CHANGELOG_CN.md)
 
+## 0.6.3
+
+- Add new `Snippets` : 'time'  and optimizate others
+- Update `CHANGELOG.md`
+
 ## 0.6.2
 
 - Back quote after breakline will not after a space now.

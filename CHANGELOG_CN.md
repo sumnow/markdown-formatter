@@ -2,6 +2,11 @@
 
 [English Document](./CHANGELOG.md)
 
+## 0.6.3
+
+- 添加新 `Snippets`: 'time' 并优化已有的 `Snippets`
+- 更新 `CHANGELOG.md`
+
 ## 0.6.2
 
 - 行首的反逗号不会空出一格了.

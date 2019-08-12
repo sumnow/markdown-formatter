@@ -7,6 +7,7 @@ var beautify_css = require('js-beautify').css;
 var beautify_html = require('js-beautify').html;
 
 export class FormatCode extends FormatComponent {
+    name: string = 'code'
     text: string;
     super(text: string) {
         this.text = text

@@ -2,6 +2,7 @@ import { removeReplace } from "./removeReplace";
 import { FormatComponent } from "./FormatComponent";
 
 export class FormatPunctuation extends FormatComponent {
+    name: string = 'punctuation'
     text: string;
     super(text: string) {
         this.text = text

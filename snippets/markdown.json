@@ -1,20 +1,26 @@
 {
     "Create Image": {
-        "prefix": "img",
+        "prefix": [
+            "img",
+            "image"
+        ],
         "body": [
             "![${2:img}](${1:${TM_FILEPATH}})"
         ],
         "description": "create image tag"
     },
     "Create Table": {
-        "prefix": "tab",
+        "prefix": "table",
         "body": [
             "${1:title}|${2:title}|${3:title}\n-----|-----|-----\n${4:conte}|${5:conte}|${6:conte}"
         ],
         "description": "create table tag"
     },
     "Create JS": {
-        "prefix": "js",
+        "prefix": [
+            "js",
+            "javascript"
+        ],
         "body": [
             "``` js\n${1:// javascript}\n```\n$2"
         ],
@@ -82,5 +88,32 @@
             "1. ${1:first}\n2. ${2:second}\n3. ${3:thrid}"
         ],
         "description": "create ordered list"
+    },
+    "Create Time": {
+        "prefix": [
+            "time"
+        ],
+        "body": [
+            "$CURRENT_DAY_NAME $CURRENT_MONTH_NAME $CURRENT_DATE, $CURRENT_YEAR $CURRENT_HOUR:$CURRENT_MINUTE:$CURRENT_SECOND "
+        ],
+        "description": "time now"
+    },
+    "Create Time as y/m/d h:m:s": {
+        "prefix": [
+            "ymd"
+        ],
+        "body": [
+            "$CURRENT_YEAR/$CURRENT_MONTH/$CURRENT_DATE $CURRENT_HOUR:$CURRENT_MINUTE:$CURRENT_SECOND $CURRENT_DAY_NAME "
+        ],
+        "description": "time now"
+    },
+    "Create Time as m/d/y h:m:s": {
+        "prefix": [
+            "mdy"
+        ],
+        "body": [
+            "$CURRENT_MONTH_NAME/$CURRENT_DATE/$CURRENT_YEAR $CURRENT_HOUR:$CURRENT_MINUTE:$CURRENT_SECOND  $CURRENT_DAY_NAME "
+        ],
+        "description": "time now"
     }
 }
