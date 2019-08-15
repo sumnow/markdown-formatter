@@ -2,6 +2,12 @@
 
 [English Document](./CHANGELOG.md)
 
+## 0.6.4
+
+- 代码块中的一个空行被视作连续
+- 更新中英文 `README.md` 
+- 更新中英文 `CHANGELOG.md`
+
 ## 0.6.3
 
 - 添加新 `Snippets`: 'time' 并优化已有的 `Snippets`

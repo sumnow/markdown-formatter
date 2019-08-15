@@ -80,6 +80,7 @@ export function activate(context: vscode.ExtensionContext) {
     // const CODE_AREA_EXP = /\n+((?:(?: {4}|\t)+(?!\d\.|\+|\-|\*)[^\n]+\n)+)/g;
     // const CODE_AREA_EXP = /\n+((?:(?: {4}|\t)+([^\+\d\.\-\*])[^\n]+\n)+)/g
     const CODE_AREA_EXP = /\n+((?:(?: {4}|\t)[^\n]*\n)+)/g;
+    const CODE_AREAS_EXP = /(\n(?:(?: {4}|\t)[^\n]*\n))\n/g
     // const CODE_AREA_EXP = /(?:(?: {4}|\t)+[^\n]+\n*)+/g;
     // const CODE_EXP = /\n*```([\s\S]+?)```\n*/g;
 
@@ -91,8 +92,6 @@ export function activate(context: vscode.ExtensionContext) {
     // const TAG_START_EXP = /<(?:[^\/])(?:[^"'>]|"[^"]*"|'[^']*')*[^\/]>/g
     // const TAG_SINGLE_EXP = /<(?:[^\/])(?:[^"'>]|"[^"]*"|'[^']*')*\/>/g
     // const TAG_END_EXP = /<\/(?:[^"'>]|"[^"]*"|'[^']*')*>/g
-
-
 
     context.subscriptions.push(vscode.languages.registerDocumentFormattingEditProvider('markdown', {
         provideDocumentFormattingEdits(document, options, token) {
@@ -118,7 +117,7 @@ export function activate(context: vscode.ExtensionContext) {
                 text = new FormatTable(text).formatted(TABLE_EXP)
 
                 // handler js
-                text = new FormatCode(text).formatted({ formatOpt, codeAreaToBlock, CODE_BLOCK_EXP, LIST_EXP, CODE_AREA_EXP })
+                text = new FormatCode(text).formatted({ formatOpt, codeAreaToBlock, CODE_BLOCK_EXP, LIST_EXP, CODE_AREA_EXP, CODE_AREAS_EXP })
 
 
                 text = new FormatList(text).formatted({ formatULSymbol, LIST_EXP, LIST_UL_ST_EXP, LIST_UL_ND_EXP, LIST_UL_TH_EXP, LIST_OL_LI_EXP })

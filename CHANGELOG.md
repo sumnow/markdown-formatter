@@ -2,6 +2,11 @@
 
 [中文文档](./CHANGELOG_CN.md)
 
+## 0.6.4
+- A blank line in the code block is treated as continuous
+- Update `README.md` 
+- Update `CHANGELOG.md`
+
 ## 0.6.3
 
 - Add new `Snippets` : 'time'  and optimizate others

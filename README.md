@@ -106,7 +106,7 @@ The default is not formatted. If `codeAreaToBlock` is any language name, such as
 
 ![img](./images/example-code_area.gif)
 
-**Tips: blank lines in the code area should also start with 4 spaces.**
+**Tips: Empty lines in the code area cannot exceed one line.**
 
 
 ## Config

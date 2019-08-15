@@ -69,6 +69,7 @@ function activate(context) {
     // const CODE_AREA_EXP = /\n+((?:(?: {4}|\t)+(?!\d\.|\+|\-|\*)[^\n]+\n)+)/g;
     // const CODE_AREA_EXP = /\n+((?:(?: {4}|\t)+([^\+\d\.\-\*])[^\n]+\n)+)/g
     var CODE_AREA_EXP = /\n+((?:(?: {4}|\t)[^\n]*\n)+)/g;
+    var CODE_AREAS_EXP = /(\n(?:(?: {4}|\t)[^\n]*\n))\n/g;
     // const CODE_AREA_EXP = /(?:(?: {4}|\t)+[^\n]+\n*)+/g;
     // const CODE_EXP = /\n*```([\s\S]+?)```\n*/g;
     var CODE_BLOCK_EXP = /\n*```(?: *)(\w*)\n([\s\S]+?)(```)+\n+/g;
@@ -96,7 +97,7 @@ function activate(context) {
                 // handler table
                 text = new FormatTable_1.FormatTable(text).formatted(TABLE_EXP);
                 // handler js
-                text = new FormatCode_1.FormatCode(text).formatted({ formatOpt: formatOpt, codeAreaToBlock: codeAreaToBlock, CODE_BLOCK_EXP: CODE_BLOCK_EXP, LIST_EXP: LIST_EXP, CODE_AREA_EXP: CODE_AREA_EXP });
+                text = new FormatCode_1.FormatCode(text).formatted({ formatOpt: formatOpt, codeAreaToBlock: codeAreaToBlock, CODE_BLOCK_EXP: CODE_BLOCK_EXP, LIST_EXP: LIST_EXP, CODE_AREA_EXP: CODE_AREA_EXP, CODE_AREAS_EXP: CODE_AREAS_EXP });
                 text = new FormatList_1.FormatList(text).formatted({ formatULSymbol: formatULSymbol, LIST_EXP: LIST_EXP, LIST_UL_ST_EXP: LIST_UL_ST_EXP, LIST_UL_ND_EXP: LIST_UL_ND_EXP, LIST_UL_TH_EXP: LIST_UL_TH_EXP, LIST_OL_LI_EXP: LIST_OL_LI_EXP });
                 // text = formatList({ text })
                 text = text.replace(BACK_QUOTE_EXP, ' `$1` ');

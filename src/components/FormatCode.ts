@@ -12,12 +12,16 @@ export class FormatCode extends FormatComponent {
     super(text: string) {
         this.text = text
     }
-    formatted({ formatOpt, codeAreaToBlock, CODE_BLOCK_EXP, LIST_EXP, CODE_AREA_EXP }: { formatOpt: any, codeAreaToBlock: string, CODE_BLOCK_EXP: RegExp, LIST_EXP: RegExp, CODE_AREA_EXP: RegExp }): string {
+    formatted({ formatOpt, codeAreaToBlock, CODE_BLOCK_EXP, LIST_EXP, CODE_AREA_EXP, CODE_AREAS_EXP }: { formatOpt: any, codeAreaToBlock: string, CODE_BLOCK_EXP: RegExp, LIST_EXP: RegExp, CODE_AREA_EXP: RegExp, CODE_AREAS_EXP: RegExp }): string {
 
         let beautifyOpt = {}
         if (formatOpt) {
             beautifyOpt = Object.assign(beautify, formatOpt)
         }
+
+        // if two code areas linked by only a block line , these code areas is together
+        this.text = this.text.replace(CODE_AREAS_EXP, '$1    ' + '\n')
+
         if (formatOpt !== false) {
             this.text = removeReplace({
                 text: this.text,
