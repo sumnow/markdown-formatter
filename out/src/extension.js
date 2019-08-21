@@ -37,7 +37,7 @@ function activate(context) {
     // period which need a space after it
     var PERIOD_EXP = /([\.\!\?\:])([A-Z\u4e00-\u9fa5])/g;
     // h1 symbol
-    var H1_EXP = /^(# [^\n]+)\n*/g;
+    var H1_EXP = /^\n*(# [^\n]+)\n*/g;
     // h2,h3,h4... symbol
     var H_EXP = /\n*(##+ [^\n]+)\n*/g;
     // table
@@ -87,7 +87,7 @@ function activate(context) {
             var start = new vscode.Position(0, 0);
             var end = new vscode.Position(document.lineCount - 1, document.lineAt(document.lineCount - 1).text.length);
             var range = new vscode.Range(start, end);
-            var text = document.getText(range) + '\n';
+            var text = document.getText(range) + '\n\n';
             var textLast = text;
             // format \r\n to \n,fix
             text = text.replace(LINE_BREAK_EXP, '\n');

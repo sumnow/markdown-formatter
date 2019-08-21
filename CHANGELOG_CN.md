@@ -2,6 +2,11 @@
 
 [English Document](./CHANGELOG.md)
 
+## 0.6.5
+
+- 移除h1之前的空行
+- 更新中英文 `CHANGELOG.md`
+
 ## 0.6.4
 
 - 代码块中的一个空行被视作连续
