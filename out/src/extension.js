@@ -4,9 +4,11 @@ var FormatList_1 = require('./components/FormatList');
 var FormatTable_1 = require('./components/FormatTable');
 var FormatPunctuation_1 = require('./components/FormatPunctuation');
 var FormatCode_1 = require('./components/FormatCode');
+var handlerTime_1 = require('./components/handlerTime');
 var config = vscode.workspace.getConfiguration('markdownFormatter');
 var fullWidthTurnHalfWidth = config.get('fullWidthTurnHalfWidth', 'auto');
 var codeAreaToBlock = config.get('codeAreaToBlock', '');
+var displayTime = config.get('displayTime', false);
 var enable = config.get('enable', true);
 var formatOpt = config.get('formatOpt', {});
 var formatULSymbol = config.get('formatULSymbol', true);
@@ -15,6 +17,7 @@ vscode.workspace.onDidChangeConfiguration(function (_) {
     config = vscode.workspace.getConfiguration('markdownFormatter');
     fullWidthTurnHalfWidth = config.get('fullWidthTurnHalfWidth', 'auto');
     codeAreaToBlock = config.get('codeAreaToBlock', '');
+    displayTime = config.get('displayTime', false);
     enable = config.get('enable', true);
     formatOpt = config.get('formatOpt', {});
     formatULSymbol = config.get('formatULSymbol', true);
@@ -75,6 +78,7 @@ function activate(context) {
     var CODE_BLOCK_EXP = /\n*```(?: *)(\w*)\n([\s\S]+?)(```)+\n+/g;
     // line-break
     var LINE_BREAK_EXP = /\r\n/g;
+    var TIME_EXP = /(<!--\nCreated: [^\n]+\nModified: )[^\n]+(\n-->\n)/g;
     // const TAG_START_EXP = /<(?:[^\/])(?:[^"'>]|"[^"]*"|'[^']*')*[^\/]>/g
     // const TAG_SINGLE_EXP = /<(?:[^\/])(?:[^"'>]|"[^"]*"|'[^']*')*\/>/g
     // const TAG_END_EXP = /<\/(?:[^"'>]|"[^"]*"|'[^']*')*>/g
@@ -91,6 +95,10 @@ function activate(context) {
             var textLast = text;
             // format \r\n to \n,fix
             text = text.replace(LINE_BREAK_EXP, '\n');
+            // handler time
+            if (displayTime) {
+                text = text.match(TIME_EXP) ? text.replace(TIME_EXP, "$1" + handlerTime_1.handlerTime(new Date()) + "$2") : ("<!--\nCreated: " + handlerTime_1.handlerTime(new Date()) + "\nModified: " + handlerTime_1.handlerTime(new Date()) + "\n-->\n") + text;
+            }
             try {
                 // format PUNCTUATION_EXP
                 text = new FormatPunctuation_1.FormatPunctuation(text).formatted({ fullWidthTurnHalfWidth: fullWidthTurnHalfWidth, BACK_QUOTE_EXP: BACK_QUOTE_EXP, CODE_BLOCK_EXP: CODE_BLOCK_EXP, CODE_AREA_EXP: CODE_AREA_EXP, HREF_EXP: HREF_EXP, PUNCTUATION_EXP: PUNCTUATION_EXP, PERIOD_EXP: PERIOD_EXP, CHINESE_SYMBOL: CHINESE_SYMBOL, ENGLISH_SYMBOL: ENGLISH_SYMBOL, ENGLISH_CHARCTER_SYMBOL: ENGLISH_CHARCTER_SYMBOL, CHINESE_CHARCTER_SYMBOL: CHINESE_CHARCTER_SYMBOL });
@@ -98,8 +106,8 @@ function activate(context) {
                 text = new FormatTable_1.FormatTable(text).formatted(TABLE_EXP);
                 // handler js
                 text = new FormatCode_1.FormatCode(text).formatted({ formatOpt: formatOpt, codeAreaToBlock: codeAreaToBlock, CODE_BLOCK_EXP: CODE_BLOCK_EXP, LIST_EXP: LIST_EXP, CODE_AREA_EXP: CODE_AREA_EXP, CODE_AREAS_EXP: CODE_AREAS_EXP });
+                // handler list
                 text = new FormatList_1.FormatList(text).formatted({ formatULSymbol: formatULSymbol, LIST_EXP: LIST_EXP, LIST_UL_ST_EXP: LIST_UL_ST_EXP, LIST_UL_ND_EXP: LIST_UL_ND_EXP, LIST_UL_TH_EXP: LIST_UL_TH_EXP, LIST_OL_LI_EXP: LIST_OL_LI_EXP });
-                // text = formatList({ text })
                 text = text.replace(BACK_QUOTE_EXP, ' `$1` ');
                 text = text.replace(BACK_QUOTE_AFTER_BREAKLINE_EXP, '\n`$1` ');
                 text = text.replace(H_EXP, '\n\n' + '$1' + '\n\n');

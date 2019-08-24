@@ -2,6 +2,11 @@
 
 [English Document](./CHANGELOG.md)
 
+## 0.6.6
+
+- 新功能: 文件创建时间戳记录
+- 更新中英文 `CHANGELOG.md`
+
 ## 0.6.5
 
 - 移除h1之前的空行

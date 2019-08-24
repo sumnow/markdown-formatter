@@ -5,19 +5,22 @@ import { FormatList } from './components/FormatList'
 import { FormatTable } from './components/FormatTable';
 import { FormatPunctuation } from './components/FormatPunctuation';
 import { FormatCode } from './components/FormatCode';
+import { handlerTime } from './components/handlerTime';
 
 let config = vscode.workspace.getConfiguration('markdownFormatter');
 let fullWidthTurnHalfWidth: string = config.get<string>('fullWidthTurnHalfWidth', 'auto');
-let codeAreaToBlock: string = config.get<string>('codeAreaToBlock', '')
+let codeAreaToBlock: string = config.get<string>('codeAreaToBlock', '');
+let displayTime: boolean = config.get<boolean>('displayTime', false);
 let enable: boolean = config.get<boolean>('enable', true);
 let formatOpt: any = config.get<any>('formatOpt', {});
-let formatULSymbol: boolean = config.get<boolean>('formatULSymbol', true)
+let formatULSymbol: boolean = config.get<boolean>('formatULSymbol', true);
 let spaceAfterFullWidth: boolean = config.get<boolean>('spaceAfterFullWidth', false);
 
 vscode.workspace.onDidChangeConfiguration(_ => {
     config = vscode.workspace.getConfiguration('markdownFormatter');
     fullWidthTurnHalfWidth = config.get<string>('fullWidthTurnHalfWidth', 'auto');
     codeAreaToBlock = config.get<string>('codeAreaToBlock', '');
+    displayTime = config.get<boolean>('displayTime', false);
     enable = config.get<boolean>('enable', true);
     formatOpt = config.get<any>('formatOpt', {});
     formatULSymbol = config.get<boolean>('formatULSymbol', true);
@@ -89,6 +92,8 @@ export function activate(context: vscode.ExtensionContext) {
     // line-break
     const LINE_BREAK_EXP = /\r\n/g;
 
+    const TIME_EXP = /(<!--\nCreated: [^\n]+\nModified: )[^\n]+(\n-->\n)/g
+
     // const TAG_START_EXP = /<(?:[^\/])(?:[^"'>]|"[^"]*"|'[^']*')*[^\/]>/g
     // const TAG_SINGLE_EXP = /<(?:[^\/])(?:[^"'>]|"[^"]*"|'[^']*')*\/>/g
     // const TAG_END_EXP = /<\/(?:[^"'>]|"[^"]*"|'[^']*')*>/g
@@ -109,6 +114,11 @@ export function activate(context: vscode.ExtensionContext) {
             // format \r\n to \n,fix
             text = text.replace(LINE_BREAK_EXP, '\n');
 
+            // handler time
+            if (displayTime) {
+                text = text.match(TIME_EXP) ? text.replace(TIME_EXP, `$1${handlerTime(new Date())}$2`) : `<!--\nCreated: ${handlerTime(new Date())}\nModified: ${handlerTime(new Date())}\n-->\n` + text
+            }
+
             try {
                 // format PUNCTUATION_EXP
                 text = new FormatPunctuation(text).formatted({ fullWidthTurnHalfWidth, BACK_QUOTE_EXP, CODE_BLOCK_EXP, CODE_AREA_EXP, HREF_EXP, PUNCTUATION_EXP, PERIOD_EXP, CHINESE_SYMBOL, ENGLISH_SYMBOL, ENGLISH_CHARCTER_SYMBOL, CHINESE_CHARCTER_SYMBOL })
@@ -119,10 +129,9 @@ export function activate(context: vscode.ExtensionContext) {
                 // handler js
                 text = new FormatCode(text).formatted({ formatOpt, codeAreaToBlock, CODE_BLOCK_EXP, LIST_EXP, CODE_AREA_EXP, CODE_AREAS_EXP })
 
-
+                // handler list
                 text = new FormatList(text).formatted({ formatULSymbol, LIST_EXP, LIST_UL_ST_EXP, LIST_UL_ND_EXP, LIST_UL_TH_EXP, LIST_OL_LI_EXP })
 
-                // text = formatList({ text })
                 text = text.replace(BACK_QUOTE_EXP, ' `$1` ')
                 text = text.replace(BACK_QUOTE_AFTER_BREAKLINE_EXP, '\n`$1` ')
                 text = text.replace(H_EXP, '\n\n' + '$1' + '\n\n')

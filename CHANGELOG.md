@@ -2,6 +2,11 @@
 
 [中文文档](./CHANGELOG_CN.md)
 
+## 0.6.6
+
+- New feature: display time before the article
+- Update `CHANGELOG.md`
+
 ## 0.6.5
 - All blank lines before H1 had been removed
 - Update `CHANGELOG.md`
