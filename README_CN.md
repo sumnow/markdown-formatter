@@ -164,11 +164,11 @@ spaceAfterFullWidth = config.get<boolean>('spaceAfterFullWidth', false);
 
 ## 开发环境
 
-#### 开发版本
+### 开发版本
 
 VSCode 版本 1.29.1 (macOS Mojave)
 
-#### 测试版本
+### 测试版本
 
 VSCode 版本 1.33.1 (macOS Mojave)
 
@@ -179,3 +179,23 @@ VSCode 版本 1.33.1 (macOS Mojave)
 如果你知道如何使用前端库格式化其他语言, 欢迎告诉我. 
 
 email: mydiamervin@gmail.com 或者 [这里](https://github.com/sumnow/markdown-formatter/issues)
+
+## 鸣谢
+
+感谢大家帮助我完善这个工具
+
+* [busyrat](https://github.com/busyrat) 
+  + 提出改进(https://github.com/sumnow/markdown-formatter/issues/10)
+* [lartpang](https://github.com/lartpang) 
+  + 提出改进(https://github.com/sumnow/markdown-formatter/issues/11)
+  + 提出bug(https://github.com/sumnow/markdown-formatter/issues/9)
+  + 提出bug(https://github.com/sumnow/markdown-formatter/issues/8)
+  + 提出bug(https://github.com/sumnow/markdown-formatter/issues/7)
+  + 提出bug(https://github.com/sumnow/markdown-formatter/issues/6)
+  + 提出bug(https://github.com/sumnow/markdown-formatter/issues/5)
+* [iostalks](https://github.com/iostalks)
+  + 提出改进(https://github.com/sumnow/markdown-formatter/issues/3)
+* [zhuoyan](https://github.com/zhuoyan)
+  + 提出bug(https://github.com/sumnow/markdown-formatter/issues/1)
+
+> 排序仅按照提出问题的时间倒叙排列

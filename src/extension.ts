@@ -5,6 +5,7 @@ import { FormatList } from './components/FormatList'
 import { FormatTable } from './components/FormatTable';
 import { FormatPunctuation } from './components/FormatPunctuation';
 import { FormatCode } from './components/FormatCode';
+// import { FormatHTML } from './components/FormatHTML';
 import { handlerTime } from './components/handlerTime';
 
 let config = vscode.workspace.getConfiguration('markdownFormatter');
@@ -34,8 +35,8 @@ export function activate(context: vscode.ExtensionContext) {
 
     // console.log(vscode.window.activeTextEditor.options.tabSize)
     // repalce symbol
-    const CHINESE_SYMBOL = `，：；！“”‘’（）？。`;
-    const ENGLISH_SYMBOL = `,:;!""''()?.`;
+    const CHINESE_SYMBOL = `，、：；！“”‘’（）？。`;
+    const ENGLISH_SYMBOL = `,,:;!""''()?.`;
 
     // chinese symbol
     const CHINESE_CHARCTER_SYMBOL = `([\\u4e00-\\u9fa5])`;
@@ -43,9 +44,11 @@ export function activate(context: vscode.ExtensionContext) {
 
     // punctuation which need a space after it
     // const PUNCTUATION_EXP = /([，,。；;！、？：])\ */g;
-    const PUNCTUATION_EXP = spaceAfterFullWidth ? /([，,。；;！、？：])\ */g : /([,;])\ */g;
+    // const PUNCTUATION_ALL_EXP = /([，,。；;！、？：])\ */g;
+    const PUNCTUATION_CHINESE_EXP = /([，。；！、？：])\ */g;
+    const PUNCTUATION_ENGLISH_EXP = /([,;])\ */g;
     // period which need a space after it
-    const PERIOD_EXP = /([\.\!\?\:])([A-Z\u4e00-\u9fa5])/g;
+    const PUNCTUATION_SPACIAL_ENGLISH_EXP = /([\.\!\?\:])([A-Z\u4e00-\u9fa5])/g;
     // h1 symbol
     const H1_EXP = /^\n*(# [^\n]+)\n*/g;
     // h2,h3,h4... symbol
@@ -94,9 +97,9 @@ export function activate(context: vscode.ExtensionContext) {
 
     const TIME_EXP = /(<!--\nCreated: [^\n]+\nModified: )[^\n]+(\n-->\n)/g
 
-    // const TAG_START_EXP = /<(?:[^\/])(?:[^"'>]|"[^"]*"|'[^']*')*[^\/]>/g
-    // const TAG_SINGLE_EXP = /<(?:[^\/])(?:[^"'>]|"[^"]*"|'[^']*')*\/>/g
-    // const TAG_END_EXP = /<\/(?:[^"'>]|"[^"]*"|'[^']*')*>/g
+    const TAG_START_EXP = /<(?:[^\/])(?:[^"'>]|"[^"]*"|'[^']*')*[^\/]>/g
+    const TAG_SINGLE_EXP = /<(?:[^\/])(?:[^"'>]|"[^"]*"|'[^']*')*\/>/g
+    const TAG_END_EXP = /<\/(?:[^"'>]|"[^"]*"|'[^']*')*>/g
 
     context.subscriptions.push(vscode.languages.registerDocumentFormattingEditProvider('markdown', {
         provideDocumentFormattingEdits(document, options, token) {
@@ -121,7 +124,7 @@ export function activate(context: vscode.ExtensionContext) {
 
             try {
                 // format PUNCTUATION_EXP
-                text = new FormatPunctuation(text).formatted({ fullWidthTurnHalfWidth, BACK_QUOTE_EXP, CODE_BLOCK_EXP, CODE_AREA_EXP, HREF_EXP, PUNCTUATION_EXP, PERIOD_EXP, CHINESE_SYMBOL, ENGLISH_SYMBOL, ENGLISH_CHARCTER_SYMBOL, CHINESE_CHARCTER_SYMBOL })
+                text = new FormatPunctuation(text).formatted({ fullWidthTurnHalfWidth, spaceAfterFullWidth, BACK_QUOTE_EXP, CODE_BLOCK_EXP, CODE_AREA_EXP, HREF_EXP, PUNCTUATION_CHINESE_EXP, PUNCTUATION_ENGLISH_EXP, PUNCTUATION_SPACIAL_ENGLISH_EXP, CHINESE_SYMBOL, ENGLISH_SYMBOL, ENGLISH_CHARCTER_SYMBOL, CHINESE_CHARCTER_SYMBOL })
 
                 // handler table
                 text = new FormatTable(text).formatted(TABLE_EXP)
@@ -131,6 +134,8 @@ export function activate(context: vscode.ExtensionContext) {
 
                 // handler list
                 text = new FormatList(text).formatted({ formatULSymbol, LIST_EXP, LIST_UL_ST_EXP, LIST_UL_ND_EXP, LIST_UL_TH_EXP, LIST_OL_LI_EXP })
+
+                // text = new FormatHTML(text).formatted({TAG_START_EXP,TAG_SINGLE_EXP,TAG_END_EXP})
 
                 text = text.replace(BACK_QUOTE_EXP, ' `$1` ')
                 text = text.replace(BACK_QUOTE_AFTER_BREAKLINE_EXP, '\n`$1` ')

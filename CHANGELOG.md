@@ -2,9 +2,13 @@
 
 [中文文档](./CHANGELOG_CN.md)
 
-## 0.6.6
+Add the function of replacing the full corner with a comma
 
-- New feature: display time before the article
+## 0.6.7
+
+- Cut multiple spaces after the symbol to 1
+- Add the feature of replacing the full corner with a comma
+- Update `README.md`
 - Update `CHANGELOG.md`
 
 ## 0.6.5

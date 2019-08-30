@@ -8,8 +8,8 @@ export class FormatPunctuation extends FormatComponent {
         this.text = text
     }
 
-    formatted({ fullWidthTurnHalfWidth, BACK_QUOTE_EXP, CODE_BLOCK_EXP, CODE_AREA_EXP, HREF_EXP, PUNCTUATION_EXP, PERIOD_EXP, CHINESE_SYMBOL, ENGLISH_SYMBOL, ENGLISH_CHARCTER_SYMBOL, CHINESE_CHARCTER_SYMBOL }: {
-        fullWidthTurnHalfWidth: string, BACK_QUOTE_EXP: RegExp, CODE_BLOCK_EXP: RegExp, CODE_AREA_EXP: RegExp, HREF_EXP: RegExp, PUNCTUATION_EXP: RegExp, PERIOD_EXP: RegExp, CHINESE_SYMBOL: string, ENGLISH_SYMBOL: string, ENGLISH_CHARCTER_SYMBOL: string, CHINESE_CHARCTER_SYMBOL: string
+    formatted({ fullWidthTurnHalfWidth, spaceAfterFullWidth, BACK_QUOTE_EXP, CODE_BLOCK_EXP, CODE_AREA_EXP, HREF_EXP, PUNCTUATION_CHINESE_EXP, PUNCTUATION_ENGLISH_EXP, PUNCTUATION_SPACIAL_ENGLISH_EXP, CHINESE_SYMBOL, ENGLISH_SYMBOL, ENGLISH_CHARCTER_SYMBOL, CHINESE_CHARCTER_SYMBOL }: {
+        fullWidthTurnHalfWidth: string, spaceAfterFullWidth: boolean, BACK_QUOTE_EXP: RegExp, CODE_BLOCK_EXP: RegExp, CODE_AREA_EXP: RegExp, HREF_EXP: RegExp, PUNCTUATION_CHINESE_EXP: RegExp, PUNCTUATION_ENGLISH_EXP: RegExp, PUNCTUATION_SPACIAL_ENGLISH_EXP: RegExp, CHINESE_SYMBOL: string, ENGLISH_SYMBOL: string, ENGLISH_CHARCTER_SYMBOL: string, CHINESE_CHARCTER_SYMBOL: string
     }): string {
 
         const _replacewithCharcter = ({ target, judge, pad }: { target: string[]; judge: string; pad: string[]; }) => {
@@ -42,8 +42,19 @@ export class FormatPunctuation extends FormatComponent {
                         }
                     }
                 }
-                text = text.replace(PUNCTUATION_EXP, '$1 ');
-                text = text.replace(PERIOD_EXP, '$1 $2');
+
+                // handle the spaces after '.' 
+                text = text.replace(/\.\ */g, '.');
+
+                // hanlde '.!?:'
+                text = text.replace(PUNCTUATION_SPACIAL_ENGLISH_EXP, '$1 $2');
+
+                if (spaceAfterFullWidth) {
+                    text = text.replace(PUNCTUATION_CHINESE_EXP, '$1 ');
+                }
+
+                text = text.replace(PUNCTUATION_ENGLISH_EXP, '$1 ');
+
 
 
                 return text;

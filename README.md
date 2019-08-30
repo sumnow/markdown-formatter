@@ -179,3 +179,24 @@ If you know how to format other languages using front-end libraries, please let 
 
 email: mydiamervin@gmail.com  or [here](https://github.com/sumnow/markdown-formatter/issues)
 
+
+## Gratitude
+
+Thank you for helping me improve this tool.
+
+* [busyrat](https://github.com/busyrat) 
+  + Feature(https://github.com/sumnow/markdown-formatter/issues/10)
+* [lartpang](https://github.com/lartpang) 
+  + Feature(https://github.com/sumnow/markdown-formatter/issues/11)
+  + Bug(https://github.com/sumnow/markdown-formatter/issues/9)
+  + Bug(https://github.com/sumnow/markdown-formatter/issues/8)
+  + Bug(https://github.com/sumnow/markdown-formatter/issues/7)
+  + Bug(https://github.com/sumnow/markdown-formatter/issues/6)
+  + Bug(https://github.com/sumnow/markdown-formatter/issues/5)
+* [iostalks](https://github.com/iostalks)
+  + Feature(https://github.com/sumnow/markdown-formatter/issues/3)
+* [zhuoyan](https://github.com/zhuoyan)
+  + Bug(https://github.com/sumnow/markdown-formatter/issues/1)
+
+> Sorting only according to the time of the question
+
