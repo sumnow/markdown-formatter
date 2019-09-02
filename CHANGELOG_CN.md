@@ -2,6 +2,10 @@
 
 [English Document](./CHANGELOG.md)
 
+## 0.6.8
+
+- 更新中英文 `README.md`
+
 ## 0.6.7
 
 - 将符号后的多个空格删减为1个

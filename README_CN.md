@@ -10,7 +10,7 @@
 
 安装完成以后, 你可能需要重新启动你的vscode. 
 
-在任何 `.md` 为后缀的 `markdown` 标准文件中, 都可以使用 `shift+option+f` 快速格式化代码. 
+在任何 `.md` 为后缀的 `markdown` 标准文件中, 都可以使用 `shift+option+f` (osx) 或者 `ctrl+shift+f` (window) 快速格式化代码. 
 
 ![example.gif](https://raw.githubusercontent.com/sumnow/markdown-formatter/master/images/example.gif)
 
@@ -19,6 +19,19 @@
 ## 功能
 
 ### 代码段部分
+
+**必须在`settings.json`中进行如下配置，才可以启用提示**
+
+```js
+"[markdown]": {
+  // 快速补全
+  "editor.quickSuggestions": {
+    "other": true,
+    "comments": true,
+    "strings": true
+  },
+}
+```
 
 #### 插入图片
 
@@ -126,7 +139,7 @@ codeAreaToBlock = config.get<string>('codeAreaToBlock', '');
 // 是否格式化代码或者配置js-beautify
 // false: 不格式化代码
 // {}: beautifyjs的配置设置
-formatOpt = config.get <any> ('formatOpt', {}); 
+formatOpt = config.get<any> ('formatOpt', {}); 
 // 格式化无序列表的符号 
 // * > + > -
 formatULSymbol = config.get<boolean>('formatULSymbol', true); 
@@ -136,11 +149,20 @@ spaceAfterFullWidth = config.get<boolean>('spaceAfterFullWidth', false);
 
 配置 `js-beautify` , 可以参考[这里](https://github.com/beautify-web/js-beautify)
 
-你可以参考我的配置方法: 
+### 配置示例
+
+你可以参考我的配置: 
 
 ```js
+// settings.json
 // markdown-formatter conf
+// 按照js格式化
+// "markdownFormatter.codeAreaToBlock": "js",
+// 不格式化
+"markdownFormatter.codeAreaToBlock": "",
+// 自动格式化标点
 "markdownFormatter.fullWidthTurnHalfWidth": "auto",
+// 中文标点格式化为英文
 // "markdownFormatter.fullWidthTurnHalfWidth": "，：；！“”‘’（）？。",
 "markdownFormatter.formatOpt": {
   "indent_size": 2
@@ -156,9 +178,13 @@ spaceAfterFullWidth = config.get<boolean>('spaceAfterFullWidth', false);
     "comments": true,
     "strings": true
   },
+  // snippet 提示优先
   "editor.snippetSuggestions": "top",
   "editor.tabCompletion": "on",
-  "editor.acceptSuggestionOnEnter": "on"
+  // 使用enter 接受提示
+  "editor.acceptSuggestionOnEnter": "on",
+  // 默认格式化工具为本工具
+  "editor.defaultFormatter": "mervin.markdown-formatter"
 }
 ```
 

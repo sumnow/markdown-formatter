@@ -10,7 +10,7 @@ This is a tool to improve the writing efficiency of markdown, not only provides 
 
 After the installation is complete, you may need to restart your vscode.
 
-In any `markdown` standard file with a `.md` suffix, you can use `shift+option+f` to quickly format the code.
+In any `markdown` standard file with a `.md` suffix, you can use `shift+option+f`(osx) or `ctrl+shift+f`(window) to quickly format the code. 
 
 ![example.gif](https://raw.githubusercontent.com/sumnow/markdown-formatter/master/images/example.gif)
 
@@ -19,6 +19,19 @@ In any `markdown` standard file with a `.md` suffix, you can use `shift+option+f
 ## Feature
 
 ### Snippets part
+
+**First of all, You must config like this in `settings.json`**
+
+```js
+"[markdown]": {
+  // 快速补全
+  "editor.quickSuggestions": {
+    "other": true,
+    "comments": true,
+    "strings": true
+  },
+}
+```
 
 #### import image
 
@@ -125,7 +138,7 @@ codeAreaToBlock = config.get<string>('codeAreaToBlock', '');
 // enable/disable format code or config beautifyjs
 // false: disable format code 
 // {}: config beautifyjs
-formatOpt = config.get <any> ('formatOpt', {}); 
+formatOpt = config.get<any> ('formatOpt', {}); 
 // Format the symbols of the unordered list
 // * > + > -
 formatULSymbol = config.get<boolean>('formatULSymbol', true);
@@ -135,30 +148,43 @@ spaceAfterFullWidth = config.get<boolean>('spaceAfterFullWidth', false);
 
 How to config `beautifyjs` , you can click[here](https://github.com/beautify-web/js-beautify)
 
+### configuration example
+
 You can refer to my configuration:
 
 ```js
-  // markdown-formatter conf
-  "markdownFormatter.fullWidthTurnHalfWidth": "auto",
-  // "markdownFormatter.fullWidthTurnHalfWidth": "，：；！“”‘’（）？。",
-  "markdownFormatter.formatOpt": {
-    "indent_size": 2
+// settings.json
+// markdown-formatter conf
+// 按照js格式化
+// "markdownFormatter.codeAreaToBlock": "js",
+// 不格式化
+"markdownFormatter.codeAreaToBlock": "",
+// 自动格式化标点
+"markdownFormatter.fullWidthTurnHalfWidth": "auto",
+// 中文标点格式化为英文
+// "markdownFormatter.fullWidthTurnHalfWidth": "，：；！“”‘’（）？。",
+"markdownFormatter.formatOpt": {
+  "indent_size": 2
+},
+"[markdown]": {
+  // 自动保存
+  "editor.formatOnSave": true,
+  // 显示空格
+  "editor.renderWhitespace": "all",
+  // 快速补全
+  "editor.quickSuggestions": {
+    "other": true,
+    "comments": true,
+    "strings": true
   },
-  "[markdown]": {
-    // 自动保存
-    "editor.formatOnSave": true,
-    // 显示空格
-    "editor.renderWhitespace": "all",
-    // 快速补全
-    "editor.quickSuggestions": {
-      "other": true,
-      "comments": true,
-      "strings": true
-    },
-    "editor.snippetSuggestions": "top",
-    "editor.tabCompletion": "on",
-    "editor.acceptSuggestionOnEnter": "on"
-  }
+  // snippet 提示优先
+  "editor.snippetSuggestions": "top",
+  "editor.tabCompletion": "on",
+  // 使用enter 接受提示
+  "editor.acceptSuggestionOnEnter": "on",
+  // 默认格式化工具为本工具
+  "editor.defaultFormatter": "mervin.markdown-formatter"
+}
 ```
 
 ## Software version and development environment

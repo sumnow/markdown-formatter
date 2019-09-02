@@ -2,7 +2,9 @@
 
 [中文文档](./CHANGELOG_CN.md)
 
-Add the function of replacing the full corner with a comma
+## 0.6.8
+
+- Update `README.md`
 
 ## 0.6.7
 
@@ -11,11 +13,18 @@ Add the function of replacing the full corner with a comma
 - Update `README.md`
 - Update `CHANGELOG.md`
 
+## 0.6.6
+
+- New feature: display time before the article
+
+
 ## 0.6.5
+
 - All blank lines before H1 had been removed
 - Update `CHANGELOG.md`
 
 ## 0.6.4
+
 - A blank line in the code block is treated as continuous
 - Update `README.md` 
 - Update `CHANGELOG.md`
