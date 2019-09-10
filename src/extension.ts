@@ -95,11 +95,16 @@ export function activate(context: vscode.ExtensionContext) {
     // line-break
     const LINE_BREAK_EXP = /\r\n/g;
 
-    const TIME_EXP = /(<!--\nCreated: [^\n]+\nModified: )[^\n]+(\n-->\n)/g
+    const TIME_EXP = /(<!--\nCreated: [^\n]+\nModified: )[^\n]+(\n-->)(\n+)/g
 
     const TAG_START_EXP = /<(?:[^\/])(?:[^"'>]|"[^"]*"|'[^']*')*[^\/]>/g
     const TAG_SINGLE_EXP = /<(?:[^\/])(?:[^"'>]|"[^"]*"|'[^']*')*\/>/g
     const TAG_END_EXP = /<\/(?:[^"'>]|"[^"]*"|'[^']*')*>/g
+
+    const ITALIC_EXP = /\*\ (`[^`]+`)\ \*/g;
+    const BOLD_EXP = /\*\*\ (`[^`]+`)\ \*\*/g;
+    const ITALIC_BOLD_EXP = /\*\*\*\ (`[^`]+`)\ \*\*\*/g;
+    const LINE_THROUGH_EXP = /\~\~\ (`[^`]+`)\ \~\~/g;
 
     context.subscriptions.push(vscode.languages.registerDocumentFormattingEditProvider('markdown', {
         provideDocumentFormattingEdits(document, options, token) {
@@ -114,12 +119,13 @@ export function activate(context: vscode.ExtensionContext) {
 
             const textLast = text
 
+
             // format \r\n to \n,fix
             text = text.replace(LINE_BREAK_EXP, '\n');
 
             // handler time
             if (displayTime) {
-                text = text.match(TIME_EXP) ? text.replace(TIME_EXP, `$1${handlerTime(new Date())}$2`) : `<!--\nCreated: ${handlerTime(new Date())}\nModified: ${handlerTime(new Date())}\n-->\n` + text
+                text = text.match(TIME_EXP) ? text.replace(TIME_EXP, `$1${handlerTime(new Date())}$2\n`) : `<!--\nCreated: ${handlerTime(new Date())}\nModified: ${handlerTime(new Date())}\n-->\n\n` + text
             }
 
             try {
@@ -146,7 +152,11 @@ export function activate(context: vscode.ExtensionContext) {
                 text = text.replace(LINK_EXP, '\n\n' + '$1' + '\n\n')
                 text = text.replace(LINK_SPACE_EXP, '\n' + '$1 $2')
                 text = text.replace(EXTRALINE_EXP, '\n\n')
-
+                
+                text = text.replace(ITALIC_BOLD_EXP,`***$1***`)
+                text = text.replace(BOLD_EXP,'**$1**')
+                text = text.replace(ITALIC_EXP,'*$1*')
+                text = text.replace(LINE_THROUGH_EXP,'~~$1~~')
             } catch (e) {
                 text = textLast
                 vscode.window.showInformationMessage(`[Error Format]:${e} \n you can ask for help by https://github.com/sumnow/markdown-formatter/issues`);

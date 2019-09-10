@@ -81,10 +81,14 @@ function activate(context) {
     var CODE_BLOCK_EXP = /\n*```(?: *)(\w*)\n([\s\S]+?)(```)+\n+/g;
     // line-break
     var LINE_BREAK_EXP = /\r\n/g;
-    var TIME_EXP = /(<!--\nCreated: [^\n]+\nModified: )[^\n]+(\n-->\n)/g;
+    var TIME_EXP = /(<!--\nCreated: [^\n]+\nModified: )[^\n]+(\n-->)(\n+)/g;
     var TAG_START_EXP = /<(?:[^\/])(?:[^"'>]|"[^"]*"|'[^']*')*[^\/]>/g;
     var TAG_SINGLE_EXP = /<(?:[^\/])(?:[^"'>]|"[^"]*"|'[^']*')*\/>/g;
     var TAG_END_EXP = /<\/(?:[^"'>]|"[^"]*"|'[^']*')*>/g;
+    var ITALIC_EXP = /\*\ (`[^`]+`)\ \*/g;
+    var BOLD_EXP = /\*\*\ (`[^`]+`)\ \*\*/g;
+    var ITALIC_BOLD_EXP = /\*\*\*\ (`[^`]+`)\ \*\*\*/g;
+    var LINE_THROUGH_EXP = /\~\~\ (`[^`]+`)\ \~\~/g;
     context.subscriptions.push(vscode.languages.registerDocumentFormattingEditProvider('markdown', {
         provideDocumentFormattingEdits: function (document, options, token) {
             if (!enable) {
@@ -100,7 +104,7 @@ function activate(context) {
             text = text.replace(LINE_BREAK_EXP, '\n');
             // handler time
             if (displayTime) {
-                text = text.match(TIME_EXP) ? text.replace(TIME_EXP, "$1" + handlerTime_1.handlerTime(new Date()) + "$2") : ("<!--\nCreated: " + handlerTime_1.handlerTime(new Date()) + "\nModified: " + handlerTime_1.handlerTime(new Date()) + "\n-->\n") + text;
+                text = text.match(TIME_EXP) ? text.replace(TIME_EXP, "$1" + handlerTime_1.handlerTime(new Date()) + "$2\n") : ("<!--\nCreated: " + handlerTime_1.handlerTime(new Date()) + "\nModified: " + handlerTime_1.handlerTime(new Date()) + "\n-->\n\n") + text;
             }
             try {
                 // format PUNCTUATION_EXP
@@ -121,6 +125,10 @@ function activate(context) {
                 text = text.replace(LINK_EXP, '\n\n' + '$1' + '\n\n');
                 text = text.replace(LINK_SPACE_EXP, '\n' + '$1 $2');
                 text = text.replace(EXTRALINE_EXP, '\n\n');
+                text = text.replace(ITALIC_BOLD_EXP, "***$1***");
+                text = text.replace(BOLD_EXP, '**$1**');
+                text = text.replace(ITALIC_EXP, '*$1*');
+                text = text.replace(LINE_THROUGH_EXP, '~~$1~~');
             }
             catch (e) {
                 text = textLast;

@@ -2,6 +2,11 @@
 
 [English Document](./CHANGELOG.md)
 
+## 0.6.9
+
+- 修复问题: 格式化加粗,倾斜内的代码块无法正确格式化
+- 更新中英文 `CHANGELOG.md`
+
 ## 0.6.8
 
 - 更新中英文 `README.md`
@@ -53,7 +58,7 @@
 
 ## 0.5.9
 
-- 修复bug: 代码块转化偶发的bug
+- 修复问题: 代码块转化偶发的bug
 - 优化代码结构
 - 更新中英文 `CHANGELOG.md`
 
@@ -65,7 +70,7 @@
 
 ## 0.5.7
 
-- 修复bug： 代码块转代码区的偶发bug
+- 修复问题： 代码块转代码区的偶发bug
 - 更新中英文 `CHANGELOG.md`
 
 ## 0.5.6
@@ -75,25 +80,25 @@
 
 ## 0.5.5
 
-- 修复bug: [半角符号不能转换](https://github.com/sumnow/markdown-formatter/issues/5)
-- 修复bug: [格式化操作会破坏`markdown-all-in-one`插件生成的目录](https://github.com/sumnow/markdown-formatter/issues/8)
-- 修复bug: [格式化操作会破坏原有链接](https://github.com/sumnow/markdown-formatter/issues/9)
+- 修复问题: [半角符号不能转换](https://github.com/sumnow/markdown-formatter/issues/5)
+- 修复问题: [格式化操作会破坏`markdown-all-in-one`插件生成的目录](https://github.com/sumnow/markdown-formatter/issues/8)
+- 修复问题: [格式化操作会破坏原有链接](https://github.com/sumnow/markdown-formatter/issues/9)
 - 更新中英文 `CHANGELOG.md`
 
 ## 0.5.4
 
-- 修复bug: [关于嵌套的连接的格式化问题](https://github.com/sumnow/markdown-formatter/issues/7)
-- 修复bug: [对于引用区域的格式化是否可以控制不要添加多余的行？](https://github.com/sumnow/markdown-formatter/issues/6)
+- 修复问题: [关于嵌套的连接的格式化问题](https://github.com/sumnow/markdown-formatter/issues/7)
+- 修复问题: [对于引用区域的格式化是否可以控制不要添加多余的行？](https://github.com/sumnow/markdown-formatter/issues/6)
 - 更新中英文 `CHANGELOG.md`
 
 ## 0.5.3
 
-- 修复bug: 格式化代码区里的HTML和CSS
+- 修复问题: 格式化代码区里的HTML和CSS
 - 更新中英文 `CHANGELOG.md`
 
 ## 0.5.2
 
-- 修复bug: 特殊情况下， 代码块格式化出现错误。 
+- 修复问题: 特殊情况下， 代码块格式化出现错误。 
 - 更新中英文 `CHANGELOG.md`
 
 ## 0.5.1
@@ -104,7 +109,7 @@
 
 ## 0.5.0
 
-- 修复bug： 连续代码区格式化错误
+- 修复问题： 连续代码区格式化错误
 - 更新中英文 `CHANGELOG.md`
 
 ## 0.4.9
@@ -126,7 +131,7 @@
 
 ## 0.4.6
 
-- 修复bug: 在最后一行的代码块不会正确格式化
+- 修复问题: 在最后一行的代码块不会正确格式化
 - 更新中英文 `CHANGELOG.md` 
 
 ## 0.4.5
@@ -179,7 +184,7 @@
 - 优化代码结构
 - 更新 `README.md` 
 - 提供格式化 `CSS` 和 `HTML` 
-- 修复bug
+- 修复问题
 
 ## 0.3.1
 
@@ -189,7 +194,7 @@
 
 ## 0.3.0
 
-- 修复bug: [代码块中格式化错误](https://github.com/sumnow/markdown-formatter/issues/1)
+- 修复问题: [代码块中格式化错误](https://github.com/sumnow/markdown-formatter/issues/1)
 
 ## 0.2.9
 
@@ -223,7 +228,7 @@
 
 ## 0.2.2
 
-- 修复bug
+- 修复问题
 
 ## 0.2.1
 
@@ -239,11 +244,11 @@
 
 ## 0.1.8
 
-- 修复bug: 表格中中文字符对齐
+- 修复问题: 表格中中文字符对齐
 
 ## 0.1.7
 
-- 修复bug: list长度大于9时换行
+- 修复问题: list长度大于9时换行
 
 ## 0.1.6
 
@@ -263,7 +268,7 @@
 
 ## 0.1.2
 
-- 修复bug: 代码区域下的代码块没有被正确格式化
+- 修复问题: 代码区域下的代码块没有被正确格式化
 
 ## 0.1.1
 
@@ -284,18 +289,18 @@
 
 ## 0.0.7
 
-- 修复bug: 代码重复格式化
-- 修复bug:  `PC/UNIX` 行尾符号
+- 修复问题: 代码重复格式化
+- 修复问题:  `PC/UNIX` 行尾符号
 - 更新 README.md
 
 ## 0.0.6
 
-- 修复bug: 引用显示
+- 修复问题: 引用显示
 - 更新README.md和图标
 
 ## 0.0.5
 
-- 修复bug
+- 修复问题
 
 ## 0.0.4
 

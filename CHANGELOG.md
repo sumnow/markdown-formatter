@@ -2,6 +2,11 @@
 
 [中文文档](./CHANGELOG_CN.md)
 
+## 0.6.9
+
+- Fix bug: the code wrapped by `*` , `~~`, `**` or `***` will not formatted as expected.
+- Update `CHANGELOG.md`
+
 ## 0.6.8
 
 - Update `README.md`
@@ -53,7 +58,7 @@
 
 ## 0.5.9
 
-- Fix bug: Code area will not formatted as excepted.
+- Fix bug: Code area will not formatted as expected.
 - Optimization
 - Update `CHANGELOG.md`
 
@@ -92,7 +97,7 @@
 
 ## 0.5.2
 
-- Fix bug: Code area will not formatted as excepted.
+- Fix bug: Code area will not formatted as expected.
 - Update `CHANGELOG.md`
 
 ## 0.5.1
@@ -126,7 +131,6 @@
 ## 0.4.6
 
 - Fix bug: Code area in the end will not be formatted as expected
- as except
 - Update `CHANGELOG.md` 
 
 ## 0.4.5
@@ -263,7 +267,7 @@
 
 ## 0.1.2
 
-- Fix bug: code area next code block not formatted as except
+- Fix bug: code area next code block not formatted as expected.
 
 ## 0.1.1
 
