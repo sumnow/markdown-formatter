@@ -40,6 +40,13 @@
         ],
         "description": "create CSS code block"
     },
+    "Create C Language": {
+        "prefix": "clang",
+        "body": [
+            "``` c\n${1:/* c */}\n```\n$2"
+        ],
+        "description": "create C code block"
+    },
     "Create Java": {
         "prefix": "java",
         "body": [

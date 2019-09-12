@@ -2,6 +2,11 @@
 
 [中文文档](./CHANGELOG_CN.md)
 
+## 0.7.0
+
+- Fix bug: the title will not after breakline, while `displayTime` is `true`.
+- Update `CHANGELOG.md`
+
 ## 0.6.9
 
 - Fix bug: the code wrapped by `*` , `~~`, `**` or `***` will not formatted as expected.
