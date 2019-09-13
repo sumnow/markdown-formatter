@@ -43,9 +43,9 @@ function activate(context) {
     // period which need a space after it
     var PUNCTUATION_SPACIAL_ENGLISH_EXP = /([\.\!\?\:])([A-Z\u4e00-\u9fa5])/g;
     // h1 symbol
-    var H1_EXP = /^\n*(# [^\n]+)\n*/g;
+    var H1_EXP = /\n+(# [^\n]+)\n*/g;
     // h2,h3,h4... symbol
-    var H_EXP = /\n+(#+ [^\n]+)\n*/g;
+    var H_EXP = /\n+(##+ [^\n]+)\n*/g;
     // table
     var TABLE_EXP = /((?:(?:[^\n]*?\|[^\n]*)\ *)?(?:\r?\n|^))(?:[^|]+)((?:\|\ *(?::?-+:?|::)\ *|\|?(?:\ *(?::?-+:?|::)\ *\|)+)(?:\ *(?::?-+:?|::)\ *)?\ *\r?\n)((?:(?:[^\n]*?\|[^\n]*)\ *(?:\r?\n|$))+)/g;
     //back quote
@@ -112,14 +112,14 @@ function activate(context) {
                 // handler table
                 text = new FormatTable_1.FormatTable(text).formatted(TABLE_EXP);
                 // handler js
-                text = new FormatCode_1.FormatCode(text).formatted({ formatOpt: formatOpt, codeAreaToBlock: codeAreaToBlock, CODE_BLOCK_EXP: CODE_BLOCK_EXP, LIST_EXP: LIST_EXP, CODE_AREA_EXP: CODE_AREA_EXP, CODE_AREAS_EXP: CODE_AREAS_EXP });
+                text = new FormatCode_1.FormatCode(text).formatted({ formatOpt: formatOpt, codeAreaToBlock: codeAreaToBlock, CODE_BLOCK_EXP: CODE_BLOCK_EXP, LIST_EXP: LIST_EXP, CODE_AREA_EXP: CODE_AREA_EXP, CODE_AREAS_EXP: CODE_AREAS_EXP, H1_EXP: H1_EXP });
                 // handler list
                 text = new FormatList_1.FormatList(text).formatted({ formatULSymbol: formatULSymbol, LIST_EXP: LIST_EXP, LIST_UL_ST_EXP: LIST_UL_ST_EXP, LIST_UL_ND_EXP: LIST_UL_ND_EXP, LIST_UL_TH_EXP: LIST_UL_TH_EXP, LIST_OL_LI_EXP: LIST_OL_LI_EXP });
                 // text = new FormatHTML(text).formatted({TAG_START_EXP,TAG_SINGLE_EXP,TAG_END_EXP})
                 text = text.replace(BACK_QUOTE_EXP, ' `$1` ');
                 text = text.replace(BACK_QUOTE_AFTER_BREAKLINE_EXP, '\n`$1` ');
                 text = text.replace(H_EXP, '\n\n' + '$1' + '\n\n');
-                text = text.replace(H1_EXP, '$1' + '\n\n');
+                // text = text.replace(H1_EXP, '$1' + '\n\n')s
                 text = text.replace(IMG_EXP, '$1\n\n' + '$2' + '\n\n');
                 text = text.replace(CODE_BLOCK_EXP, '\n\n``` ' + '$1\n$2' + '```\n\n');
                 text = text.replace(LINK_EXP, '\n\n' + '$1' + '\n\n');

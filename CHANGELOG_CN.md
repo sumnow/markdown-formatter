@@ -2,6 +2,11 @@
 
 [English Document](./CHANGELOG.md)
 
+## 0.7.1
+
+- 修复问题
+- 更新中英文 `CHANGELOG.md`
+
 ## 0.7.0
 
 - 修复问题: 在显示时间的时候,标题不会空出额外一行.
