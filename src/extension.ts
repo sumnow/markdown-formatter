@@ -42,6 +42,7 @@ export function activate(context: vscode.ExtensionContext) {
     const CHINESE_CHARCTER_SYMBOL = `([\\u4e00-\\u9fa5])`;
     const ENGLISH_CHARCTER_SYMBOL = `([A-Za-z])`;
 
+    const SPACE_EXP = /\n+\ +\n+/g;
     // punctuation which need a space after it
     // const PUNCTUATION_EXP = /([，,。；;！、？：])\ */g;
     // const PUNCTUATION_ALL_EXP = /([，,。；;！、？：])\ */g;
@@ -85,8 +86,8 @@ export function activate(context: vscode.ExtensionContext) {
     // const CODE_AREA_EXP = /\n+((?:(?: {4}|\t)+[^\n\-\+\*][^\n]+\n*)+)/g;
     // const CODE_AREA_EXP = /\n+((?:(?: {4}|\t)+(?!\d\.|\+|\-|\*)[^\n]+\n)+)/g;
     // const CODE_AREA_EXP = /\n+((?:(?: {4}|\t)+([^\+\d\.\-\*])[^\n]+\n)+)/g
-    const CODE_AREA_EXP = /\n+((?:(?: {4}|\t)[^\n]*\n)+)/g;
-    const CODE_AREAS_EXP = /(\n(?:(?: {4}|\t)[^\n]*\n))\n/g
+    const CODE_AREA_EXP = /\n+((?:(?: {4}|\t)[^\n\ ]*\n)+)/g;
+    // const CODE_AREAS_EXP = /(\n(?:(?: {4}|\t)[^\n]*\n))\n/g
     // const CODE_AREA_EXP = /(?:(?: {4}|\t)+[^\n]+\n*)+/g;
     // const CODE_EXP = /\n*```([\s\S]+?)```\n*/g;
 
@@ -136,7 +137,7 @@ export function activate(context: vscode.ExtensionContext) {
                 text = new FormatTable(text).formatted(TABLE_EXP)
 
                 // handler js
-                text = new FormatCode(text).formatted({ formatOpt, codeAreaToBlock, CODE_BLOCK_EXP, LIST_EXP, CODE_AREA_EXP, CODE_AREAS_EXP, H1_EXP })
+                text = new FormatCode(text).formatted({ formatOpt, codeAreaToBlock, CODE_BLOCK_EXP, LIST_EXP, CODE_AREA_EXP, H1_EXP })
 
                 // handler list
                 text = new FormatList(text).formatted({ formatULSymbol, LIST_EXP, LIST_UL_ST_EXP, LIST_UL_ND_EXP, LIST_UL_TH_EXP, LIST_OL_LI_EXP })

@@ -35,6 +35,7 @@ function activate(context) {
     // chinese symbol
     var CHINESE_CHARCTER_SYMBOL = "([\\u4e00-\\u9fa5])";
     var ENGLISH_CHARCTER_SYMBOL = "([A-Za-z])";
+    var SPACE_EXP = /\n+\ +\n+/g;
     // punctuation which need a space after it
     // const PUNCTUATION_EXP = /([，,。；;！、？：])\ */g;
     // const PUNCTUATION_ALL_EXP = /([，,。；;！、？：])\ */g;
@@ -74,8 +75,8 @@ function activate(context) {
     // const CODE_AREA_EXP = /\n+((?:(?: {4}|\t)+[^\n\-\+\*][^\n]+\n*)+)/g;
     // const CODE_AREA_EXP = /\n+((?:(?: {4}|\t)+(?!\d\.|\+|\-|\*)[^\n]+\n)+)/g;
     // const CODE_AREA_EXP = /\n+((?:(?: {4}|\t)+([^\+\d\.\-\*])[^\n]+\n)+)/g
-    var CODE_AREA_EXP = /\n+((?:(?: {4}|\t)[^\n]*\n)+)/g;
-    var CODE_AREAS_EXP = /(\n(?:(?: {4}|\t)[^\n]*\n))\n/g;
+    var CODE_AREA_EXP = /\n+((?:(?: {4}|\t)[^\n\ ]*\n)+)/g;
+    // const CODE_AREAS_EXP = /(\n(?:(?: {4}|\t)[^\n]*\n))\n/g
     // const CODE_AREA_EXP = /(?:(?: {4}|\t)+[^\n]+\n*)+/g;
     // const CODE_EXP = /\n*```([\s\S]+?)```\n*/g;
     var CODE_BLOCK_EXP = /\n*```(?: *)(\w*)\n([\s\S]+?)(```)+\n+/g;
@@ -112,7 +113,7 @@ function activate(context) {
                 // handler table
                 text = new FormatTable_1.FormatTable(text).formatted(TABLE_EXP);
                 // handler js
-                text = new FormatCode_1.FormatCode(text).formatted({ formatOpt: formatOpt, codeAreaToBlock: codeAreaToBlock, CODE_BLOCK_EXP: CODE_BLOCK_EXP, LIST_EXP: LIST_EXP, CODE_AREA_EXP: CODE_AREA_EXP, CODE_AREAS_EXP: CODE_AREAS_EXP, H1_EXP: H1_EXP });
+                text = new FormatCode_1.FormatCode(text).formatted({ formatOpt: formatOpt, codeAreaToBlock: codeAreaToBlock, CODE_BLOCK_EXP: CODE_BLOCK_EXP, LIST_EXP: LIST_EXP, CODE_AREA_EXP: CODE_AREA_EXP, H1_EXP: H1_EXP });
                 // handler list
                 text = new FormatList_1.FormatList(text).formatted({ formatULSymbol: formatULSymbol, LIST_EXP: LIST_EXP, LIST_UL_ST_EXP: LIST_UL_ST_EXP, LIST_UL_ND_EXP: LIST_UL_ND_EXP, LIST_UL_TH_EXP: LIST_UL_TH_EXP, LIST_OL_LI_EXP: LIST_OL_LI_EXP });
                 // text = new FormatHTML(text).formatted({TAG_START_EXP,TAG_SINGLE_EXP,TAG_END_EXP})

@@ -2,6 +2,11 @@
 
 [English Document](./CHANGELOG.md)
 
+## 0.7.2
+
+- 修复问题: 列表后的代码可能会格式化失败.
+- 更新中英文 `CHANGELOG.md`
+
 ## 0.7.1
 
 - 修复问题

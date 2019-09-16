@@ -12,7 +12,7 @@ export class FormatCode extends FormatComponent {
     super(text: string) {
         this.text = text
     }
-    formatted({ formatOpt, codeAreaToBlock, CODE_BLOCK_EXP, LIST_EXP, CODE_AREA_EXP, CODE_AREAS_EXP,H1_EXP }: { formatOpt: any, codeAreaToBlock: string, CODE_BLOCK_EXP: RegExp, LIST_EXP: RegExp, CODE_AREA_EXP: RegExp, CODE_AREAS_EXP: RegExp,H1_EXP:RegExp }): string {
+    formatted({ formatOpt, codeAreaToBlock, CODE_BLOCK_EXP, LIST_EXP, CODE_AREA_EXP, H1_EXP }: { formatOpt: any, codeAreaToBlock: string, CODE_BLOCK_EXP: RegExp, LIST_EXP: RegExp, CODE_AREA_EXP: RegExp, H1_EXP: RegExp }): string {
 
         let beautifyOpt = {}
         if (formatOpt) {
@@ -20,7 +20,7 @@ export class FormatCode extends FormatComponent {
         }
 
         // if two code areas linked by only a block line , these code areas is together
-        this.text = this.text.replace(CODE_AREAS_EXP, '$1    ' + '\n')
+        // this.text = this.text.replace(CODE_AREAS_EXP, '$1    ' + '\n')
 
         if (formatOpt !== false) {
             this.text = removeReplace({
@@ -28,6 +28,7 @@ export class FormatCode extends FormatComponent {
                 reg: [CODE_BLOCK_EXP, LIST_EXP],
                 func: (text: string): string => {
                     const _jsArr = text.match(CODE_AREA_EXP);
+                    console.log(text, _jsArr)
                     codeAreaToBlock = codeAreaToBlock.toLowerCase()
                     if (_jsArr && _jsArr.length > 0) {
                         if (codeAreaToBlock === '') {
@@ -44,7 +45,7 @@ export class FormatCode extends FormatComponent {
                             });
                         }
                     }
-                    text = text.replace(H1_EXP, '\n'+'$1' + '\n\n')
+                    text = text.replace(H1_EXP, '\n' + '$1' + '\n\n')
 
                     return text;
                 }
