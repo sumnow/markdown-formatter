@@ -2,6 +2,11 @@
 
 [中文文档](./CHANGELOG_CN.md)
 
+## 0.7.3
+
+- Fix bug: the list formatted failed sometimes.
+- Update `CHANGELOG.md`
+
 ## 0.7.2
 
 - Fix bug: the code after list will formatted failed

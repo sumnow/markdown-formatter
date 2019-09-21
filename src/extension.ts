@@ -131,7 +131,7 @@ export function activate(context: vscode.ExtensionContext) {
 
             try {
                 // format PUNCTUATION_EXP
-                text = new FormatPunctuation(text).formatted({ fullWidthTurnHalfWidth, spaceAfterFullWidth, BACK_QUOTE_EXP, CODE_BLOCK_EXP, CODE_AREA_EXP, HREF_EXP, PUNCTUATION_CHINESE_EXP, PUNCTUATION_ENGLISH_EXP, PUNCTUATION_SPACIAL_ENGLISH_EXP, CHINESE_SYMBOL, ENGLISH_SYMBOL, ENGLISH_CHARCTER_SYMBOL, CHINESE_CHARCTER_SYMBOL })
+                text = new FormatPunctuation(text).formatted({ fullWidthTurnHalfWidth, spaceAfterFullWidth, BACK_QUOTE_EXP, CODE_BLOCK_EXP, CODE_AREA_EXP, HREF_EXP, LIST_OL_LI_EXP, PUNCTUATION_CHINESE_EXP, PUNCTUATION_ENGLISH_EXP, PUNCTUATION_SPACIAL_ENGLISH_EXP, CHINESE_SYMBOL, ENGLISH_SYMBOL, ENGLISH_CHARCTER_SYMBOL, CHINESE_CHARCTER_SYMBOL })
 
                 // handler table
                 text = new FormatTable(text).formatted(TABLE_EXP)
