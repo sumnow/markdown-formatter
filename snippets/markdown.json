@@ -22,56 +22,63 @@
             "javascript"
         ],
         "body": [
-            "``` js\n${1:// javascript}\n```\n$2"
+            "``` JS\n${1:// JavaScript}\n```\n$2"
         ],
         "description": "create  ECMAScript code block"
     },
     "Create HTML": {
         "prefix": "html",
         "body": [
-            "``` html\n${1:<!-- html -->}\n```\n$2"
+            "``` HTML\n${1:<!-- HTML -->}\n```\n$2"
         ],
         "description": "create HTML code block"
     },
     "Create CSS": {
         "prefix": "css",
         "body": [
-            "``` css\n${1:/* css */}\n```\n$2"
+            "``` CSS\n${1:/* CSS */}\n```\n$2"
         ],
         "description": "create CSS code block"
+    },
+    "Create Dart": {
+        "prefix": "dart",
+        "body": [
+            "``` Dart\n${1:// Dart}\n```\n$2"
+        ],
+        "description": "create Dart code block"
     },
     "Create C Language": {
         "prefix": "clang",
         "body": [
-            "``` c\n${1:/* c */}\n```\n$2"
+            "``` C\n${1:/* C */}\n```\n$2"
         ],
         "description": "create C code block"
     },
     "Create Java": {
         "prefix": "java",
         "body": [
-            "``` java\n${1:// java}\n```\n$2"
+            "``` JAVA\n${1:// JAVA}\n```\n$2"
         ],
         "description": "create Java code block"
     },
     "Create Python": {
         "prefix": "python",
         "body": [
-            "``` python\n${1:# python}\n```\n$2"
+            "``` Python\n${1:# Python}\n```\n$2"
         ],
         "description": "create Python code block"
     },
     "Create Go": {
         "prefix": "go",
         "body": [
-            "``` go\n${1:// go}\n```\n$2"
+            "``` Go\n${1:// Go}\n```\n$2"
         ],
         "description": "create Go code block"
     },
     "Create bash": {
         "prefix": "bash",
         "body": [
-            "``` bash\n${1:# bash}\n```\n$2"
+            "``` BASH\n${1:# BASH}\n```\n$2"
         ],
         "description": "create Bash code block"
     },

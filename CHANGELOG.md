@@ -2,6 +2,12 @@
 
 [中文文档](./CHANGELOG_CN.md)
 
+## 0.7.4
+
+- Fix bug: the code area will formatted failed sometimes.
+- Update snippets discribution
+- 更新中英文 `CHANGELOG.md`
+
 ## 0.7.3
 
 - Fix bug: the list formatted failed sometimes.

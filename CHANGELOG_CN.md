@@ -2,6 +2,12 @@
 
 [English Document](./CHANGELOG.md)
 
+## 0.7.4
+
+- 修复问题: 格式化连续代码块某些情况下失败.
+- 修改snippets的描述
+- 更新中英文 `CHANGELOG.md`
+
 ## 0.7.3
 
 - 修复问题: 列表格式化某些情况下失败.
