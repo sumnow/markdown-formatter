@@ -2,6 +2,13 @@
 
 [English Document](./CHANGELOG.md)
 
+## 0.7.5
+
+- 修复问题: [格式化错误](https://github.com/sumnow/markdown-formatter/issues/12) 
+> 出现问题的原因在于文章中的一级标题会删除顶部的空行,导致格式化代码依赖的空行的被误删.
+- 修复问题: 在代码块中以`>`开头会被错误格式化为链接.
+- 更新中英文 `CHANGELOG.md`
+
 ## 0.7.4
 
 - 修复问题: 格式化连续代码块某些情况下失败.

@@ -27,6 +27,10 @@ export function removeReplace({ text, reg, func, type }: {
             const _reg = new RegExp(escapeStringRegexp(_mdformatter), 'g');
             text = text.replace(_reg, _tempRegArr[i].content);
         });
+        if (type) {
+            console.log(`handler ${type} after:`)
+            console.log(text)
+        }
     }
     else {
         text = func(text);

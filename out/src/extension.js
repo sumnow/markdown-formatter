@@ -4,6 +4,7 @@ var FormatList_1 = require('./components/FormatList');
 var FormatTable_1 = require('./components/FormatTable');
 var FormatPunctuation_1 = require('./components/FormatPunctuation');
 var FormatCode_1 = require('./components/FormatCode');
+var FormatLink_1 = require('./components/FormatLink');
 // import { FormatHTML } from './components/FormatHTML';
 var handlerTime_1 = require('./components/handlerTime');
 var config = vscode.workspace.getConfiguration('markdownFormatter');
@@ -35,7 +36,9 @@ function activate(context) {
     // chinese symbol
     var CHINESE_CHARCTER_SYMBOL = "([\\u4e00-\\u9fa5])";
     var ENGLISH_CHARCTER_SYMBOL = "([A-Za-z])";
-    var SPACE_EXP = /\n+\ +\n+/g;
+    // const SPACE_EXP = /\n+\ +\n+/g;
+    // breakline before the text 
+    var BEGIN_LINE_EXP = /^\n+/g;
     // punctuation which need a space after it
     // const PUNCTUATION_EXP = /([，,。；;！、？：])\ */g;
     // const PUNCTUATION_ALL_EXP = /([，,。；;！、？：])\ */g;
@@ -116,6 +119,7 @@ function activate(context) {
                 text = new FormatCode_1.FormatCode(text).formatted({ formatOpt: formatOpt, codeAreaToBlock: codeAreaToBlock, CODE_BLOCK_EXP: CODE_BLOCK_EXP, LIST_EXP: LIST_EXP, CODE_AREA_EXP: CODE_AREA_EXP, H1_EXP: H1_EXP });
                 // handler list
                 text = new FormatList_1.FormatList(text).formatted({ formatULSymbol: formatULSymbol, LIST_EXP: LIST_EXP, LIST_UL_ST_EXP: LIST_UL_ST_EXP, LIST_UL_ND_EXP: LIST_UL_ND_EXP, LIST_UL_TH_EXP: LIST_UL_TH_EXP, LIST_OL_LI_EXP: LIST_OL_LI_EXP });
+                text = new FormatLink_1.FormatLink(text).formatted({ LINK_SPACE_EXP: LINK_SPACE_EXP, LINK_EXP: LINK_EXP, CODE_BLOCK_EXP: CODE_BLOCK_EXP });
                 // text = new FormatHTML(text).formatted({TAG_START_EXP,TAG_SINGLE_EXP,TAG_END_EXP})
                 text = text.replace(BACK_QUOTE_EXP, ' `$1` ');
                 text = text.replace(BACK_QUOTE_AFTER_BREAKLINE_EXP, '\n`$1` ');
@@ -123,13 +127,15 @@ function activate(context) {
                 // text = text.replace(H1_EXP, '$1' + '\n\n')s
                 text = text.replace(IMG_EXP, '$1\n\n' + '$2' + '\n\n');
                 text = text.replace(CODE_BLOCK_EXP, '\n\n``` ' + '$1\n$2' + '```\n\n');
-                text = text.replace(LINK_EXP, '\n\n' + '$1' + '\n\n');
-                text = text.replace(LINK_SPACE_EXP, '\n' + '$1 $2');
+                // text = text.replace(LINK_EXP, '\n\n' + '$1' + '\n\n')
+                // text = text.replace(LINK_SPACE_EXP, '\n' + '$1 $2')
                 text = text.replace(EXTRALINE_EXP, '\n\n');
                 text = text.replace(ITALIC_BOLD_EXP, "***$1***");
                 text = text.replace(BOLD_EXP, '**$1**');
                 text = text.replace(ITALIC_EXP, '*$1*');
                 text = text.replace(LINE_THROUGH_EXP, '~~$1~~');
+                // clear breakline
+                text = text.replace(BEGIN_LINE_EXP, '');
             }
             catch (e) {
                 text = textLast;

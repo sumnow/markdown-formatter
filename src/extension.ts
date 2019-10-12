@@ -5,6 +5,7 @@ import { FormatList } from './components/FormatList'
 import { FormatTable } from './components/FormatTable';
 import { FormatPunctuation } from './components/FormatPunctuation';
 import { FormatCode } from './components/FormatCode';
+import { FormatLink } from './components/FormatLink'
 // import { FormatHTML } from './components/FormatHTML';
 import { handlerTime } from './components/handlerTime';
 
@@ -42,7 +43,10 @@ export function activate(context: vscode.ExtensionContext) {
     const CHINESE_CHARCTER_SYMBOL = `([\\u4e00-\\u9fa5])`;
     const ENGLISH_CHARCTER_SYMBOL = `([A-Za-z])`;
 
-    const SPACE_EXP = /\n+\ +\n+/g;
+    // const SPACE_EXP = /\n+\ +\n+/g;
+
+    // breakline before the text 
+    const BEGIN_LINE_EXP = /^\n+/g
     // punctuation which need a space after it
     // const PUNCTUATION_EXP = /([，,。；;！、？：])\ */g;
     // const PUNCTUATION_ALL_EXP = /([，,。；;！、？：])\ */g;
@@ -142,6 +146,7 @@ export function activate(context: vscode.ExtensionContext) {
                 // handler list
                 text = new FormatList(text).formatted({ formatULSymbol, LIST_EXP, LIST_UL_ST_EXP, LIST_UL_ND_EXP, LIST_UL_TH_EXP, LIST_OL_LI_EXP })
 
+                text = new FormatLink(text).formatted({ LINK_SPACE_EXP, LINK_EXP, CODE_BLOCK_EXP })
                 // text = new FormatHTML(text).formatted({TAG_START_EXP,TAG_SINGLE_EXP,TAG_END_EXP})
 
                 text = text.replace(BACK_QUOTE_EXP, ' `$1` ')
@@ -150,14 +155,16 @@ export function activate(context: vscode.ExtensionContext) {
                 // text = text.replace(H1_EXP, '$1' + '\n\n')s
                 text = text.replace(IMG_EXP, '$1\n\n' + '$2' + '\n\n')
                 text = text.replace(CODE_BLOCK_EXP, '\n\n``` ' + '$1\n$2' + '```\n\n')
-                text = text.replace(LINK_EXP, '\n\n' + '$1' + '\n\n')
-                text = text.replace(LINK_SPACE_EXP, '\n' + '$1 $2')
+                // text = text.replace(LINK_EXP, '\n\n' + '$1' + '\n\n')
+                // text = text.replace(LINK_SPACE_EXP, '\n' + '$1 $2')
                 text = text.replace(EXTRALINE_EXP, '\n\n')
 
                 text = text.replace(ITALIC_BOLD_EXP, `***$1***`)
                 text = text.replace(BOLD_EXP, '**$1**')
                 text = text.replace(ITALIC_EXP, '*$1*')
                 text = text.replace(LINE_THROUGH_EXP, '~~$1~~')
+                // clear breakline
+                text = text.replace(BEGIN_LINE_EXP, '')
             } catch (e) {
                 text = textLast
                 vscode.window.showInformationMessage(`[Error Format]:${e} \n you can ask for help by https://github.com/sumnow/markdown-formatter/issues`);

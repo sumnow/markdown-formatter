@@ -45,10 +45,11 @@ export class FormatCode extends FormatComponent {
                             });
                         }
                     }
-                    text = text.replace(H1_EXP, '\n' + '$1' + '\n\n')
+                    text = text.replace(H1_EXP, '\n\n' + '$1' + '\n\n')
 
                     return text;
-                }
+                },
+                // type: 'code'
             })
         }
 

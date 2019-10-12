@@ -2,11 +2,17 @@
 
 [中文文档](./CHANGELOG_CN.md)
 
+## 0.7.5
+
+- Fix bug: [格式化错误](https://github.com/sumnow/markdown-formatter/issues/12) 
+- Fix bug: The `>` formatted as link in code block cause error.
+- Update `CHANGELOG.md`
+
 ## 0.7.4
 
 - Fix bug: the code area will formatted failed sometimes.
 - Update snippets discribution
-- 更新中英文 `CHANGELOG.md`
+- Update `CHANGELOG.md`
 
 ## 0.7.3
 

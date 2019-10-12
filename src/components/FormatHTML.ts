@@ -14,7 +14,6 @@ export class FormatHTML extends FormatComponent {
         var asd = this.text.match(TAG_SINGLE_EXP)
         var asde = this.text.match(TAG_END_EXP)
 
-        console.log(as, asd, asde)
 
         // this.outputAfterInfo()
         return this.text
