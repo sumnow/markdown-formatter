@@ -36,6 +36,7 @@ function activate(context) {
     // chinese symbol
     var CHINESE_CHARCTER_SYMBOL = "([\\u4e00-\\u9fa5])";
     var ENGLISH_CHARCTER_SYMBOL = "([A-Za-z])";
+    var ELLIPSIS_EXP = /(\.\.\.)+/g;
     // const SPACE_EXP = /\n+\ +\n+/g;
     // breakline before the text 
     var BEGIN_LINE_EXP = /^\n+/g;

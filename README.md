@@ -210,6 +210,8 @@ email: mydiamervin@gmail.com  or [here](https://github.com/sumnow/markdown-forma
 
 Thank you for helping me improve this tool.
 
+* [Ardeshir81](https://github.com/Ardeshir81)
+  + Bug(https://github.com/sumnow/markdown-formatter/issues/13)
 * [busyrat](https://github.com/busyrat) 
   + Feature(https://github.com/sumnow/markdown-formatter/issues/10)
 * [lartpang](https://github.com/lartpang) 
@@ -223,6 +225,7 @@ Thank you for helping me improve this tool.
   + Feature(https://github.com/sumnow/markdown-formatter/issues/3)
 * [zhuoyan](https://github.com/zhuoyan)
   + Bug(https://github.com/sumnow/markdown-formatter/issues/1)
+
 
 > Sorting only according to the time of the question
 

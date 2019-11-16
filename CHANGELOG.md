@@ -2,6 +2,11 @@
 
 [中文文档](./CHANGELOG_CN.md)
 
+## 0.7.6
+
+- Fix bug: [bad formatting for dots](https://github.com/sumnow/markdown-formatter/issues/13) 
+- Update `CHANGELOG.md`
+
 ## 0.7.5
 
 - Fix bug: [格式化错误](https://github.com/sumnow/markdown-formatter/issues/12) 

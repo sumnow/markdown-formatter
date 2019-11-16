@@ -28,7 +28,6 @@ export class FormatCode extends FormatComponent {
                 reg: [CODE_BLOCK_EXP, LIST_EXP],
                 func: (text: string): string => {
                     const _jsArr = text.match(CODE_AREA_EXP);
-                    console.log(text, _jsArr)
                     codeAreaToBlock = codeAreaToBlock.toLowerCase()
                     if (_jsArr && _jsArr.length > 0) {
                         if (codeAreaToBlock === '') {

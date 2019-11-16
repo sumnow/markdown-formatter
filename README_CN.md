@@ -210,6 +210,10 @@ email: mydiamervin@gmail.com 或者 [这里](https://github.com/sumnow/markdown-
 
 感谢大家帮助我完善这个工具
 
+* [Ardeshir81](https://github.com/Ardeshir81)
+  + 提出bug(https://github.com/sumnow/markdown-formatter/issues/13)
+* [Zt448143356](https://github.com/Zt448143356)
+  + 提出bug(https://github.com/sumnow/markdown-formatter/issues/12)
 * [busyrat](https://github.com/busyrat) 
   + 提出改进(https://github.com/sumnow/markdown-formatter/issues/10)
 * [lartpang](https://github.com/lartpang) 
@@ -223,5 +227,6 @@ email: mydiamervin@gmail.com 或者 [这里](https://github.com/sumnow/markdown-
   + 提出改进(https://github.com/sumnow/markdown-formatter/issues/3)
 * [zhuoyan](https://github.com/zhuoyan)
   + 提出bug(https://github.com/sumnow/markdown-formatter/issues/1)
+
 
 > 排序仅按照提出问题的时间倒叙排列

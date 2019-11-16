@@ -43,6 +43,8 @@ export function activate(context: vscode.ExtensionContext) {
     const CHINESE_CHARCTER_SYMBOL = `([\\u4e00-\\u9fa5])`;
     const ENGLISH_CHARCTER_SYMBOL = `([A-Za-z])`;
 
+    const ELLIPSIS_EXP = /(\.\.\.)+/g;
+
     // const SPACE_EXP = /\n+\ +\n+/g;
 
     // breakline before the text 

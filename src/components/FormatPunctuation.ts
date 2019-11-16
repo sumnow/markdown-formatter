@@ -46,6 +46,9 @@ export class FormatPunctuation extends FormatComponent {
                 // handle the spaces after '.' 
                 text = text.replace(/\.\ */g, '.');
 
+                // handle ELLIPSIS
+                text = text.replace(/((\.\.\.)+)/g, '$1 ')
+
                 // hanlde '.!?:'
                 text = text.replace(PUNCTUATION_SPACIAL_ENGLISH_EXP, '$1 $2');
 
