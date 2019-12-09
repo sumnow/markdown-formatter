@@ -2,6 +2,15 @@
 
 [中文文档](./CHANGELOG_CN.md)
 
+## 0.7.8
+
+- Update `README.md`
+- Update `CHANGELOG.md`
+
+## 0.7.7
+
+- Upload again
+
 ## 0.7.6
 
 - Fix bug: [bad formatting for dots](https://github.com/sumnow/markdown-formatter/issues/13) 
