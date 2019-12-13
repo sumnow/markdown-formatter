@@ -2,6 +2,11 @@
 
 [English Document](./CHANGELOG.md)
 
+## 0.7.9
+
+- 修复问题: [列表接着一级标题格式化出错 #16](https://github.com/sumnow/markdown-formatter/issues/16)
+- 更新中英文 `CHANGELOG.md`
+
 ## 0.7.8
 
 - 更新中英文 `README.md`

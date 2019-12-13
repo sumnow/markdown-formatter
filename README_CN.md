@@ -209,26 +209,27 @@ email: mydiamervin@gmail.com 或者 [这里](https://github.com/sumnow/markdown-
 ## 鸣谢
 
 感谢大家帮助我完善这个工具
+
+* [lancerXXXX](https://github.com/lancerXXXX)
+  + Bug(https://github.com/sumnow/markdown-formatter/issues/16)
 * [rgeorgiev583](https://github.com/rgeorgiev583)
-  + 提出bug(https://github.com/sumnow/markdown-formatter/issues/14)
+  + Bug(https://github.com/sumnow/markdown-formatter/issues/14)
 * [Ardeshir81](https://github.com/Ardeshir81)
-  + 提出bug(https://github.com/sumnow/markdown-formatter/issues/13)
-* [Zt448143356](https://github.com/Zt448143356)
-  + 提出bug(https://github.com/sumnow/markdown-formatter/issues/12)
+  + Bug(https://github.com/sumnow/markdown-formatter/issues/13)
 * [busyrat](https://github.com/busyrat) 
-  + 提出改进(https://github.com/sumnow/markdown-formatter/issues/10)
+  + Feature(https://github.com/sumnow/markdown-formatter/issues/10)
 * [lartpang](https://github.com/lartpang) 
-  + 提出bug(https://github.com/sumnow/markdown-formatter/issues/15)
-  + 提出改进(https://github.com/sumnow/markdown-formatter/issues/11)
-  + 提出bug(https://github.com/sumnow/markdown-formatter/issues/9)
-  + 提出bug(https://github.com/sumnow/markdown-formatter/issues/8)
-  + 提出bug(https://github.com/sumnow/markdown-formatter/issues/7)
-  + 提出bug(https://github.com/sumnow/markdown-formatter/issues/6)
-  + 提出bug(https://github.com/sumnow/markdown-formatter/issues/5)
+  + Bug(https://github.com/sumnow/markdown-formatter/issues/15)
+  + Feature(https://github.com/sumnow/markdown-formatter/issues/11)
+  + Bug(https://github.com/sumnow/markdown-formatter/issues/9)
+  + Bug(https://github.com/sumnow/markdown-formatter/issues/8)
+  + Bug(https://github.com/sumnow/markdown-formatter/issues/7)
+  + Bug(https://github.com/sumnow/markdown-formatter/issues/6)
+  + Bug(https://github.com/sumnow/markdown-formatter/issues/5)
 * [iostalks](https://github.com/iostalks)
-  + 提出改进(https://github.com/sumnow/markdown-formatter/issues/3)
+  + Feature(https://github.com/sumnow/markdown-formatter/issues/3)
 * [zhuoyan](https://github.com/zhuoyan)
-  + 提出bug(https://github.com/sumnow/markdown-formatter/issues/1)
+  + Bug(https://github.com/sumnow/markdown-formatter/issues/1)
 
 
 > 排序仅按照提出问题的时间倒叙排列

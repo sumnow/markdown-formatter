@@ -210,11 +210,16 @@ email: mydiamervin@gmail.com  or [here](https://github.com/sumnow/markdown-forma
 
 Thank you for helping me improve this tool.
 
+* [lancerXXXX](https://github.com/lancerXXXX)
+  + Bug(https://github.com/sumnow/markdown-formatter/issues/16)
+* [rgeorgiev583](https://github.com/rgeorgiev583)
+  + Bug(https://github.com/sumnow/markdown-formatter/issues/14)
 * [Ardeshir81](https://github.com/Ardeshir81)
   + Bug(https://github.com/sumnow/markdown-formatter/issues/13)
 * [busyrat](https://github.com/busyrat) 
   + Feature(https://github.com/sumnow/markdown-formatter/issues/10)
 * [lartpang](https://github.com/lartpang) 
+  + Bug(https://github.com/sumnow/markdown-formatter/issues/15)
   + Feature(https://github.com/sumnow/markdown-formatter/issues/11)
   + Bug(https://github.com/sumnow/markdown-formatter/issues/9)
   + Bug(https://github.com/sumnow/markdown-formatter/issues/8)
