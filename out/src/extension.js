@@ -7,6 +7,7 @@ var FormatCode_1 = require('./components/FormatCode');
 var FormatLink_1 = require('./components/FormatLink');
 // import { FormatHTML } from './components/FormatHTML';
 var handlerTime_1 = require('./components/handlerTime');
+var escapeStringRegexp = require('escape-string-regexp');
 var config = vscode.workspace.getConfiguration('markdownFormatter');
 var fullWidthTurnHalfWidth = config.get('fullWidthTurnHalfWidth', 'auto');
 var codeAreaToBlock = config.get('codeAreaToBlock', '');
@@ -58,11 +59,15 @@ function activate(context) {
     var BACK_QUOTE_AFTER_BREAKLINE_EXP = /\n\ `([^`\n]+)`\ /g;
     // image link
     var IMG_EXP = /([^[])(\!\[[^\n]+\]\([^\n]+\))/g;
+    // split line 
+    var SPLIT_LINE_EXP = /\- \- \-( \-)*/g;
     // list 
     // const LIST_EXP = /(((?:\n)+(?: {4}|\t)*(?:\d+\.|\-|\*|\+) [^\n]+)+)/g;
     var LIST_EXP = /((\n(?: {2}|\t)*(?:\d+\.|\-|\*|\+) [^\n]+)+)/g;
     // const LIST_OL_EXP = /((\n(?: {2}|\t)*(\d+)\. [^\n]+)+)/g
     var LIST_OL_LI_EXP = /(\n(?: {2}|\t)*)(\d+)(\. [^\n]+)/g;
+    // avoid - - - format to * - -
+    // const LIST_UL_ST_EXP = /\n(?:\-|\*|\+) ([^\n]+)/g;
     var LIST_UL_ST_EXP = /\n(?:\-|\*|\+) ([^\n]+)/g;
     var LIST_UL_ND_EXP = /\n(?: {2}|\t)(?:\-|\*|\+) ([^\n]+)/g;
     var LIST_UL_TH_EXP = /\n(?: {2}|\t){2}(?:\-|\*|\+) ([^\n]+)/g;
@@ -103,6 +108,7 @@ function activate(context) {
             var start = new vscode.Position(0, 0);
             var end = new vscode.Position(document.lineCount - 1, document.lineAt(document.lineCount - 1).text.length);
             var range = new vscode.Range(start, end);
+            // let text = document.getText(range) + '\n\n'
             var text = document.getText(range) + '\n\n';
             var textLast = text;
             // format \r\n to \n,fix
@@ -119,9 +125,10 @@ function activate(context) {
                 // handler js
                 text = new FormatCode_1.FormatCode(text).formatted({ formatOpt: formatOpt, codeAreaToBlock: codeAreaToBlock, CODE_BLOCK_EXP: CODE_BLOCK_EXP, LIST_EXP: LIST_EXP, CODE_AREA_EXP: CODE_AREA_EXP, H1_EXP: H1_EXP });
                 // handler list
-                text = new FormatList_1.FormatList(text).formatted({ formatULSymbol: formatULSymbol, LIST_EXP: LIST_EXP, LIST_UL_ST_EXP: LIST_UL_ST_EXP, LIST_UL_ND_EXP: LIST_UL_ND_EXP, LIST_UL_TH_EXP: LIST_UL_TH_EXP, LIST_OL_LI_EXP: LIST_OL_LI_EXP });
+                text = new FormatList_1.FormatList(text).formatted({ formatULSymbol: formatULSymbol, LIST_EXP: LIST_EXP, LIST_UL_ST_EXP: LIST_UL_ST_EXP, LIST_UL_ND_EXP: LIST_UL_ND_EXP, LIST_UL_TH_EXP: LIST_UL_TH_EXP, LIST_OL_LI_EXP: LIST_OL_LI_EXP, SPLIT_LINE_EXP: SPLIT_LINE_EXP });
                 text = new FormatLink_1.FormatLink(text).formatted({ LINK_SPACE_EXP: LINK_SPACE_EXP, LINK_EXP: LINK_EXP, CODE_BLOCK_EXP: CODE_BLOCK_EXP });
                 // text = new FormatHTML(text).formatted({TAG_START_EXP,TAG_SINGLE_EXP,TAG_END_EXP})
+                console.log(text, text.match(BACK_QUOTE_EXP));
                 text = text.replace(BACK_QUOTE_EXP, ' `$1` ');
                 text = text.replace(BACK_QUOTE_AFTER_BREAKLINE_EXP, '\n`$1` ');
                 text = text.replace(H_EXP, '\n\n' + '$1' + '\n\n');

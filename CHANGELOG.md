@@ -2,6 +2,11 @@
 
 [中文文档](./CHANGELOG_CN.md)
 
+## 0.8.0
+
+- Fix bug: [It's not formatting properly lines that contain regexp](https://github.com/sumnow/markdown-formatter/issues/22)
+- Fix bug: [Formatting adds a "*" to Markdown Rules](https://github.com/sumnow/markdown-formatter/issues/23)
+
 ## 0.7.9
 
 - Fix bug: [列表接着一级标题格式化出错 #16](https://github.com/sumnow/markdown-formatter/issues/16)

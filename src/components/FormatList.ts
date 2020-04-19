@@ -1,5 +1,6 @@
 import { FormatComponent } from './FormatComponent'
 var escapeStringRegexp = require('escape-string-regexp');
+import { removeReplace } from "./removeReplace";
 
 export class FormatList extends FormatComponent {
     name: string = 'list'
@@ -16,12 +17,13 @@ export class FormatList extends FormatComponent {
     private formatLineBetween({ LIST_EXP }: { LIST_EXP: RegExp }) {
         this.text = this.text.replace(LIST_EXP, '\n\n' + '$1' + '\n\n');
     }
-    private formatUL({ formatULSymbol, LIST_UL_ST_EXP, LIST_UL_ND_EXP, LIST_UL_TH_EXP }: { formatULSymbol: Boolean, LIST_UL_ST_EXP: RegExp, LIST_UL_ND_EXP: RegExp, LIST_UL_TH_EXP: RegExp }) {
+    private formatUL(text, { formatULSymbol, LIST_UL_ST_EXP, LIST_UL_ND_EXP, LIST_UL_TH_EXP }: { formatULSymbol: Boolean, LIST_UL_ST_EXP: RegExp, LIST_UL_ND_EXP: RegExp, LIST_UL_TH_EXP: RegExp }) {
         if (formatULSymbol) {
-            this.text = this.text.replace(LIST_UL_ST_EXP, '\n* ' + '$1');
-            this.text = this.text.replace(LIST_UL_ND_EXP, '\n  + ' + '$1');
-            this.text = this.text.replace(LIST_UL_TH_EXP, '\n    - ' + '$1');
+            text = text.replace(LIST_UL_ST_EXP, '\n* ' + '$1');
+            text = text.replace(LIST_UL_ND_EXP, '\n  + ' + '$1');
+            text = text.replace(LIST_UL_TH_EXP, '\n    - ' + '$1');
         }
+        return text
     }
     private formatOL({ LIST_OL_LI_EXP }: { LIST_OL_LI_EXP: RegExp }) {
         // format ol
@@ -40,13 +42,23 @@ export class FormatList extends FormatComponent {
             })
         }
     }
-    public formatted({ formatULSymbol, LIST_EXP, LIST_UL_ST_EXP, LIST_UL_ND_EXP, LIST_UL_TH_EXP, LIST_OL_LI_EXP }): string {
+    public formatted({ formatULSymbol, LIST_EXP, LIST_UL_ST_EXP, LIST_UL_ND_EXP, LIST_UL_TH_EXP, LIST_OL_LI_EXP, SPLIT_LINE_EXP }): string {
         // this.outputBeforeInfo()
 
         // format list
         this.formatLineBetween({ LIST_EXP })
         // format ul
-        this.formatUL({ formatULSymbol, LIST_UL_ST_EXP, LIST_UL_ND_EXP, LIST_UL_TH_EXP })
+        const self = this
+        // https://github.com/sumnow/markdown-formatter/issues/23
+        this.text = removeReplace({
+            text: this.text,
+            reg: [SPLIT_LINE_EXP],
+            func(text: String) {
+                text = self.formatUL(text, { formatULSymbol, LIST_UL_ST_EXP, LIST_UL_ND_EXP, LIST_UL_TH_EXP })
+                return text
+            }
+        })
+
         // format ol
         this.formatOL({ LIST_OL_LI_EXP })
 

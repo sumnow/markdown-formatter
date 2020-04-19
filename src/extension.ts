@@ -8,6 +8,7 @@ import { FormatCode } from './components/FormatCode';
 import { FormatLink } from './components/FormatLink'
 // import { FormatHTML } from './components/FormatHTML';
 import { handlerTime } from './components/handlerTime';
+var escapeStringRegexp = require('escape-string-regexp');
 
 let config = vscode.workspace.getConfiguration('markdownFormatter');
 let fullWidthTurnHalfWidth: string = config.get<string>('fullWidthTurnHalfWidth', 'auto');
@@ -68,11 +69,16 @@ export function activate(context: vscode.ExtensionContext) {
     // image link
     const IMG_EXP = /([^[])(\!\[[^\n]+\]\([^\n]+\))/g;
 
+
+    // split line 
+    const SPLIT_LINE_EXP = /\- \- \-( \-)*/g
     // list 
     // const LIST_EXP = /(((?:\n)+(?: {4}|\t)*(?:\d+\.|\-|\*|\+) [^\n]+)+)/g;
     const LIST_EXP = /((\n(?: {2}|\t)*(?:\d+\.|\-|\*|\+) [^\n]+)+)/g
     // const LIST_OL_EXP = /((\n(?: {2}|\t)*(\d+)\. [^\n]+)+)/g
     const LIST_OL_LI_EXP = /(\n(?: {2}|\t)*)(\d+)(\. [^\n]+)/g
+    // avoid - - - format to * - -
+    // const LIST_UL_ST_EXP = /\n(?:\-|\*|\+) ([^\n]+)/g;
     const LIST_UL_ST_EXP = /\n(?:\-|\*|\+) ([^\n]+)/g;
     const LIST_UL_ND_EXP = /\n(?: {2}|\t)(?:\-|\*|\+) ([^\n]+)/g;
     const LIST_UL_TH_EXP = /\n(?: {2}|\t){2}(?:\-|\*|\+) ([^\n]+)/g;
@@ -122,6 +128,7 @@ export function activate(context: vscode.ExtensionContext) {
             const start = new vscode.Position(0, 0);
             const end = new vscode.Position(document.lineCount - 1, document.lineAt(document.lineCount - 1).text.length);
             const range = new vscode.Range(start, end);
+            // let text = document.getText(range) + '\n\n'
             let text = document.getText(range) + '\n\n'
 
             const textLast = text
@@ -134,7 +141,6 @@ export function activate(context: vscode.ExtensionContext) {
             if (displayTime) {
                 text = text.match(TIME_EXP) ? text.replace(TIME_EXP, `$1${handlerTime(new Date())}$2\n`) : `<!--\nCreated: ${handlerTime(new Date())}\nModified: ${handlerTime(new Date())}\n-->\n\n` + text
             }
-
             try {
                 // format PUNCTUATION_EXP
                 text = new FormatPunctuation(text).formatted({ fullWidthTurnHalfWidth, spaceAfterFullWidth, BACK_QUOTE_EXP, CODE_BLOCK_EXP, CODE_AREA_EXP, HREF_EXP, LIST_OL_LI_EXP, PUNCTUATION_CHINESE_EXP, PUNCTUATION_ENGLISH_EXP, PUNCTUATION_SPACIAL_ENGLISH_EXP, CHINESE_SYMBOL, ENGLISH_SYMBOL, ENGLISH_CHARCTER_SYMBOL, CHINESE_CHARCTER_SYMBOL })
@@ -146,11 +152,11 @@ export function activate(context: vscode.ExtensionContext) {
                 text = new FormatCode(text).formatted({ formatOpt, codeAreaToBlock, CODE_BLOCK_EXP, LIST_EXP, CODE_AREA_EXP, H1_EXP })
 
                 // handler list
-                text = new FormatList(text).formatted({ formatULSymbol, LIST_EXP, LIST_UL_ST_EXP, LIST_UL_ND_EXP, LIST_UL_TH_EXP, LIST_OL_LI_EXP })
+                text = new FormatList(text).formatted({ formatULSymbol, LIST_EXP, LIST_UL_ST_EXP, LIST_UL_ND_EXP, LIST_UL_TH_EXP, LIST_OL_LI_EXP ,SPLIT_LINE_EXP})
 
                 text = new FormatLink(text).formatted({ LINK_SPACE_EXP, LINK_EXP, CODE_BLOCK_EXP })
                 // text = new FormatHTML(text).formatted({TAG_START_EXP,TAG_SINGLE_EXP,TAG_END_EXP})
-
+                console.log(text, text.match(BACK_QUOTE_EXP))
                 text = text.replace(BACK_QUOTE_EXP, ' `$1` ')
                 text = text.replace(BACK_QUOTE_AFTER_BREAKLINE_EXP, '\n`$1` ')
                 text = text.replace(H_EXP, '\n\n' + '$1' + '\n\n')
@@ -171,7 +177,6 @@ export function activate(context: vscode.ExtensionContext) {
                 text = textLast
                 vscode.window.showInformationMessage(`[Error Format]:${e} \n you can ask for help by https://github.com/sumnow/markdown-formatter/issues`);
             }
-
             result.push(new vscode.TextEdit(range, text));
             vscode.window.showInformationMessage('Formatted text succeeded!');
             return result;

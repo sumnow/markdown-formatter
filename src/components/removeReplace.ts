@@ -10,7 +10,8 @@ export function removeReplace({ text, reg, func, type }: {
     reg.forEach(e => {
         const _arr = text.match(e);
         if (_arr)
-            _tempRegArr.push(..._arr.map(e => { return { content: e, hasN: e.includes('\n') }; }));
+            // replace second param need to escaped
+            _tempRegArr.push(..._arr.map(e => { return { content: escapeStringRegexp(e), hasN: e.includes('\n') }; }));
     });
     if (_tempRegArr && _tempRegArr.length > 0) {
         _tempRegArr.forEach((e, i) => {
