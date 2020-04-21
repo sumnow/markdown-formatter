@@ -18,11 +18,10 @@ export class FormatPunctuation extends FormatComponent {
                 this.text = this.text.replace(_reg, `$1${pad[i]}`);
             });
         };
-
+        
         this.text = removeReplace({
             text: this.text, reg: [CODE_BLOCK_EXP, CODE_AREA_EXP, BACK_QUOTE_EXP, HREF_EXP, LIST_OL_LI_EXP], func: (text: string): string => {
                 // handle fullwidth character
-                console.log(text)
                 const fullwidthArr = CHINESE_SYMBOL.split('');
                 const halfwidthArr = ENGLISH_SYMBOL.split('');
                 if (fullWidthTurnHalfWidth === 'auto') {
@@ -45,7 +44,6 @@ export class FormatPunctuation extends FormatComponent {
 
                 // handle the spaces after '.' 
 
-                console.log(text)
                 text = text.replace(/\.\ */g, '. ');
 
                 // handle ELLIPSIS

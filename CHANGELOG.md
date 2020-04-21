@@ -2,6 +2,11 @@
 
 [中文文档](./CHANGELOG_CN.md)
 
+## 0.8.2
+
+- Fix bug
+- Update `CHANGELOG.md`
+
 ## 0.8.1
 
 - Fix bug: [2 blank lines added at the end of file, conflicts with markdownlint](https://github.com/sumnow/markdown-formatter/issues/22)
