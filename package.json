@@ -2,7 +2,7 @@
     "name": "markdown-formatter",
     "displayName": "markdown-formatter",
     "description": " A Markdown Plugin for code artist",
-    "version": "0.8.0",
+    "version": "0.8.1",
     "icon": "icon.png",
     "publisher": "mervin",
     "engines": {
@@ -48,10 +48,15 @@
                     "default": true,
                     "description": "Enable/disable markdown-formatter."
                 },
+                "markdownFormatter.formatCodes": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "set false to stop all code format"
+                },
                 "markdownFormatter.formatOpt": {
                     "type": "object",
                     "default": {},
-                    "description": "config as js-beautify options, or set false to stop all code format"
+                    "description": "config as js-beautify options"
                 },
                 "markdownFormatter.formatULSymbol": {
                     "type": "boolean",
@@ -75,10 +80,19 @@
     "scripts": {
         "vscode:prepublish": "node ./node_modules/vscode/bin/compile",
         "compile": "node ./node_modules/vscode/bin/compile -watch -p ./",
-        "postinstall": "node ./node_modules/vscode/bin/install"
+        "postinstall": "node ./node_modules/vscode/bin/install",
+        "build": "tsc",
+        "test": "jest",
+        "test-c": "jest --coverage"
+    },
+    "jest": {
+        "testEnvironment": "node"
     },
     "devDependencies": {
+        "@types/jest": "^25.2.1",
         "escape-string-regexp": "^1.0.5",
+        "jest": "^25.4.0",
+        "ts-jest": "^25.4.0",
         "typescript": "^1.8.5",
         "vscode": "^0.11.0"
     },
