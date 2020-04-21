@@ -89,8 +89,8 @@
 ``` markdown
 
 * 大标题
-    + 中标题
-        - 小标题
+  + 中标题
+    - 小标题
 
 ```
 
@@ -136,8 +136,10 @@ fullWidthTurnHalfWidth = config.get<string>('fullWidthTurnHalfWidth', 'auto');
 // 可以设置为任意合法英文
 // 只有设置成js或者javascript，才会按照js语言语法格式化
 codeAreaToBlock = config.get<string>('codeAreaToBlock', '');
-// 是否格式化代码或者配置js-beautify
+// 是否格式化代码
 // false: 不格式化代码
+formatCodes = config.get<boolean>('formatCodes', true);
+// 配置js-beautify
 // {}: beautifyjs的配置设置
 formatOpt = config.get<any> ('formatOpt', {}); 
 // 格式化无序列表的符号 
@@ -156,9 +158,9 @@ spaceAfterFullWidth = config.get<boolean>('spaceAfterFullWidth', false);
 ```js
 // settings.json
 // markdown-formatter conf
-// 按照js格式化
+// 将未指明语言类型的代码区转化为js代码块,
 // "markdownFormatter.codeAreaToBlock": "js",
-// 不格式化
+// 或者不转化
 "markdownFormatter.codeAreaToBlock": "",
 // 自动格式化标点
 "markdownFormatter.fullWidthTurnHalfWidth": "auto",
@@ -188,6 +190,9 @@ spaceAfterFullWidth = config.get<boolean>('spaceAfterFullWidth', false);
 }
 ```
 
+1. 推荐使用代码块代替代码区, 代码块可以显式地声明代码的类型,如果你的文档里有大量不同语言的代码块,推荐设置`codeAreaToBlock`为`code` , 且从此之后开始声明代码区
+2. 层级列表推荐每级别相差2个空格
+
 ## 开发环境
 
 ### 开发版本
@@ -210,6 +215,12 @@ email: mydiamervin@gmail.com 或者 [这里](https://github.com/sumnow/markdown-
 
 感谢大家帮助我完善这个工具
 
+* [Robert Wildling](https://github.com/rowild)
+  + Bug(https://github.com/sumnow/markdown-formatter/issues/24)
+* []()
+  + Bug(https://github.com/sumnow/markdown-formatter/issues/23)
+* []()
+  + Bug(https://github.com/sumnow/markdown-formatter/issues/22)
 * [lancerXXXX](https://github.com/lancerXXXX)
   + Bug(https://github.com/sumnow/markdown-formatter/issues/16)
 * [rgeorgiev583](https://github.com/rgeorgiev583)

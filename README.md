@@ -85,9 +85,9 @@ Typing `ul` or `ol`
 
 ``` markdown
 
-* 大标题
-    + 中标题
-        - 小标题
+* TITLE
+  + Title
+    - title
 
 ```
 
@@ -135,8 +135,10 @@ fullWidthTurnHalfWidth = config.get<string>('fullWidthTurnHalfWidth', 'auto');
 // You can set it by any meaningful strings
 // if it is set to js, it will be formatted according to the js language syntax.
 codeAreaToBlock = config.get<string>('codeAreaToBlock', '');
-// enable/disable format code or config beautifyjs
-// false: disable format code 
+// enable/disable format code
+// false: disable format code
+formatCodes = config.get<boolean>('formatCodes', true);
+// config beautifyjs
 // {}: config beautifyjs
 formatOpt = config.get<any> ('formatOpt', {}); 
 // Format the symbols of the unordered list
@@ -155,37 +157,38 @@ You can refer to my configuration:
 ```js
 // settings.json
 // markdown-formatter conf
-// 按照js格式化
+// Convert the code area of unnamed language into code block according to js type
 // "markdownFormatter.codeAreaToBlock": "js",
-// 不格式化
+// or not
 "markdownFormatter.codeAreaToBlock": "",
-// 自动格式化标点
+// format punctuation automatically
 "markdownFormatter.fullWidthTurnHalfWidth": "auto",
-// 中文标点格式化为英文
+// Chinese punctuation formatted to English
 // "markdownFormatter.fullWidthTurnHalfWidth": "，：；！“”‘’（）？。",
 "markdownFormatter.formatOpt": {
   "indent_size": 2
 },
 "[markdown]": {
-  // 自动保存
-  "editor.formatOnSave": true,
-  // 显示空格
+  // auto save
+  "editor.formatOnSave": false,
+  // show space
   "editor.renderWhitespace": "all",
-  // 快速补全
+  // 
   "editor.quickSuggestions": {
     "other": true,
     "comments": true,
     "strings": true
   },
-  // snippet 提示优先
+  // 
   "editor.snippetSuggestions": "top",
   "editor.tabCompletion": "on",
-  // 使用enter 接受提示
+  // 
   "editor.acceptSuggestionOnEnter": "on",
-  // 默认格式化工具为本工具
+  // 
   "editor.defaultFormatter": "mervin.markdown-formatter"
 }
 ```
+
 
 ## Software version and development environment
 

@@ -2,6 +2,12 @@
 
 [中文文档](./CHANGELOG_CN.md)
 
+## 0.8.1
+
+- Fix bug: [2 blank lines added at the end of file, conflicts with markdownlint](https://github.com/sumnow/markdown-formatter/issues/22)
+- Fix bug: [能否不要删除code block](https://github.com/sumnow/markdown-formatter/issues/18)
+
+
 ## 0.8.0
 
 - Fix bug: [It's not formatting properly lines that contain regexp](https://github.com/sumnow/markdown-formatter/issues/22)

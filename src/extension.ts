@@ -15,6 +15,7 @@ let fullWidthTurnHalfWidth: string = config.get<string>('fullWidthTurnHalfWidth'
 let codeAreaToBlock: string = config.get<string>('codeAreaToBlock', '');
 let displayTime: boolean = config.get<boolean>('displayTime', false);
 let enable: boolean = config.get<boolean>('enable', true);
+var formatCodes: boolean = config.get<boolean>('formatCodes', true)
 let formatOpt: any = config.get<any>('formatOpt', {});
 let formatULSymbol: boolean = config.get<boolean>('formatULSymbol', true);
 let spaceAfterFullWidth: boolean = config.get<boolean>('spaceAfterFullWidth', false);
@@ -25,6 +26,7 @@ vscode.workspace.onDidChangeConfiguration(_ => {
     codeAreaToBlock = config.get<string>('codeAreaToBlock', '');
     displayTime = config.get<boolean>('displayTime', false);
     enable = config.get<boolean>('enable', true);
+    formatCodes = config.get<boolean>('formatCodes', true);
     formatOpt = config.get<any>('formatOpt', {});
     formatULSymbol = config.get<boolean>('formatULSymbol', true);
     spaceAfterFullWidth = config.get<boolean>('spaceAfterFullWidth', false);
@@ -94,6 +96,8 @@ export function activate(context: vscode.ExtensionContext) {
     // duplicated line
     const EXTRALINE_EXP = /\n\n+/g;
 
+    const END_LINE_EXP = /\n\n$/g
+
     // code block
     // const CODE_AREA_EXP = /\n+((?:(?: {4}|\t)+[^\n\-\+\*][^\n]+\n*)+)/g;
     // const CODE_AREA_EXP = /\n+((?:(?: {4}|\t)+(?!\d\.|\+|\-|\*)[^\n]+\n)+)/g;
@@ -149,14 +153,13 @@ export function activate(context: vscode.ExtensionContext) {
                 text = new FormatTable(text).formatted(TABLE_EXP)
 
                 // handler js
-                text = new FormatCode(text).formatted({ formatOpt, codeAreaToBlock, CODE_BLOCK_EXP, LIST_EXP, CODE_AREA_EXP, H1_EXP })
-
+                text = new FormatCode(text).formatted({ formatCodes,formatOpt, codeAreaToBlock, CODE_BLOCK_EXP, LIST_EXP, CODE_AREA_EXP, H1_EXP })
+                
                 // handler list
-                text = new FormatList(text).formatted({ formatULSymbol, LIST_EXP, LIST_UL_ST_EXP, LIST_UL_ND_EXP, LIST_UL_TH_EXP, LIST_OL_LI_EXP ,SPLIT_LINE_EXP})
+                text = new FormatList(text).formatted({ formatULSymbol, LIST_EXP, LIST_UL_ST_EXP, LIST_UL_ND_EXP, LIST_UL_TH_EXP, LIST_OL_LI_EXP, SPLIT_LINE_EXP })
 
                 text = new FormatLink(text).formatted({ LINK_SPACE_EXP, LINK_EXP, CODE_BLOCK_EXP })
                 // text = new FormatHTML(text).formatted({TAG_START_EXP,TAG_SINGLE_EXP,TAG_END_EXP})
-                console.log(text, text.match(BACK_QUOTE_EXP))
                 text = text.replace(BACK_QUOTE_EXP, ' `$1` ')
                 text = text.replace(BACK_QUOTE_AFTER_BREAKLINE_EXP, '\n`$1` ')
                 text = text.replace(H_EXP, '\n\n' + '$1' + '\n\n')
@@ -173,6 +176,10 @@ export function activate(context: vscode.ExtensionContext) {
                 text = text.replace(LINE_THROUGH_EXP, '~~$1~~')
                 // clear breakline
                 text = text.replace(BEGIN_LINE_EXP, '')
+
+                // decrease end line
+                // https://github.com/sumnow/markdown-formatter/issues/24
+                text = text.replace(END_LINE_EXP, '\n')
             } catch (e) {
                 text = textLast
                 vscode.window.showInformationMessage(`[Error Format]:${e} \n you can ask for help by https://github.com/sumnow/markdown-formatter/issues`);

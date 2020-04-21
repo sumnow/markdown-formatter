@@ -22,9 +22,9 @@ export class FormatPunctuation extends FormatComponent {
         this.text = removeReplace({
             text: this.text, reg: [CODE_BLOCK_EXP, CODE_AREA_EXP, BACK_QUOTE_EXP, HREF_EXP, LIST_OL_LI_EXP], func: (text: string): string => {
                 // handle fullwidth character
+                console.log(text)
                 const fullwidthArr = CHINESE_SYMBOL.split('');
                 const halfwidthArr = ENGLISH_SYMBOL.split('');
-
                 if (fullWidthTurnHalfWidth === 'auto') {
                     _replacewithCharcter({ target: fullwidthArr, judge: ENGLISH_CHARCTER_SYMBOL, pad: halfwidthArr });
                     _replacewithCharcter({ target: halfwidthArr, judge: CHINESE_CHARCTER_SYMBOL, pad: fullwidthArr });
@@ -44,10 +44,12 @@ export class FormatPunctuation extends FormatComponent {
                 }
 
                 // handle the spaces after '.' 
-                text = text.replace(/\.\ */g, '.');
+
+                console.log(text)
+                text = text.replace(/\.\ */g, '. ');
 
                 // handle ELLIPSIS
-                text = text.replace(/((\.\.\.)+)/g, '$1 ')
+                text = text.replace(/(\. \. \. )/g, '... ')
 
                 // hanlde '.!?:'
                 text = text.replace(PUNCTUATION_SPACIAL_ENGLISH_EXP, '$1 $2');
