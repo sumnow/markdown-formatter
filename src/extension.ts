@@ -8,8 +8,6 @@ import { FormatCode } from './components/FormatCode';
 import { FormatLink } from './components/FormatLink'
 // import { FormatHTML } from './components/FormatHTML';
 import { handlerTime } from './components/handlerTime';
-import onReplace from './components/handlerReplace'
-var escapeStringRegexp = require('escape-string-regexp');
 
 let config = vscode.workspace.getConfiguration('markdownFormatter');
 let fullWidthTurnHalfWidth: string = config.get<string>('fullWidthTurnHalfWidth', 'auto');

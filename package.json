@@ -6,7 +6,7 @@
     "icon": "icon.png",
     "publisher": "mervin",
     "engines": {
-        "vscode": "^1.0.0"
+		"vscode": "^1.44.0"
     },
     "keywords": [
         "Markdown",
@@ -78,23 +78,31 @@
         ]
     },
     "scripts": {
-        "vscode:prepublish": "node ./node_modules/vscode/bin/compile",
-        "compile": "node ./node_modules/vscode/bin/compile -watch -p ./",
-        "postinstall": "node ./node_modules/vscode/bin/install",
-        "build": "tsc",
-        "test": "jest",
-        "test-c": "jest --coverage"
+        "vscode:prepublish": "yarn run compile",
+		"compile": "tsc -p ./",
+		"lint": "eslint src --ext ts",
+		"watch": "tsc -watch -p ./",
+		"pretest": "yarn run compile && yarn run lint",
+        "test": "jest"
     },
     "jest": {
         "testEnvironment": "node"
     },
     "devDependencies": {
         "@types/jest": "^25.2.1",
-        "escape-string-regexp": "^1.0.5",
         "jest": "^25.4.0",
         "ts-jest": "^25.4.0",
-        "typescript": "^1.8.5",
-        "vscode": "^0.11.0"
+        "@types/vscode": "^1.44.0",
+		"@types/glob": "^7.1.1",
+		"@types/mocha": "^7.0.2",
+		"@types/node": "^13.11.0",
+		"eslint": "^6.8.0",
+		"@typescript-eslint/parser": "^2.26.0",
+		"@typescript-eslint/eslint-plugin": "^2.26.0",
+		"glob": "^7.1.6",
+		"mocha": "^7.1.1",
+		"typescript": "^3.8.3",
+		"vscode-test": "^1.3.0"
     },
     "dependencies": {
         "escape-string-regexp": "^1.0.5",
