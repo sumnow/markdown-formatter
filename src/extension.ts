@@ -20,6 +20,7 @@ var formatCodes: boolean = config.get<boolean>('formatCodes', true)
 let formatOpt: any = config.get<any>('formatOpt', {});
 let formatULSymbol: boolean = config.get<boolean>('formatULSymbol', true);
 let spaceAfterFullWidth: boolean = config.get<boolean>('spaceAfterFullWidth', false);
+let endOfLineSpaces: number = config.get<number>('endOfLineSpaces', 2);
 
 vscode.workspace.onDidChangeConfiguration(_ => {
     config = vscode.workspace.getConfiguration('markdownFormatter');
@@ -31,6 +32,7 @@ vscode.workspace.onDidChangeConfiguration(_ => {
     formatOpt = config.get<any>('formatOpt', {});
     formatULSymbol = config.get<boolean>('formatULSymbol', true);
     spaceAfterFullWidth = config.get<boolean>('spaceAfterFullWidth', false);
+    endOfLineSpaces = config.get<number>('endOfLineSpaces', 2);
 });
 
 // console.log(vscode.window.activeTextEditor.options.tabSize)
@@ -163,6 +165,7 @@ export function formatted(textP: string): string {
         text = text.replace(LINE_THROUGH_EXP, '~~$1~~')
         // clear breakline
         text = text.replace(BEGIN_LINE_EXP, '')
+        text = text.replace(/(\.|\?|\!)+\s+\n/g, '$1' + ' '.repeat(endOfLineSpaces) +  '\n\n')
 
         // decrease end line
         // https://github.com/sumnow/markdown-formatter/issues/24

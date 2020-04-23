@@ -63,9 +63,10 @@ Typing `ul` or `ol`
 
 * For `，,。;；！、？：` add a space after these symbols; 
 * `，：；！“”‘’（）？。` , unify it as a half-width character(Optional); 
-* `.!?` add a space after these symbols, if before uppercases or chineses; 
+* `.!?` add a space after these symbols, if before uppercases or chineses; Add `endOfLineSpaces` spaces if it ends a line.
 * Supports converting Chinese symbols into full-width symbols according to context, or converting English into half-width symbols; 
 * a space before and after the back-quote, which wrapped by back-quote will not be formatted; 
+
 
 #### line
 
@@ -168,6 +169,7 @@ You can refer to my configuration:
 "markdownFormatter.formatOpt": {
   "indent_size": 2
 },
+"markdownFormatter.endOfLineSpaces": 2,
 "[markdown]": {
   // auto save
   "editor.formatOnSave": false,
