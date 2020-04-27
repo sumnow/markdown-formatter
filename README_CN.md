@@ -145,8 +145,8 @@ formatOpt = config.get<any> ('formatOpt', {});
 // 格式化无序列表的符号 
 // * > + > -
 formatULSymbol = config.get<boolean>('formatULSymbol', true); 
-// 全角符号后是否需要空格
-spaceAfterFullWidth = config.get<boolean>('spaceAfterFullWidth', false); 
+// 各种符号后是否需要空格
+spaceAfterFullWidthOrHalfWidth = config.get<string>('spaceAfterFullWidthOrHalfWidth', 'half'); 
 ```
 
 配置 `js-beautify` , 可以参考[这里](https://github.com/beautify-web/js-beautify)

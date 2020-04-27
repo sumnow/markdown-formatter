@@ -2,6 +2,12 @@
 
 [中文文档](./CHANGELOG_CN.md)
 
+## 0.8.3
+
+- Remove notification
+- add configuration `spaceAfterFullWidthOrHalfWidth`
+- Update `CHANGELOG.md`
+
 ## 0.8.2
 
 - Fix bug

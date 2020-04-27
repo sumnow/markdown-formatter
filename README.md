@@ -144,8 +144,8 @@ formatOpt = config.get<any> ('formatOpt', {});
 // Format the symbols of the unordered list
 // * > + > -
 formatULSymbol = config.get<boolean>('formatULSymbol', true);
-// Whether a space is required after the full-width symbol
-spaceAfterFullWidth = config.get<boolean>('spaceAfterFullWidth', false);
+// Whether a space is required after the full-width or half-width symbol
+spaceAfterFullWidthOrHalfWidth = config.get<string>('spaceAfterFullWidthOrHalfWidth', 'half');
 ```
 
 How to config `beautifyjs` , you can click[here](https://github.com/beautify-web/js-beautify)

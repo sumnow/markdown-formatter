@@ -6,7 +6,7 @@ export function removeReplace({ text, reg, func, type }: {
     func: Function;
     type?: string;
 }): string {
-    const _tempRegArr = [];
+    const _tempRegArr:any[] = [];
     reg.forEach(e => {
         // e = escapeStringRegexp(`${e}`)
         const _arr = text.match(e);

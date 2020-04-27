@@ -1,6 +1,7 @@
 import { removeReplace } from "./removeReplace";
 import { FormatComponent } from "./FormatComponent";
 
+
 export class FormatPunctuation extends FormatComponent {
     name: string = 'punctuation'
     text: string;
@@ -8,8 +9,8 @@ export class FormatPunctuation extends FormatComponent {
         this.text = text
     }
 
-    formatted({ fullWidthTurnHalfWidth, spaceAfterFullWidth, BACK_QUOTE_EXP, CODE_BLOCK_EXP, CODE_AREA_EXP, HREF_EXP, LIST_OL_LI_EXP, PUNCTUATION_CHINESE_EXP, PUNCTUATION_ENGLISH_EXP, PUNCTUATION_SPACIAL_ENGLISH_EXP, CHINESE_SYMBOL, ENGLISH_SYMBOL, ENGLISH_CHARCTER_SYMBOL, CHINESE_CHARCTER_SYMBOL }: {
-        fullWidthTurnHalfWidth: string, spaceAfterFullWidth: boolean, BACK_QUOTE_EXP: RegExp, CODE_BLOCK_EXP: RegExp, CODE_AREA_EXP: RegExp, HREF_EXP: RegExp, LIST_OL_LI_EXP: RegExp, PUNCTUATION_CHINESE_EXP: RegExp, PUNCTUATION_ENGLISH_EXP: RegExp, PUNCTUATION_SPACIAL_ENGLISH_EXP: RegExp, CHINESE_SYMBOL: string, ENGLISH_SYMBOL: string, ENGLISH_CHARCTER_SYMBOL: string, CHINESE_CHARCTER_SYMBOL: string
+    formatted({ fullWidthTurnHalfWidth, spaceAfterFullWidthOrHalfWidth, BACK_QUOTE_EXP, CODE_BLOCK_EXP, CODE_AREA_EXP, HREF_EXP, LIST_OL_LI_EXP, PUNCTUATION_CHINESE_EXP, PUNCTUATION_ENGLISH_EXP, PUNCTUATION_SPACIAL_ENGLISH_EXP, CHINESE_SYMBOL, ENGLISH_SYMBOL, ENGLISH_CHARCTER_SYMBOL, CHINESE_CHARCTER_SYMBOL }: {
+        fullWidthTurnHalfWidth: string, spaceAfterFullWidthOrHalfWidth: string, BACK_QUOTE_EXP: RegExp, CODE_BLOCK_EXP: RegExp, CODE_AREA_EXP: RegExp, HREF_EXP: RegExp, LIST_OL_LI_EXP: RegExp, PUNCTUATION_CHINESE_EXP: RegExp, PUNCTUATION_ENGLISH_EXP: RegExp, PUNCTUATION_SPACIAL_ENGLISH_EXP: RegExp, CHINESE_SYMBOL: string, ENGLISH_SYMBOL: string, ENGLISH_CHARCTER_SYMBOL: string, CHINESE_CHARCTER_SYMBOL: string
     }): string {
 
         const _replacewithCharcter = ({ target, judge, pad }: { target: string[]; judge: string; pad: string[]; }) => {
@@ -18,7 +19,14 @@ export class FormatPunctuation extends FormatComponent {
                 this.text = this.text.replace(_reg, `$1${pad[i]}`);
             });
         };
-        
+        function hanldeEnglish(text: string): string {
+            text = text.replace(PUNCTUATION_SPACIAL_ENGLISH_EXP, '$1 $2');
+            text = text.replace(PUNCTUATION_ENGLISH_EXP, '$1 ');
+            return text;
+        }
+        function handleChinese(text: string): string {
+            return text.replace(PUNCTUATION_CHINESE_EXP, '$1 ');
+        }
         this.text = removeReplace({
             text: this.text, reg: [CODE_BLOCK_EXP, CODE_AREA_EXP, BACK_QUOTE_EXP, HREF_EXP, LIST_OL_LI_EXP], func: (text: string): string => {
                 // handle fullwidth character
@@ -44,22 +52,28 @@ export class FormatPunctuation extends FormatComponent {
 
                 // handle the spaces after '.' 
 
-                text = text.replace(/\.\ */g, '. ');
+                // text = text.replace(/\.\ */g, '. ');
 
                 // handle ELLIPSIS
                 text = text.replace(/(\. \. \. )/g, '... ')
 
-                // hanlde '.!?:'
-                text = text.replace(PUNCTUATION_SPACIAL_ENGLISH_EXP, '$1 $2');
-
-                if (spaceAfterFullWidth) {
-                    text = text.replace(PUNCTUATION_CHINESE_EXP, '$1 ');
+                switch (spaceAfterFullWidthOrHalfWidth) {
+                    case "full":
+                        text = handleChinese(text)
+                        break;
+                    case "all":
+                        text = hanldeEnglish(text)
+                        text = handleChinese(text)
+                        break;
+                    case "neither":
+                        break;
+                    case "half":
+                        // hanlde '.!?:'
+                        text = hanldeEnglish(text)
+                        break;
+                    default:
+                        text = hanldeEnglish(text)
                 }
-
-                text = text.replace(PUNCTUATION_ENGLISH_EXP, '$1 ');
-
-
-
                 return text;
             }
         })

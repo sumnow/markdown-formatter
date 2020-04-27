@@ -1,7 +1,7 @@
 export class ParseHTML {
     text: string
 
-    constructor(text) {
+    constructor(text: string) {
         this.text = text
     }
 

@@ -2,6 +2,12 @@
 
 [English Document](./CHANGELOG.md)
 
+## 0.8.3
+
+- 去除格式化提醒
+- 添加可配置空格 `spaceAfterFullWidthOrHalfWidth`
+- 更新 `CHANGELOG.md`
+
 ## 0.8.2
 
 - 修复问题

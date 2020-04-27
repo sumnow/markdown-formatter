@@ -17,7 +17,7 @@ let enable: boolean = config.get<boolean>('enable', true);
 var formatCodes: boolean = config.get<boolean>('formatCodes', true)
 let formatOpt: any = config.get<any>('formatOpt', {});
 let formatULSymbol: boolean = config.get<boolean>('formatULSymbol', true);
-let spaceAfterFullWidth: boolean = config.get<boolean>('spaceAfterFullWidth', false);
+let spaceAfterFullWidthOrHalfWidth: string = config.get<string>('spaceAfterFullWidthOrHalfWidth', 'half');
 
 vscode.workspace.onDidChangeConfiguration(_ => {
     config = vscode.workspace.getConfiguration('markdownFormatter');
@@ -28,7 +28,7 @@ vscode.workspace.onDidChangeConfiguration(_ => {
     formatCodes = config.get<boolean>('formatCodes', true);
     formatOpt = config.get<any>('formatOpt', {});
     formatULSymbol = config.get<boolean>('formatULSymbol', true);
-    spaceAfterFullWidth = config.get<boolean>('spaceAfterFullWidth', false);
+    spaceAfterFullWidthOrHalfWidth = config.get<string>('spaceAfterFullWidthOrHalfWidth', 'half');
 });
 
 // console.log(vscode.window.activeTextEditor.options.tabSize)
@@ -116,8 +116,9 @@ const ITALIC_EXP = /\*\ (`[^`]+`)\ \*/g;
 const BOLD_EXP = /\*\*\ (`[^`]+`)\ \*\*/g;
 const ITALIC_BOLD_EXP = /\*\*\*\ (`[^`]+`)\ \*\*\*/g;
 const LINE_THROUGH_EXP = /\~\~\ (`[^`]+`)\ \~\~/g;
+// format sort: time -> punctution
 export function formatted(textP: string): string {
-    if (!enable) { return void 0 }
+    if (!enable) {}
 
     // let text = document.getText(range) + '\n\n'
     let text = textP + '\n\n'
@@ -133,7 +134,7 @@ export function formatted(textP: string): string {
     }
     try {
         // format PUNCTUATION_EXP
-        text = new FormatPunctuation(text).formatted({ fullWidthTurnHalfWidth, spaceAfterFullWidth, BACK_QUOTE_EXP, CODE_BLOCK_EXP, CODE_AREA_EXP, HREF_EXP, LIST_OL_LI_EXP, PUNCTUATION_CHINESE_EXP, PUNCTUATION_ENGLISH_EXP, PUNCTUATION_SPACIAL_ENGLISH_EXP, CHINESE_SYMBOL, ENGLISH_SYMBOL, ENGLISH_CHARCTER_SYMBOL, CHINESE_CHARCTER_SYMBOL })
+        text = new FormatPunctuation(text).formatted({ fullWidthTurnHalfWidth, spaceAfterFullWidthOrHalfWidth, BACK_QUOTE_EXP, CODE_BLOCK_EXP, CODE_AREA_EXP, HREF_EXP, LIST_OL_LI_EXP, PUNCTUATION_CHINESE_EXP, PUNCTUATION_ENGLISH_EXP, PUNCTUATION_SPACIAL_ENGLISH_EXP, CHINESE_SYMBOL, ENGLISH_SYMBOL, ENGLISH_CHARCTER_SYMBOL, CHINESE_CHARCTER_SYMBOL })
 
         // handler table
         text = new FormatTable(text).formatted(TABLE_EXP)
@@ -188,7 +189,7 @@ export function activate(context: vscode.ExtensionContext) {
             let text = formatted(document.getText(range))
 
             result.push(new vscode.TextEdit(range, text));
-            vscode.window.showInformationMessage('Formatted text succeeded!');
+            // vscode.window.showInformationMessage('Formatted text succeeded!');
             return result;
         }
     }))
