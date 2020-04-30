@@ -2,6 +2,11 @@
 
 [English Document](./CHANGELOG.md)
 
+## 0.8.4
+
+- 修复问题: [引用下的表格](https://github.com/sumnow/markdown-formatter/issues/20)
+- 更新 `CHANGELOG.md`
+
 ## 0.8.3
 
 - 去除格式化提醒

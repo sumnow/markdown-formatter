@@ -89,6 +89,9 @@ export class FormatTableTool {
     getPadding(len) {
         return this.repeatStr(' ', len);
     }
+    getChinesePadding(len) {
+        return this.repeatStr('　', len);
+    }
     repeatStr(str, count) {
         return count > 0 ? Array(count + 1).join(str) : '';
     }

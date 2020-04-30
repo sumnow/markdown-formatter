@@ -2,11 +2,11 @@
     "name": "markdown-formatter",
     "displayName": "markdown-formatter",
     "description": " A Markdown Plugin for code artist",
-    "version": "0.8.3",
+    "version": "0.8.4",
     "icon": "icon.png",
     "publisher": "mervin",
     "engines": {
-		"vscode": "^1.44.0"
+        "vscode": "^1.44.0"
     },
     "keywords": [
         "Markdown",
@@ -85,10 +85,10 @@
     },
     "scripts": {
         "vscode:prepublish": "yarn run compile",
-		"compile": "tsc -p ./",
-		"lint": "eslint src --ext ts",
-		"watch": "tsc -watch -p ./",
-		"pretest": "yarn run compile && yarn run lint",
+        "compile": "tsc -p ./",
+        "lint": "eslint src --ext ts",
+        "watch": "tsc -watch -p ./",
+        "pretest": "yarn run compile && yarn run lint",
         "test": "jest"
     },
     "jest": {
@@ -99,15 +99,15 @@
         "jest": "^25.4.0",
         "ts-jest": "^25.4.0",
         "@types/vscode": "^1.44.0",
-		"@types/glob": "^7.1.1",
-		"@types/mocha": "^7.0.2",
-		"@types/node": "^13.11.0",
-		"eslint": "^6.8.0",
-		"@typescript-eslint/parser": "^2.26.0",
-		"@typescript-eslint/eslint-plugin": "^2.26.0",
-		"glob": "^7.1.6",
-		"typescript": "^3.8.3",
-		"vscode-test": "^1.3.0"
+        "@types/glob": "^7.1.1",
+        "@types/mocha": "^7.0.2",
+        "@types/node": "^13.11.0",
+        "eslint": "^6.8.0",
+        "@typescript-eslint/parser": "^2.26.0",
+        "@typescript-eslint/eslint-plugin": "^2.26.0",
+        "glob": "^7.1.6",
+        "typescript": "^3.8.3",
+        "vscode-test": "^1.3.0"
     },
     "dependencies": {
         "escape-string-regexp": "^1.0.5",

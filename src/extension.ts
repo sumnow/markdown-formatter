@@ -118,7 +118,7 @@ const ITALIC_BOLD_EXP = /\*\*\*\ (`[^`]+`)\ \*\*\*/g;
 const LINE_THROUGH_EXP = /\~\~\ (`[^`]+`)\ \~\~/g;
 // format sort: time -> punctution
 export function formatted(textP: string): string {
-    if (!enable) {}
+    if (!enable) { return textP }
 
     // let text = document.getText(range) + '\n\n'
     let text = textP + '\n\n'
@@ -136,15 +136,17 @@ export function formatted(textP: string): string {
         // format PUNCTUATION_EXP
         text = new FormatPunctuation(text).formatted({ fullWidthTurnHalfWidth, spaceAfterFullWidthOrHalfWidth, BACK_QUOTE_EXP, CODE_BLOCK_EXP, CODE_AREA_EXP, HREF_EXP, LIST_OL_LI_EXP, PUNCTUATION_CHINESE_EXP, PUNCTUATION_ENGLISH_EXP, PUNCTUATION_SPACIAL_ENGLISH_EXP, CHINESE_SYMBOL, ENGLISH_SYMBOL, ENGLISH_CHARCTER_SYMBOL, CHINESE_CHARCTER_SYMBOL })
 
+        text = new FormatLink(text).formatted({ LINK_SPACE_EXP, LINK_EXP, CODE_BLOCK_EXP, TABLE_EXP })
+
         // handler table
-        text = new FormatTable(text).formatted(TABLE_EXP)
+        text = new FormatTable(text).formatted({ TABLE_EXP, LINK_EXP, CODE_BLOCK_EXP, CODE_AREA_EXP })
+
         // handler js
         text = new FormatCode(text).formatted({ formatCodes, formatOpt, codeAreaToBlock, CODE_BLOCK_EXP, LIST_EXP, CODE_AREA_EXP, H1_EXP })
 
         // handler list
         text = new FormatList(text).formatted({ formatULSymbol, LIST_EXP, LIST_UL_ST_EXP, LIST_UL_ND_EXP, LIST_UL_TH_EXP, LIST_OL_LI_EXP, SPLIT_LINE_EXP })
 
-        text = new FormatLink(text).formatted({ LINK_SPACE_EXP, LINK_EXP, CODE_BLOCK_EXP })
         // text = new FormatHTML(text).formatted({TAG_START_EXP,TAG_SINGLE_EXP,TAG_END_EXP})
         text = text.replace(BACK_QUOTE_EXP, ' `$1` ')
         text = text.replace(BACK_QUOTE_AFTER_BREAKLINE_EXP, '\n`$1` ')
