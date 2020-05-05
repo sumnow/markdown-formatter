@@ -2,6 +2,12 @@
 
 [中文文档](./CHANGELOG_CN.md)
 
+
+## 0.8.5
+
+- Fix bug: [[Error Format]:TypeError: Cannot read property 'forEach' of null](https://github.com/sumnow/markdown-formatter/issues/28)
+- Update `CHANGELOG.md`
+
 ## 0.8.4
 
 - Fix bug: [引用下的表格](https://github.com/sumnow/markdown-formatter/issues/20)

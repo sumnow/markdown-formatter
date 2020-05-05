@@ -17,20 +17,21 @@ export class FormatLink extends FormatComponent {
             text: this.text,
             reg: [CODE_BLOCK_EXP],
             func(text: string) {
-                console.log(text, text.match(LINK_EXP), text.match(LINK_SPACE_EXP))
                 text = text.replace(LINK_EXP, '\n\n' + '$1' + '\n\n')
                 text = text.replace(LINK_SPACE_EXP, '\n' + '$1 $2')
                 // hanler table in link
                 // https://github.com/sumnow/markdown-formatter/issues/20
-                text.match(LINK_EXP).forEach(e => {
-                    const textRemoveLinkSymbol = e.replace(/\n\>\ /g, '\n');
+                if (text.match(LINK_EXP)) {
+                    text.match(LINK_EXP).forEach(e => {
+                        const textRemoveLinkSymbol = e.replace(/\n\>\ /g, '\n');
+                        if (textRemoveLinkSymbol.match(TABLE_EXP)) {
+                            const textResult = `\n${new FormatTableTool().reformat(textRemoveLinkSymbol)}`.replace(/\n\|/g, '\n> |')
+                            const _reg = new RegExp(escapeStringRegexp(e));
+                            text = text.replace(_reg, textResult)
+                        }
 
-                    const textResult = `\n${new FormatTableTool().reformat(textRemoveLinkSymbol)}`.replace(/\n\|/g, '\n> |')
-
-                    const _reg = new RegExp(escapeStringRegexp(e));
-
-                    text = text.replace(_reg, textResult)
-                })
+                    })
+                }
                 // textTable.forEach(e => {
                 //     const les = new FormatTableTool().reformat(e)
                 //     console.log(456, les)

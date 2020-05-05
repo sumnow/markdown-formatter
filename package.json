@@ -2,7 +2,7 @@
     "name": "markdown-formatter",
     "displayName": "markdown-formatter",
     "description": " A Markdown Plugin for code artist",
-    "version": "0.8.4",
+    "version": "0.8.5",
     "icon": "icon.png",
     "publisher": "mervin",
     "engines": {
