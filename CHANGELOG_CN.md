@@ -2,6 +2,10 @@
 
 [English Document](./CHANGELOG.md)
 
+## 0.8.6
+
+- 修复问题: 标题间的空行未被格式化
+- 更新 `CHANGELOG.md`
 
 ## 0.8.5
 

@@ -56,7 +56,7 @@ const PUNCTUATION_SPACIAL_ENGLISH_EXP = /([\.\!\?\:])([A-Z\u4e00-\u9fa5])/g;
 // h1 symbol
 const H1_EXP = /\n+(# [^\n]+)\n*/g;
 // h2,h3,h4... symbol
-const H_EXP = /\n+(##+ [^\n]+)\n*/g;
+const H_EXP = /\n+(##+ [^\n]+)\n/g;
 // table
 const TABLE_EXP = /((?:(?:[^\n]*?\|[^\n]*)\ *)?(?:\r?\n|^))(?:[^|]+)((?:\|\ *(?::?-+:?|::)\ *|\|?(?:\ *(?::?-+:?|::)\ *\|)+)(?:\ *(?::?-+:?|::)\ *)?\ *\r?\n)((?:(?:[^\n]*?\|[^\n]*)\ *(?:\r?\n|$))+)/g;
 //back quote

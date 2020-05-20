@@ -6,8 +6,10 @@ import * as assert from 'assert';
 // as well as import your extension to test it
 import * as vscode from 'vscode';
 import * as myExtension from '../src/extension';
-// import { formatted, sum } from '../src/extension'
+// import { formatted } from '../src/extension'
 
-// test('adds 1 + 2 to equal 3', () => {
-//     expect(sum(1, 2)).toBe(3);
+// describe('sum suite', function () {
+//     test('should add 2 positive numbers together and return the result', function () {
+//         expect(formatted(`# name`)).toBe(``);
+//     });
 // });

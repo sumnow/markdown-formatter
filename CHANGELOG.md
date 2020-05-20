@@ -2,6 +2,10 @@
 
 [中文文档](./CHANGELOG_CN.md)
 
+## 0.8.6
+
+- Fix issue: There is no content between consecutive titles, and blank lines cannot be formatted correctly.
+- Update `CHANGELOG.md`
 
 ## 0.8.5
 
