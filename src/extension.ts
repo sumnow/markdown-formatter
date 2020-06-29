@@ -121,7 +121,7 @@ export function formatted(textP: string): string {
     if (!enable) { return textP }
 
     // let text = document.getText(range) + '\n\n'
-    let text = textP + '\n\n'
+    let text = '\n' + textP + '\n\n'
 
     const textLast = text
 
@@ -149,6 +149,9 @@ export function formatted(textP: string): string {
 
         // text = new FormatHTML(text).formatted({TAG_START_EXP,TAG_SINGLE_EXP,TAG_END_EXP})
         text = text.replace(BACK_QUOTE_EXP, ' `$1` ')
+        // remove space in `something`+space+breakline
+        text = text.replace(/` \n+/g, '`\n')
+
         text = text.replace(BACK_QUOTE_AFTER_BREAKLINE_EXP, '\n`$1` ')
         text = text.replace(H_EXP, '\n\n' + '$1' + '\n\n')
         // text = text.replace(H1_EXP, '$1' + '\n\n')

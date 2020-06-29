@@ -2,6 +2,11 @@
 
 [中文文档](./CHANGELOG_CN.md)
 
+## 0.8.7
+
+- Fix issue: [Formatter adds trailing space between backticks and newlines, which conflicts with Markdown linters](https://github.com/sumnow/markdown-formatter/issues/31)
+- Update `CHANGELOG.md`
+
 ## 0.8.6
 
 - Fix issue: There is no content between consecutive titles, and blank lines cannot be formatted correctly.

@@ -2,6 +2,11 @@
 
 [English Document](./CHANGELOG.md)
 
+## 0.8.7
+
+- 修复问题: 去除代码区后无意义的空格
+- 更新 `CHANGELOG.md`
+
 ## 0.8.6
 
 - 修复问题: 标题间的空行未被格式化
