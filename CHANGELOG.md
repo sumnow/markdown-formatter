@@ -2,6 +2,11 @@
 
 [中文文档](./CHANGELOG_CN.md)
 
+## 0.8.8
+
+- Fix issue: [错误地加转义符号](https://github.com/sumnow/markdown-formatter/issues/29)
+- Update `CHANGELOG.md`
+
 ## 0.8.7
 
 - Fix issue: [Formatter adds trailing space between backticks and newlines, which conflicts with Markdown linters](https://github.com/sumnow/markdown-formatter/issues/31)

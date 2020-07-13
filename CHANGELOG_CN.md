@@ -2,6 +2,11 @@
 
 [English Document](./CHANGELOG.md)
 
+## 0.8.8
+
+- 修复问题: [错误地加转义符号](https://github.com/sumnow/markdown-formatter/issues/29)
+- 更新 `CHANGELOG.md`
+
 ## 0.8.7
 
 - 修复问题: 去除代码区后无意义的空格
