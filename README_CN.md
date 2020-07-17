@@ -10,7 +10,7 @@
 
 安装完成以后, 你可能需要重新启动你的vscode. 
 
-在任何 `.md` 为后缀的 `markdown` 标准文件中, 都可以使用 `shift+option+f` (osx) 或者 `ctrl+shift+f` (window) 快速格式化代码. 
+在任何 `.md` 为后缀的 `markdown` 标准文件中, 都可以使用 `shift+option+f` (osx) 或者 `shift+alt+f` (window) 快速格式化代码. 
 
 ![example.gif](https://raw.githubusercontent.com/sumnow/markdown-formatter/master/images/example.gif)
 
