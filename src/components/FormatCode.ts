@@ -13,7 +13,7 @@ export class FormatCode extends FormatComponent {
     super(text: string) {
         this.text = text
     }
-    formatted({ formatCodes, formatOpt, codeAreaToBlock, CODE_BLOCK_EXP, LIST_EXP, CODE_AREA_EXP, H1_EXP }: { formatCodes: boolean, formatOpt: any, codeAreaToBlock: string, CODE_BLOCK_EXP: RegExp, LIST_EXP: RegExp, CODE_AREA_EXP: RegExp, H1_EXP: RegExp }): string {
+    formatted({ formatCodes, formatOpt, codeAreaToBlock, CODE_BLOCK_EXP, LIST_EXP, CODE_AREA_EXP, H1_EXP, BACK_QUOTE_EXP }: { formatCodes: boolean, formatOpt: any, codeAreaToBlock: string, CODE_BLOCK_EXP: RegExp, LIST_EXP: RegExp, CODE_AREA_EXP: RegExp, H1_EXP: RegExp, BACK_QUOTE_EXP: RegExp }): string {
         if (!formatCodes) {
             return this.text
         }
@@ -30,6 +30,7 @@ export class FormatCode extends FormatComponent {
                 reg: [CODE_BLOCK_EXP, LIST_EXP],
                 func: (text: string): string => {
                     const _jsArr = text.match(CODE_AREA_EXP);
+
                     codeAreaToBlock = codeAreaToBlock.toLowerCase()
                     if (_jsArr && _jsArr.length > 0) {
                         if (codeAreaToBlock === '') {
@@ -49,7 +50,9 @@ export class FormatCode extends FormatComponent {
                             });
                         }
                     }
+                    // specail handler: format H1 and `` 
                     text = text.replace(H1_EXP, '\n\n\n' + '$1' + '\n\n')
+                    text = text.replace(BACK_QUOTE_EXP, ' `$1` ')
 
                     return text;
                 },

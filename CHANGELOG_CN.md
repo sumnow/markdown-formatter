@@ -2,6 +2,12 @@
 
 [English Document](./CHANGELOG.md)
 
+## 0.8.9
+
+- 修复问题: [Formatting issue in shell/bash code block](https://github.com/sumnow/markdown-formatter/issues/38)
+- 修复问题: [Space remove in case of list entry ending with code](https://github.com/sumnow/markdown-formatter/issues/36)
+- 更新 `CHANGELOG.md`
+
 ## 0.8.8
 
 - 修复问题: [错误地加转义符号](https://github.com/sumnow/markdown-formatter/issues/29)
