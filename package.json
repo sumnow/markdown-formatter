@@ -2,7 +2,7 @@
     "name": "markdown-formatter",
     "displayName": "markdown-formatter",
     "description": " A Markdown Plugin for code artist",
-    "version": "0.8.9",
+    "version": "0.9.0",
     "icon": "icon.png",
     "publisher": "mervin",
     "engines": {
@@ -52,6 +52,11 @@
                     "type": "boolean",
                     "default": true,
                     "description": "set false to stop all code format"
+                },
+                "markdownFormatter.formatTable": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Format the table, if the table contains pictures or different languages, please do not open this"
                 },
                 "markdownFormatter.formatOpt": {
                     "type": "object",

@@ -15,9 +15,12 @@ let codeAreaToBlock: string = config.get<string>('codeAreaToBlock', '');
 let displayTime: boolean = config.get<boolean>('displayTime', false);
 let enable: boolean = config.get<boolean>('enable', true);
 var formatCodes: boolean = config.get<boolean>('formatCodes', true)
+let formatTable: boolean = config.get<boolean>('formatTable', false);
 let formatOpt: any = config.get<any>('formatOpt', {});
 let formatULSymbol: boolean = config.get<boolean>('formatULSymbol', true);
-let spaceAfterFullWidthOrHalfWidth: string = config.get<string>('spaceAfterFullWidthOrHalfWidth', 'half');
+let spaceAfterFullWidthOrHalfWidth: string = config.get<string>
+    ('spaceAfterFullWidthOrHalfWidth', 'half');
+
 
 vscode.workspace.onDidChangeConfiguration(_ => {
     config = vscode.workspace.getConfiguration('markdownFormatter');
@@ -25,6 +28,7 @@ vscode.workspace.onDidChangeConfiguration(_ => {
     codeAreaToBlock = config.get<string>('codeAreaToBlock', '');
     displayTime = config.get<boolean>('displayTime', false);
     enable = config.get<boolean>('enable', true);
+    formatTable = config.get<boolean>('formatTable', false);
     formatCodes = config.get<boolean>('formatCodes', true);
     formatOpt = config.get<any>('formatOpt', {});
     formatULSymbol = config.get<boolean>('formatULSymbol', true);
@@ -139,8 +143,10 @@ export function formatted(textP: string): string {
 
         text = new FormatLink(text).formatted({ LINK_SPACE_EXP, LINK_EXP, CODE_BLOCK_EXP, TABLE_EXP })
 
-        // handler table
-        text = new FormatTable(text).formatted({ TABLE_EXP, LINK_EXP, CODE_BLOCK_EXP, CODE_AREA_EXP })
+        if (formatTable) {
+            // handler table
+            text = new FormatTable(text).formatted({ TABLE_EXP, LINK_EXP, CODE_BLOCK_EXP, CODE_AREA_EXP })
+        }
 
         // handler js
         text = new FormatCode(text).formatted({ formatCodes, formatOpt, codeAreaToBlock, CODE_BLOCK_EXP, LIST_EXP, CODE_AREA_EXP, H1_EXP, BACK_QUOTE_EXP })
@@ -154,7 +160,7 @@ export function formatted(textP: string): string {
         // remove space in `something`+space+breakline
         // https://github.com/sumnow/markdown-formatter/issues/36
         text = text.replace(/` \n+/g, '`\n\n')
-
+        console.log(233, text, text.match(BACK_QUOTE_AFTER_BREAKLINE_EXP))
         text = text.replace(BACK_QUOTE_AFTER_BREAKLINE_EXP, '\n`$1` ')
         text = text.replace(H_EXP, '\n\n' + '$1' + '\n\n')
         // text = text.replace(H1_EXP, '$1' + '\n\n')

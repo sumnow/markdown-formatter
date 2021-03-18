@@ -14,6 +14,7 @@ let codeAreaToBlock = config.get('codeAreaToBlock', '');
 let displayTime = config.get('displayTime', false);
 let enable = config.get('enable', true);
 var formatCodes = config.get('formatCodes', true);
+let formatTable = config.get('formatTable', false);
 let formatOpt = config.get('formatOpt', {});
 let formatULSymbol = config.get('formatULSymbol', true);
 let spaceAfterFullWidthOrHalfWidth = config.get('spaceAfterFullWidthOrHalfWidth', 'half');
@@ -23,6 +24,7 @@ vscode.workspace.onDidChangeConfiguration(_ => {
     codeAreaToBlock = config.get('codeAreaToBlock', '');
     displayTime = config.get('displayTime', false);
     enable = config.get('enable', true);
+    formatTable = config.get('formatTable', false);
     formatCodes = config.get('formatCodes', true);
     formatOpt = config.get('formatOpt', {});
     formatULSymbol = config.get('formatULSymbol', true);
@@ -116,8 +118,10 @@ function formatted(textP) {
         // format PUNCTUATION_EXP
         text = new FormatPunctuation_1.FormatPunctuation(text).formatted({ fullWidthTurnHalfWidth, spaceAfterFullWidthOrHalfWidth, BACK_QUOTE_EXP, CODE_BLOCK_EXP, CODE_AREA_EXP, HREF_EXP, LIST_OL_LI_EXP, PUNCTUATION_CHINESE_EXP, PUNCTUATION_ENGLISH_EXP, PUNCTUATION_SPACIAL_ENGLISH_EXP, CHINESE_SYMBOL, ENGLISH_SYMBOL, ENGLISH_CHARCTER_SYMBOL, CHINESE_CHARCTER_SYMBOL });
         text = new FormatLink_1.FormatLink(text).formatted({ LINK_SPACE_EXP, LINK_EXP, CODE_BLOCK_EXP, TABLE_EXP });
-        // handler table
-        text = new FormatTable_1.FormatTable(text).formatted({ TABLE_EXP, LINK_EXP, CODE_BLOCK_EXP, CODE_AREA_EXP });
+        if (formatTable) {
+            // handler table
+            text = new FormatTable_1.FormatTable(text).formatted({ TABLE_EXP, LINK_EXP, CODE_BLOCK_EXP, CODE_AREA_EXP });
+        }
         // handler js
         text = new FormatCode_1.FormatCode(text).formatted({ formatCodes, formatOpt, codeAreaToBlock, CODE_BLOCK_EXP, LIST_EXP, CODE_AREA_EXP, H1_EXP, BACK_QUOTE_EXP });
         // handler list
@@ -127,6 +131,7 @@ function formatted(textP) {
         // remove space in `something`+space+breakline
         // https://github.com/sumnow/markdown-formatter/issues/36
         text = text.replace(/` \n+/g, '`\n\n');
+        console.log(233, text, text.match(BACK_QUOTE_AFTER_BREAKLINE_EXP));
         text = text.replace(BACK_QUOTE_AFTER_BREAKLINE_EXP, '\n`$1` ');
         text = text.replace(H_EXP, '\n\n' + '$1' + '\n\n');
         // text = text.replace(H1_EXP, '$1' + '\n\n')
