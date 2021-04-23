@@ -32,12 +32,12 @@ export class FormatList extends FormatComponent {
             return e.replace(LIST_OL_LI_EXP, '$2').length
         }) : []
 
-        console.log(_arr,_length)
         const maxLength: number = Math.max(..._length)
         if (maxLength > 1) {
             _arr.forEach((e, i) => {
                 if (_length[i] < maxLength) {
-                    const _reg = new RegExp((e), 'g');
+                    // https://github.com/sumnow/markdown-formatter/issues/45
+                    const _reg = new RegExp(escapeStringRegexp(e), 'g');
                     this.text = this.text.replace(_reg, e.replace(LIST_OL_LI_EXP, `$1${this.repeatZero({ number: maxLength - _length[i], str: '' })}$2$3`))
                 }
             })

@@ -57,6 +57,8 @@ const TABLE_EXP = /((?:(?:[^\n]*?\|[^\n]*)\ *)?(?:\r?\n|^))(?:[^|]+)((?:\|\ *(?:
 //back quote
 const BACK_QUOTE_EXP = /\ *`([^`\n]+)`\ */g;
 const BACK_QUOTE_AFTER_BREAKLINE_EXP = /\n\ `([^`\n]+)`\ /g;
+// issue: https://github.com/sumnow/markdown-formatter/issues/48
+const BACK_QUOTE_WITH_SPACE_EXP = /\ `([^`\n]+)`\ /g;
 // image link
 const IMG_EXP = /([^[])(\!\[[^\n]+\]\([^\n]+\))/g;
 // split line 
@@ -116,7 +118,7 @@ function formatted(textP) {
     }
     try {
         // format PUNCTUATION_EXP
-        text = new FormatPunctuation_1.FormatPunctuation(text).formatted({ fullWidthTurnHalfWidth, spaceAfterFullWidthOrHalfWidth, BACK_QUOTE_EXP, CODE_BLOCK_EXP, CODE_AREA_EXP, HREF_EXP, LIST_OL_LI_EXP, PUNCTUATION_CHINESE_EXP, PUNCTUATION_ENGLISH_EXP, PUNCTUATION_SPACIAL_ENGLISH_EXP, CHINESE_SYMBOL, ENGLISH_SYMBOL, ENGLISH_CHARCTER_SYMBOL, CHINESE_CHARCTER_SYMBOL });
+        text = new FormatPunctuation_1.FormatPunctuation(text).formatted({ fullWidthTurnHalfWidth, spaceAfterFullWidthOrHalfWidth, BACK_QUOTE_WITH_SPACE_EXP, CODE_BLOCK_EXP, CODE_AREA_EXP, HREF_EXP, LIST_OL_LI_EXP, PUNCTUATION_CHINESE_EXP, PUNCTUATION_ENGLISH_EXP, PUNCTUATION_SPACIAL_ENGLISH_EXP, CHINESE_SYMBOL, ENGLISH_SYMBOL, ENGLISH_CHARCTER_SYMBOL, CHINESE_CHARCTER_SYMBOL });
         text = new FormatLink_1.FormatLink(text).formatted({ LINK_SPACE_EXP, LINK_EXP, CODE_BLOCK_EXP, TABLE_EXP });
         if (formatTable) {
             // handler table
@@ -131,7 +133,6 @@ function formatted(textP) {
         // remove space in `something`+space+breakline
         // https://github.com/sumnow/markdown-formatter/issues/36
         text = text.replace(/` \n+/g, '`\n\n');
-        console.log(233, text, text.match(BACK_QUOTE_AFTER_BREAKLINE_EXP));
         text = text.replace(BACK_QUOTE_AFTER_BREAKLINE_EXP, '\n`$1` ');
         text = text.replace(H_EXP, '\n\n' + '$1' + '\n\n');
         // text = text.replace(H1_EXP, '$1' + '\n\n')

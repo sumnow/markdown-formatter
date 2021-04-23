@@ -2,6 +2,15 @@
 
 [English Document](./CHANGELOG.md)
 
+## 0.9.1
+- 修复问题: [格式化序号有bug #45](https://github.com/sumnow/markdown-formatter/issues/45)
+- 修复问题: [Spaces being added forever between comma and snippet](https://github.com/sumnow/markdown-formatter/issues/48)
+- 更新 `CHANGELOG.md`
+
+## 0.9.0
+
+- 更新 `CHANGELOG.md`
+
 ## 0.8.9
 
 - 修复问题: [Formatting issue in shell/bash code block](https://github.com/sumnow/markdown-formatter/issues/38)
