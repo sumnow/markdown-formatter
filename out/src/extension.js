@@ -137,7 +137,7 @@ function formatted(textP) {
         text = text.replace(H_EXP, '\n\n' + '$1' + '\n\n');
         // text = text.replace(H1_EXP, '$1' + '\n\n')
         text = text.replace(IMG_EXP, '$1\n\n' + '$2' + '\n\n');
-        text = text.replace(CODE_BLOCK_EXP, '\n\n``` ' + '$1\n$2' + '```\n\n');
+        text = text.replace(CODE_BLOCK_EXP, '\n\n```' + '$1\n$2' + '```\n\n');
         // text = text.replace(LINK_EXP, '\n\n' + '$1' + '\n\n')
         // text = text.replace(LINK_SPACE_EXP, '\n' + '$1 $2')
         text = text.replace(EXTRALINE_EXP, '\n\n');
