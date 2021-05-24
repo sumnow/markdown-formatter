@@ -2,5 +2,4 @@ export default function onReplace(source: string, target: RegExp, handler: strin
     return source.replace(target, function (): string {
         return handler
     })
-
 }

@@ -14,11 +14,19 @@ export class FormatList extends FormatComponent {
             return this.repeatZero({ number: number - 1, str: `0${str}` })
         }
     }
-    private formatLineBetween({ LIST_EXP }: { LIST_EXP: RegExp }) {
-        this.text = this.text.replace(LIST_EXP, '\n\n' + '$1' + '\n\n');
+    private formatLineBetween({ LIST_EXP, CODE_BLOCK_EXP, CODE_AREA_EXP }: { LIST_EXP: RegExp, CODE_BLOCK_EXP: RegExp, CODE_AREA_EXP: RegExp }) {
+        removeReplace({
+            text: this.text,
+            reg: [CODE_BLOCK_EXP, CODE_AREA_EXP],
+            func(text: String) {
+                text = text.replace(LIST_EXP, '\n\n' + '$1' + '\n\n');
+                return text
+            }
+        })
     }
     private formatUL(text, { formatULSymbol, LIST_UL_ST_EXP, LIST_UL_ND_EXP, LIST_UL_TH_EXP }: { formatULSymbol: Boolean, LIST_UL_ST_EXP: RegExp, LIST_UL_ND_EXP: RegExp, LIST_UL_TH_EXP: RegExp }) {
         if (formatULSymbol) {
+            console.log(1234, text)
             text = text.replace(LIST_UL_ST_EXP, '\n* ' + '$1');
             text = text.replace(LIST_UL_ND_EXP, '\n  + ' + '$1');
             text = text.replace(LIST_UL_TH_EXP, '\n    - ' + '$1');
@@ -43,16 +51,16 @@ export class FormatList extends FormatComponent {
             })
         }
     }
-    public formatted({ formatULSymbol, LIST_EXP, LIST_UL_ST_EXP, LIST_UL_ND_EXP, LIST_UL_TH_EXP, LIST_OL_LI_EXP, SPLIT_LINE_EXP }): string {
+    public formatted({ formatULSymbol, LIST_EXP, LIST_UL_ST_EXP, LIST_UL_ND_EXP, LIST_UL_TH_EXP, LIST_OL_LI_EXP, SPLIT_LINE_EXP, CODE_BLOCK_EXP, CODE_AREA_EXP }): string {
         // this.outputBeforeInfo()
         // format list
-        this.formatLineBetween({ LIST_EXP })
+        this.formatLineBetween({ LIST_EXP, CODE_BLOCK_EXP, CODE_AREA_EXP })
         // format ul
         const self = this
         // https://github.com/sumnow/markdown-formatter/issues/23
         this.text = removeReplace({
             text: this.text,
-            reg: [SPLIT_LINE_EXP],
+            reg: [SPLIT_LINE_EXP, CODE_BLOCK_EXP],
             func(text: String) {
                 text = self.formatUL(text, { formatULSymbol, LIST_UL_ST_EXP, LIST_UL_ND_EXP, LIST_UL_TH_EXP })
                 return text

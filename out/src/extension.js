@@ -127,7 +127,7 @@ function formatted(textP) {
         // handler js
         text = new FormatCode_1.FormatCode(text).formatted({ formatCodes, formatOpt, codeAreaToBlock, CODE_BLOCK_EXP, LIST_EXP, CODE_AREA_EXP, H1_EXP, BACK_QUOTE_EXP });
         // handler list
-        text = new FormatList_1.FormatList(text).formatted({ formatULSymbol, LIST_EXP, LIST_UL_ST_EXP, LIST_UL_ND_EXP, LIST_UL_TH_EXP, LIST_OL_LI_EXP, SPLIT_LINE_EXP });
+        text = new FormatList_1.FormatList(text).formatted({ formatULSymbol, LIST_EXP, LIST_UL_ST_EXP, LIST_UL_ND_EXP, LIST_UL_TH_EXP, LIST_OL_LI_EXP, SPLIT_LINE_EXP, CODE_BLOCK_EXP, CODE_AREA_EXP });
         // text = new FormatHTML(text).formatted({TAG_START_EXP,TAG_SINGLE_EXP,TAG_END_EXP})
         // text = text.replace(BACK_QUOTE_EXP, ' `$1` ')
         // remove space in `something`+space+breakline

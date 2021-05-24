@@ -213,7 +213,30 @@ email: mydiamervin@gmail.com  or [here](https://github.com/sumnow/markdown-forma
 
 Thank you for helping me improve this tool.
 
+* [whidy]
+  + Bug(https://github.com/sumnow/markdown-formatter/issues/41)
+* [ddejohn]
+  + Bug(https://github.com/sumnow/markdown-formatter/issues/35)
+* [jackfirth]
+  + Bug(https://github.com/sumnow/markdown-formatter/issues/35)
+* [fruh]
+  + Bug(https://github.com/sumnow/markdown-formatter/issues/36)
+* [ddejohn]
+  + Bug(https://github.com/sumnow/markdown-formatter/issues/31)
+* [vio1etus]
+  + Bug(https://github.com/sumnow/markdown-formatter/issues/29)
+* [zybieku]
+  + Bug(https://github.com/sumnow/markdown-formatter/issues/27)
+* [rowild]
+  + Bug(https://github.com/sumnow/markdown-formatter/issues/24)
+* [tifDev](https://github.com/tifDev)
+  + Bug(https://github.com/sumnow/markdown-formatter/issues/28)
+  + Bug(https://github.com/sumnow/markdown-formatter/issues/23)
+  + Bug(https://github.com/sumnow/markdown-formatter/issues/22)
+* [lartpang](https://github.com/lartpang)
+  + Bug(https://github.com/sumnow/markdown-formatter/issues/18)
 * [lancerXXXX](https://github.com/lancerXXXX)
+  + Bug(https://github.com/sumnow/markdown-formatter/issues/20)
   + Bug(https://github.com/sumnow/markdown-formatter/issues/16)
 * [rgeorgiev583](https://github.com/rgeorgiev583)
   + Bug(https://github.com/sumnow/markdown-formatter/issues/14)

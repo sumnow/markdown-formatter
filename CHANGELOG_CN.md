@@ -2,6 +2,14 @@
 
 [English Document](./CHANGELOG.md)
 
+## 0.9.3
+- 修复问题: [yaml code blocks get formatted ](https://github.com/sumnow/markdown-formatter/issues/49)
+- 更新 `CHANGELOG.md`
+
+## 0.9.2
+- 修复问题: [Autoformat incorrectly adding spaces in code fence](https://github.com/sumnow/markdown-formatter/issues/35)
+- 更新 `CHANGELOG.md`
+
 ## 0.9.1
 - 修复问题: [格式化序号有bug #45](https://github.com/sumnow/markdown-formatter/issues/45)
 - 修复问题: [Spaces being added forever between comma and snippet](https://github.com/sumnow/markdown-formatter/issues/48)
