@@ -1,4 +1,13 @@
 {
+    "Format Current File Disable": {
+        "prefix": [
+            "disable"
+        ],
+        "body": [
+            "<!-- /* md-file-format-disable */ -->"
+        ],
+        "description": "insert disabled line"
+    },
     "Create Image": {
         "prefix": [
             "img",
@@ -22,70 +31,70 @@
             "javascript"
         ],
         "body": [
-            "``` JS\n${1:// JavaScript}\n```\n$2"
+            "``` JS\n${1://JavaScript}\n```\n$2"
         ],
         "description": "create  ECMAScript code block"
     },
     "Create HTML": {
         "prefix": "html",
         "body": [
-            "``` HTML\n${1:<!-- HTML -->}\n```\n$2"
+            "```HTML\n${1:<!-- HTML -->}\n```\n$2"
         ],
         "description": "create HTML code block"
     },
     "Create CSS": {
         "prefix": "css",
         "body": [
-            "``` CSS\n${1:/* CSS */}\n```\n$2"
+            "```CSS\n${1:/* CSS */}\n```\n$2"
         ],
         "description": "create CSS code block"
     },
     "Create Dart": {
         "prefix": "dart",
         "body": [
-            "``` Dart\n${1:// Dart}\n```\n$2"
+            "```Dart\n${1:// Dart}\n```\n$2"
         ],
         "description": "create Dart code block"
     },
     "Create C Language": {
         "prefix": "clang",
         "body": [
-            "``` C\n${1:/* C */}\n```\n$2"
+            "```C\n${1:/* C */}\n```\n$2"
         ],
         "description": "create C code block"
     },
     "Create Java": {
         "prefix": "java",
         "body": [
-            "``` JAVA\n${1:// JAVA}\n```\n$2"
+            "```JAVA\n${1:// JAVA}\n```\n$2"
         ],
         "description": "create Java code block"
     },
     "Create Python": {
         "prefix": "python",
         "body": [
-            "``` Python\n${1:# Python}\n```\n$2"
+            "```Python\n${1:# Python}\n```\n$2"
         ],
         "description": "create Python code block"
     },
     "Create Go": {
         "prefix": "go",
         "body": [
-            "``` Go\n${1:// Go}\n```\n$2"
+            "```Go\n${1:// Go}\n```\n$2"
         ],
         "description": "create Go code block"
     },
     "Create bash": {
         "prefix": "bash",
         "body": [
-            "``` BASH\n${1:# BASH}\n```\n$2"
+            "```BASH\n${1:# BASH}\n```\n$2"
         ],
         "description": "create Bash code block"
     },
     "Create Code": {
         "prefix": "code",
         "body": [
-            "``` code\n${1:// code}\n```\n$2"
+            "```code\n${1:// code}\n```\n$2"
         ],
         "description": "create code block"
     },

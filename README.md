@@ -18,6 +18,14 @@ In any `markdown` standard file with a `.md` suffix, you can use `shift+option+f
 
 ## Feature
 
+### Ignore file format
+
+If you want to ignore the current file ( not to be formatted ), you can insert below the code before  or after the article
+
+```code
+<!-- /* md-file-format-disable */ -->
+```
+
 ### Snippets part
 
 **First of all, You must config like this in `settings.json`**

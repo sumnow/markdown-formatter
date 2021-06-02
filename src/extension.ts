@@ -114,6 +114,9 @@ const LINE_BREAK_EXP = /\r\n/g;
 
 const TIME_EXP = /(<!--\nCreated: [^\n]+\nModified: )[^\n]+(\n-->)(\n+)/g
 
+const DISABLE_EXP = /<!-- \/\* md-file-format-disable \*\/ -->/g
+
+
 const TAG_START_EXP = /<(?:[^\/])(?:[^"'>]|"[^"]*"|'[^']*')*[^\/]>/g
 const TAG_SINGLE_EXP = /<(?:[^\/])(?:[^"'>]|"[^"]*"|'[^']*')*\/>/g
 const TAG_END_EXP = /<\/(?:[^"'>]|"[^"]*"|'[^']*')*>/g
@@ -131,6 +134,11 @@ export function formatted(textP: string): string {
     let text = '\n' + textP + '\n\n'
 
     const textLast = text
+
+    if (text.match(DISABLE_EXP)) {
+        console.log('format current file disabled')
+        return textP
+    }
 
 
     // format \r\n to \n,fix

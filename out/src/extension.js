@@ -95,6 +95,7 @@ const CODE_BLOCK_EXP = /\n*```(?: *)(\w*)\n([\s\S]+?)(```)+\n+/g;
 // line-break
 const LINE_BREAK_EXP = /\r\n/g;
 const TIME_EXP = /(<!--\nCreated: [^\n]+\nModified: )[^\n]+(\n-->)(\n+)/g;
+const DISABLE_EXP = /<!-- \/\* md-file-format-disable \*\/ -->/g;
 const TAG_START_EXP = /<(?:[^\/])(?:[^"'>]|"[^"]*"|'[^']*')*[^\/]>/g;
 const TAG_SINGLE_EXP = /<(?:[^\/])(?:[^"'>]|"[^"]*"|'[^']*')*\/>/g;
 const TAG_END_EXP = /<\/(?:[^"'>]|"[^"]*"|'[^']*')*>/g;
@@ -110,6 +111,10 @@ function formatted(textP) {
     // let text = document.getText(range) + '\n\n'
     let text = '\n' + textP + '\n\n';
     const textLast = text;
+    if (text.match(DISABLE_EXP)) {
+        console.log('format current file disabled');
+        return textP;
+    }
     // format \r\n to \n,fix
     text = text.replace(LINE_BREAK_EXP, '\n');
     // handler time

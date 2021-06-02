@@ -2,6 +2,11 @@
 
 [English Document](./CHANGELOG.md)
 
+## 0.9.4
+- 新增功能: 添加文件是否格式化标识符
+- 修复问题: [How to disable formatter with a file](hhttps://github.com/sumnow/markdown-formatter/issues/41)
+- 更新 `CHANGELOG.md`
+
 ## 0.9.3
 - 修复问题: [yaml code blocks get formatted ](https://github.com/sumnow/markdown-formatter/issues/49)
 - 更新 `CHANGELOG.md`

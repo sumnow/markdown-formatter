@@ -2,6 +2,11 @@
 
 [中文文档](./CHANGELOG_CN.md)
 
+## 0.9.4
+- New Feature: Disable format file tag is optional
+- Fix issue: [How to disable formatter with a file](hhttps://github.com/sumnow/markdown-formatter/issues/41)
+- Update `CHANGELOG.md`
+
 ## 0.9.3
 - Fix issue: [yaml code blocks get formatted ](https://github.com/sumnow/markdown-formatter/issues/49)
 - Update `CHANGELOG.md`
