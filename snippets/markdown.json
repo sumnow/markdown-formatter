@@ -31,9 +31,9 @@
             "javascript"
         ],
         "body": [
-            "``` JS\n${1://JavaScript}\n```\n$2"
+            "```JS\n${1://JavaScript}\n```\n$2"
         ],
-        "description": "create  ECMAScript code block"
+        "description": "create ECMAScript code block"
     },
     "Create HTML": {
         "prefix": "html",
