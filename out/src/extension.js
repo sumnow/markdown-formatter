@@ -1,5 +1,6 @@
 'use strict';
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.deactivate = exports.activate = exports.formatted = void 0;
 const vscode = require("vscode");
 const FormatList_1 = require("./components/FormatList");
 const FormatTable_1 = require("./components/FormatTable");
