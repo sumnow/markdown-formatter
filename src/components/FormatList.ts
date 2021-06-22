@@ -26,7 +26,6 @@ export class FormatList extends FormatComponent {
     }
     private formatUL(text, { formatULSymbol, LIST_UL_ST_EXP, LIST_UL_ND_EXP, LIST_UL_TH_EXP }: { formatULSymbol: Boolean, LIST_UL_ST_EXP: RegExp, LIST_UL_ND_EXP: RegExp, LIST_UL_TH_EXP: RegExp }) {
         if (formatULSymbol) {
-            console.log(1234, text)
             text = text.replace(LIST_UL_ST_EXP, '\n* ' + '$1');
             text = text.replace(LIST_UL_ND_EXP, '\n  + ' + '$1');
             text = text.replace(LIST_UL_TH_EXP, '\n    - ' + '$1');
