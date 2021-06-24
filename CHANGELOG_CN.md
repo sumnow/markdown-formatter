@@ -2,6 +2,9 @@
 
 [English Document](./CHANGELOG.md)
 
+## 0.9.6
+- 更新 snippets
+
 ## 0.9.5
 - 更新 `CHANGELOG.md`
 

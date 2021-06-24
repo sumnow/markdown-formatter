@@ -91,6 +91,21 @@
         ],
         "description": "create Bash code block"
     },
+    "Create assembly": {
+        "prefix": "asm",
+        "body": [
+            "```ASM\n${1:; asm}\n```\n$2"
+        ],
+        "description": "create Assembly language block"
+    },
+    "Create SQL ": {
+        "prefix": "sql",
+        "body": [
+            "```SQL\n${1:/* SQL */}\n```\n$2"
+        ],
+        "description": "create Assembly language block"
+    },
+    
     "Create Code": {
         "prefix": "code",
         "body": [

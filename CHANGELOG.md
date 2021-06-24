@@ -2,6 +2,9 @@
 
 [中文文档](./CHANGELOG_CN.md)
 
+## 0.9.6
+- Update snippets
+
 ## 0.9.5
 - Update `CHANGELOG.md`
 
