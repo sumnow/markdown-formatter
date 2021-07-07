@@ -10,7 +10,7 @@ This is a tool to improve the writing efficiency of markdown, not only provides 
 
 After the installation is complete, you may need to restart your vscode.
 
-In any `markdown` standard file with a `.md` suffix, you can use `shift+option+f`(osx) or `ctrl+shift+f`(window) to quickly format the code. 
+In any `markdown` standard file with a `.md` suffix, you can use `shift+option+f`(osx) or `shift+alt+f`(window) to quickly format the code. 
 
 ![example.gif](https://raw.githubusercontent.com/sumnow/markdown-formatter/master/images/example.gif)
 
