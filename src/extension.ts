@@ -36,7 +36,7 @@ vscode.workspace.onDidChangeConfiguration(_ => {
 });
 
 // console.log(vscode.window.activeTextEditor.options.tabSize)
-// repalce symbol
+// replace symbol
 const CHINESE_SYMBOL = `，、：；！“”‘’（）？。`;
 const ENGLISH_SYMBOL = `,,:;!""''()?.`;
 
@@ -126,7 +126,22 @@ const BOLD_EXP = /\*\*\ (`[^`]+`)\ \*\*/g;
 const ITALIC_BOLD_EXP = /\*\*\*\ (`[^`]+`)\ \*\*\*/g;
 const LINE_THROUGH_EXP = /\~\~\ (`[^`]+`)\ \~\~/g;
 
-// format sort: time -> punctution
+/**
+ * format sort:
+ * 1. handler time
+ * 2. punctuation
+ * 3. link
+ * 4. table
+ * 5. code
+ * 6. list
+ * 7. enter '\n\n\n (more enter)'
+ * 8. back_quote  '  ``  (more space)' 
+ * 9. h
+ * 10. img 
+ * 11. code block ``` js\n ads\n ```
+ * 12. italic or bold font
+ * 13. clear break line and end line
+ */
 export function formatted(textP: string): string {
     if (!enable) { return textP }
     // let text = document.getText(range) + '\n\n'
@@ -139,11 +154,11 @@ export function formatted(textP: string): string {
         return textP
     }
 
-
     // format \r\n to \n,fix
     text = text.replace(LINE_BREAK_EXP, '\n');
 
-    
+
+
     // handler time
     if (displayTime) {
         text = text.match(TIME_EXP) ? text.replace(TIME_EXP, `$1${handlerTime(new Date())}$2\n`) : `<!--\nCreated: ${handlerTime(new Date())}\nModified: ${handlerTime(new Date())}\n-->\n\n` + text
@@ -172,6 +187,7 @@ export function formatted(textP: string): string {
         // https://github.com/sumnow/markdown-formatter/issues/36
         text = text.replace(/` \n+/g, '`\n\n')
 
+        text = text.replace(EXTRALINE_EXP, '\n\n')
 
         text = text.replace(BACK_QUOTE_AFTER_BREAKLINE_EXP, '\n`$1` ')
         text = text.replace(H_EXP, '\n\n' + '$1' + '\n\n')
@@ -180,13 +196,12 @@ export function formatted(textP: string): string {
         text = text.replace(CODE_BLOCK_EXP, '\n\n```' + '$1\n$2' + '```\n\n')
         // text = text.replace(LINK_EXP, '\n\n' + '$1' + '\n\n')
         // text = text.replace(LINK_SPACE_EXP, '\n' + '$1 $2')
-        text = text.replace(EXTRALINE_EXP, '\n\n')
 
         text = text.replace(ITALIC_BOLD_EXP, `***$1***`)
         text = text.replace(BOLD_EXP, '**$1**')
         text = text.replace(ITALIC_EXP, '*$1*')
         text = text.replace(LINE_THROUGH_EXP, '~~$1~~')
-        // clear breakline
+        // clear begin-line
         text = text.replace(BEGIN_LINE_EXP, '')
 
 
