@@ -41,8 +41,8 @@ const CHINESE_SYMBOL = `，、：；！“”‘’（）？。`;
 const ENGLISH_SYMBOL = `,,:;!""''()?.`;
 
 // chinese symbol
-const CHINESE_CHARCTER_SYMBOL = `([\\u4e00-\\u9fa5])`;
-const ENGLISH_CHARCTER_SYMBOL = `([A-Za-z])`;
+const CHINESE_CHARACTER_SYMBOL = `([\\u4e00-\\u9fa5])`;
+const ENGLISH_CHARACTER_SYMBOL = `([A-Za-z])`;
 
 const ELLIPSIS_EXP = /(\.\.\.)+/g;
 
@@ -129,7 +129,6 @@ const LINE_THROUGH_EXP = /\~\~\ (`[^`]+`)\ \~\~/g;
 // format sort: time -> punctution
 export function formatted(textP: string): string {
     if (!enable) { return textP }
-
     // let text = document.getText(range) + '\n\n'
     let text = '\n' + textP + '\n\n'
 
@@ -143,13 +142,15 @@ export function formatted(textP: string): string {
 
     // format \r\n to \n,fix
     text = text.replace(LINE_BREAK_EXP, '\n');
+
+    
     // handler time
     if (displayTime) {
         text = text.match(TIME_EXP) ? text.replace(TIME_EXP, `$1${handlerTime(new Date())}$2\n`) : `<!--\nCreated: ${handlerTime(new Date())}\nModified: ${handlerTime(new Date())}\n-->\n\n` + text
     }
     try {
         // format PUNCTUATION_EXP
-        text = new FormatPunctuation(text).formatted({ fullWidthTurnHalfWidth, spaceAfterFullWidthOrHalfWidth, BACK_QUOTE_WITH_SPACE_EXP, CODE_BLOCK_EXP, CODE_AREA_EXP, HREF_EXP, LIST_OL_LI_EXP, PUNCTUATION_CHINESE_EXP, PUNCTUATION_ENGLISH_EXP, PUNCTUATION_SPACIAL_ENGLISH_EXP, CHINESE_SYMBOL, ENGLISH_SYMBOL, ENGLISH_CHARCTER_SYMBOL, CHINESE_CHARCTER_SYMBOL })
+        text = new FormatPunctuation(text).formatted({ fullWidthTurnHalfWidth, spaceAfterFullWidthOrHalfWidth, BACK_QUOTE_WITH_SPACE_EXP, CODE_BLOCK_EXP, CODE_AREA_EXP, HREF_EXP, LIST_OL_LI_EXP, BACK_QUOTE_EXP, PUNCTUATION_CHINESE_EXP, PUNCTUATION_ENGLISH_EXP, PUNCTUATION_SPACIAL_ENGLISH_EXP, CHINESE_SYMBOL, ENGLISH_SYMBOL, ENGLISH_CHARACTER_SYMBOL, CHINESE_CHARACTER_SYMBOL })
 
         text = new FormatLink(text).formatted({ LINK_SPACE_EXP, LINK_EXP, CODE_BLOCK_EXP, TABLE_EXP })
 
@@ -162,7 +163,7 @@ export function formatted(textP: string): string {
         text = new FormatCode(text).formatted({ formatCodes, formatOpt, codeAreaToBlock, CODE_BLOCK_EXP, LIST_EXP, CODE_AREA_EXP, H1_EXP, BACK_QUOTE_EXP })
 
         // handler list
-        text = new FormatList(text).formatted({ formatULSymbol, LIST_EXP, LIST_UL_ST_EXP, LIST_UL_ND_EXP, LIST_UL_TH_EXP, LIST_OL_LI_EXP, SPLIT_LINE_EXP,CODE_BLOCK_EXP, CODE_AREA_EXP})
+        text = new FormatList(text).formatted({ formatULSymbol, LIST_EXP, LIST_UL_ST_EXP, LIST_UL_ND_EXP, LIST_UL_TH_EXP, LIST_OL_LI_EXP, SPLIT_LINE_EXP, CODE_BLOCK_EXP, CODE_AREA_EXP })
 
         // text = new FormatHTML(text).formatted({TAG_START_EXP,TAG_SINGLE_EXP,TAG_END_EXP})
         // text = text.replace(BACK_QUOTE_EXP, ' `$1` ')
@@ -170,6 +171,8 @@ export function formatted(textP: string): string {
         // remove space in `something`+space+breakline
         // https://github.com/sumnow/markdown-formatter/issues/36
         text = text.replace(/` \n+/g, '`\n\n')
+
+
         text = text.replace(BACK_QUOTE_AFTER_BREAKLINE_EXP, '\n`$1` ')
         text = text.replace(H_EXP, '\n\n' + '$1' + '\n\n')
         // text = text.replace(H1_EXP, '$1' + '\n\n')
@@ -221,7 +224,8 @@ export function activate(context: vscode.ExtensionContext) {
 
     // Use the console to output diagnostic information (console.log) and errors (console.error)
     // This line of code will only be executed once when your extension is activated
-    console.log('Congratulations, your extension "markdown-formatter" is now active!');
+
+    console.log('Congratulation1s, your extension "markdown-formatter" is now active!');
 
     // The command has been defined in the README.md file
     // Now provide the implementation of the command with  registerCommand
