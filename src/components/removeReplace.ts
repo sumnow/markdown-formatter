@@ -6,7 +6,7 @@ export function removeReplace({ text, reg, func, type }: {
     func: Function;
     type?: string;
 }): string {
-    const _tempRegArr:any[] = [];
+    const _tempRegArr: any[] = [];
     reg.forEach(e => {
         // e = escapeStringRegexp(`${e}`)
         const _arr = text.match(e);
@@ -20,18 +20,19 @@ export function removeReplace({ text, reg, func, type }: {
             text = text.replace(_reg, e.hasN ? `\n\n$mdFormatter$${i}$mdFormatter$\n\n` : `$mdFormatter$${i}$mdFormatter$`);
         });
         if (type) {
-            console.log(`handler ${type} before:`)
+            console.log(`=== === ${type} --- start === ===`)
             console.log(text)
         }
         text = func(text);
         _tempRegArr.forEach((e, i) => {
-            let _mdformatter = e.hasN ? `\n\n$mdFormatter$${i}$mdFormatter$\n\n` : `$mdFormatter$${i}$mdFormatter$`;
-            const _reg = new RegExp(escapeStringRegexp(_mdformatter), 'g');
+            let _mdFormatter = e.hasN ? `\n\n$mdFormatter$${i}$mdFormatter$\n\n` : `$mdFormatter$${i}$mdFormatter$`;
+            const _reg = new RegExp(escapeStringRegexp(_mdFormatter), 'g');
             text = onReplace(text, _reg, _tempRegArr[i].content);
         });
         if (type) {
-            console.log(`handler ${type} after:`)
+            console.log(`--- --- handler ${type} after --- ---`)
             console.log(text)
+            console.log(`  === === ${type} --- end === ===`)
         }
     }
     else {
