@@ -386,14 +386,14 @@ class FormatPunctuation extends FormatComponent_1.FormatComponent {
     super(text) {
         this.text = text;
     }
-    formatted({ fullWidthTurnHalfWidth, spaceAfterFullWidthOrHalfWidth, BACK_QUOTE_WITH_SPACE_EXP, CODE_BLOCK_EXP, CODE_AREA_EXP, HREF_EXP, LIST_OL_LI_EXP, PUNCTUATION_CHINESE_EXP, PUNCTUATION_ENGLISH_EXP, PUNCTUATION_SPACIAL_ENGLISH_EXP, CHINESE_SYMBOL, ENGLISH_SYMBOL, ENGLISH_CHARCTER_SYMBOL, CHINESE_CHARCTER_SYMBOL }) {
-        const _replacewithCharcter = ({ target, judge, pad }) => {
+    formatted({ fullWidthTurnHalfWidth, spaceAfterFullWidthOrHalfWidth, BACK_QUOTE_WITH_SPACE_EXP, CODE_BLOCK_EXP, CODE_AREA_EXP, HREF_EXP, LIST_OL_LI_EXP, BACK_QUOTE_EXP, PUNCTUATION_CHINESE_EXP, PUNCTUATION_ENGLISH_EXP, PUNCTUATION_SPACIAL_ENGLISH_EXP, CHINESE_SYMBOL, ENGLISH_SYMBOL, ENGLISH_CHARACTER_SYMBOL, CHINESE_CHARACTER_SYMBOL }) {
+        const _replaceWithCHARACTER = ({ target, judge, pad }) => {
             target.forEach((e, i) => {
                 const _reg = new RegExp(`${judge}\\${e}`, 'g');
                 this.text = this.text.replace(_reg, `$1${pad[i]}`);
             });
         };
-        function hanldeEnglish(text) {
+        function handlerEnglish(text) {
             text = text.replace(PUNCTUATION_SPACIAL_ENGLISH_EXP, '$1 $2');
             text = text.replace(PUNCTUATION_ENGLISH_EXP, '$1 ');
             return text;
@@ -402,13 +402,14 @@ class FormatPunctuation extends FormatComponent_1.FormatComponent {
             return text.replace(PUNCTUATION_CHINESE_EXP, '$1 ');
         }
         this.text = removeReplace_1.removeReplace({
-            text: this.text, reg: [CODE_BLOCK_EXP, CODE_AREA_EXP, BACK_QUOTE_WITH_SPACE_EXP, HREF_EXP, LIST_OL_LI_EXP], func: (text) => {
+            text: this.text, reg: [CODE_BLOCK_EXP, CODE_AREA_EXP, BACK_QUOTE_WITH_SPACE_EXP, HREF_EXP, LIST_OL_LI_EXP, BACK_QUOTE_EXP],
+            func: (text) => {
                 // handle fullwidth character
                 const fullwidthArr = CHINESE_SYMBOL.split('');
                 const halfwidthArr = ENGLISH_SYMBOL.split('');
                 if (fullWidthTurnHalfWidth === 'auto') {
-                    _replacewithCharcter({ target: fullwidthArr, judge: ENGLISH_CHARCTER_SYMBOL, pad: halfwidthArr });
-                    _replacewithCharcter({ target: halfwidthArr, judge: CHINESE_CHARCTER_SYMBOL, pad: fullwidthArr });
+                    _replaceWithCHARACTER({ target: fullwidthArr, judge: ENGLISH_CHARACTER_SYMBOL, pad: halfwidthArr });
+                    _replaceWithCHARACTER({ target: halfwidthArr, judge: CHINESE_CHARACTER_SYMBOL, pad: fullwidthArr });
                 }
                 else {
                     if (fullWidthTurnHalfWidth !== '' && fullWidthTurnHalfWidth !== '_') {
@@ -426,27 +427,28 @@ class FormatPunctuation extends FormatComponent_1.FormatComponent {
                 }
                 // handle the spaces after '.' 
                 // text = text.replace(/\.\ */g, '. ');
-                // handle ELLIPSIS
+                // handle ELLIPSIS  
                 text = text.replace(/(\. \. \. )/g, '... ');
                 switch (spaceAfterFullWidthOrHalfWidth) {
                     case "full":
                         text = handleChinese(text);
                         break;
                     case "all":
-                        text = hanldeEnglish(text);
+                        text = handlerEnglish(text);
                         text = handleChinese(text);
                         break;
                     case "neither":
                         break;
                     case "half":
-                        // hanlde '.!?:'
-                        text = hanldeEnglish(text);
+                        // handler '.!?:'
+                        text = handlerEnglish(text);
                         break;
                     default:
-                        text = hanldeEnglish(text);
+                        text = handlerEnglish(text);
                 }
                 return text;
-            }
+            },
+            type: 'pun'
         });
         return this.text;
     }
@@ -9506,8 +9508,8 @@ vscode.workspace.onDidChangeConfiguration(_ => {
 const CHINESE_SYMBOL = `，、：；！“”‘’（）？。`;
 const ENGLISH_SYMBOL = `,,:;!""''()?.`;
 // chinese symbol
-const CHINESE_CHARCTER_SYMBOL = `([\\u4e00-\\u9fa5])`;
-const ENGLISH_CHARCTER_SYMBOL = `([A-Za-z])`;
+const CHINESE_CHARACTER_SYMBOL = `([\\u4e00-\\u9fa5])`;
+const ENGLISH_CHARACTER_SYMBOL = `([A-Za-z])`;
 const ELLIPSIS_EXP = /(\.\.\.)+/g;
 // const SPACE_EXP = /\n+\ +\n+/g;
 // breakline before the text 
@@ -9594,7 +9596,7 @@ function formatted(textP) {
     }
     try {
         // format PUNCTUATION_EXP
-        text = new FormatPunctuation_1.FormatPunctuation(text).formatted({ fullWidthTurnHalfWidth, spaceAfterFullWidthOrHalfWidth, BACK_QUOTE_WITH_SPACE_EXP, CODE_BLOCK_EXP, CODE_AREA_EXP, HREF_EXP, LIST_OL_LI_EXP, PUNCTUATION_CHINESE_EXP, PUNCTUATION_ENGLISH_EXP, PUNCTUATION_SPACIAL_ENGLISH_EXP, CHINESE_SYMBOL, ENGLISH_SYMBOL, ENGLISH_CHARCTER_SYMBOL, CHINESE_CHARCTER_SYMBOL });
+        text = new FormatPunctuation_1.FormatPunctuation(text).formatted({ fullWidthTurnHalfWidth, spaceAfterFullWidthOrHalfWidth, BACK_QUOTE_WITH_SPACE_EXP, CODE_BLOCK_EXP, CODE_AREA_EXP, HREF_EXP, LIST_OL_LI_EXP, BACK_QUOTE_EXP, PUNCTUATION_CHINESE_EXP, PUNCTUATION_ENGLISH_EXP, PUNCTUATION_SPACIAL_ENGLISH_EXP, CHINESE_SYMBOL, ENGLISH_SYMBOL, ENGLISH_CHARACTER_SYMBOL, CHINESE_CHARACTER_SYMBOL });
         text = new FormatLink_1.FormatLink(text).formatted({ LINK_SPACE_EXP, LINK_EXP, CODE_BLOCK_EXP, TABLE_EXP });
         if (formatTable) {
             // handler table
@@ -9655,7 +9657,7 @@ function activate(context) {
     }));
     // Use the console to output diagnostic information (console.log) and errors (console.error)
     // This line of code will only be executed once when your extension is activated
-    console.log('Congratulations, your extension "markdown-formatter" is now active!');
+    console.log('Congratulation1s, your extension "markdown-formatter" is now active!');
     // The command has been defined in the README.md file
     // Now provide the implementation of the command with  registerCommand
     // The commandId parameter must match the command field in README.md
