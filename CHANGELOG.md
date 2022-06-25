@@ -2,6 +2,13 @@
 
 [中文文档](./CHANGELOG_CN.md)
 
+## 0.9.8
+- Add unit tests
+- Add tslint 
+
+## 0.9.7
+- Fix issue: code block appear error sometimes
+
 ## 0.9.6
 - Update snippets
 

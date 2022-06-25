@@ -1,16 +1,16 @@
-import { removeReplace } from "./removeReplace";
+import { removeReplace } from "../utils/removeReplace";
 import { FormatComponent } from "./FormatComponent";
 
 
 export class FormatPunctuation extends FormatComponent {
-    name: string = 'punctuation'
+    name: string = 'punctuation';
     text: string;
     super(text: string) {
-        this.text = text
+        this.text = text;
     }
 
-    formatted({ fullWidthTurnHalfWidth, spaceAfterFullWidthOrHalfWidth, BACK_QUOTE_WITH_SPACE_EXP, CODE_BLOCK_EXP, CODE_AREA_EXP, HREF_EXP, LIST_OL_LI_EXP, BACK_QUOTE_EXP, PUNCTUATION_CHINESE_EXP, PUNCTUATION_ENGLISH_EXP, PUNCTUATION_SPACIAL_ENGLISH_EXP, CHINESE_SYMBOL, ENGLISH_SYMBOL, ENGLISH_CHARACTER_SYMBOL, CHINESE_CHARACTER_SYMBOL }: {
-        fullWidthTurnHalfWidth: string, spaceAfterFullWidthOrHalfWidth: string, BACK_QUOTE_WITH_SPACE_EXP: RegExp, CODE_BLOCK_EXP: RegExp, CODE_AREA_EXP: RegExp, HREF_EXP: RegExp, LIST_OL_LI_EXP: RegExp, BACK_QUOTE_EXP: RegExp, PUNCTUATION_CHINESE_EXP: RegExp, PUNCTUATION_ENGLISH_EXP: RegExp, PUNCTUATION_SPACIAL_ENGLISH_EXP: RegExp, CHINESE_SYMBOL: string, ENGLISH_SYMBOL: string, ENGLISH_CHARACTER_SYMBOL: string, CHINESE_CHARACTER_SYMBOL: string
+    formatted({ fullWidthTurnHalfWidth, spaceAfterFullWidthOrHalfWidth, expBackQuoteWithSpace, expCodeBlock, expCodeArea, expHref, expListOLLi, expBackQuote, expPunctuationChinese, expPunctuationEnglish, expPunctuationSpacialEnglish, chineseSymbol, englishSymbol, englishCharacterSymbol, chineseCharacterSymbol }: {
+        fullWidthTurnHalfWidth: string, spaceAfterFullWidthOrHalfWidth: string, expBackQuoteWithSpace: RegExp, expCodeBlock: RegExp, expCodeArea: RegExp, expHref: RegExp, expListOLLi: RegExp, expBackQuote: RegExp, expPunctuationChinese: RegExp, expPunctuationEnglish: RegExp, expPunctuationSpacialEnglish: RegExp, chineseSymbol: string, englishSymbol: string, englishCharacterSymbol: string, chineseCharacterSymbol: string
     }): string {
 
         const _replaceWithCHARACTER = ({ target, judge, pad }: { target: string[]; judge: string; pad: string[]; }) => {
@@ -20,22 +20,22 @@ export class FormatPunctuation extends FormatComponent {
             });
         };
         function handlerEnglish(text: string): string {
-            text = text.replace(PUNCTUATION_SPACIAL_ENGLISH_EXP, '$1 $2');
-            text = text.replace(PUNCTUATION_ENGLISH_EXP, '$1 ');
+            text = text.replace(expPunctuationSpacialEnglish, '$1 $2');
+            text = text.replace(expPunctuationEnglish, '$1 ');
             return text;
         }
         function handleChinese(text: string): string {
-            return text.replace(PUNCTUATION_CHINESE_EXP, '$1 ');
+            return text.replace(expPunctuationChinese, '$1 ');
         }
         this.text = removeReplace({
-            text: this.text, reg: [CODE_BLOCK_EXP, CODE_AREA_EXP, BACK_QUOTE_WITH_SPACE_EXP, HREF_EXP, LIST_OL_LI_EXP, BACK_QUOTE_EXP], 
+            text: this.text, reg: [expCodeBlock, expCodeArea, expBackQuoteWithSpace, expHref, expListOLLi, expBackQuote], 
             func: (text: string): string => {
                 // handle fullwidth character
-                const fullwidthArr = CHINESE_SYMBOL.split('');
-                const halfwidthArr = ENGLISH_SYMBOL.split('');
+                const fullwidthArr = chineseSymbol.split('');
+                const halfwidthArr = englishSymbol.split('');
                 if (fullWidthTurnHalfWidth === 'auto') {
-                    _replaceWithCHARACTER({ target: fullwidthArr, judge: ENGLISH_CHARACTER_SYMBOL, pad: halfwidthArr });
-                    _replaceWithCHARACTER({ target: halfwidthArr, judge: CHINESE_CHARACTER_SYMBOL, pad: fullwidthArr });
+                    _replaceWithCHARACTER({ target: fullwidthArr, judge: englishCharacterSymbol, pad: halfwidthArr });
+                    _replaceWithCHARACTER({ target: halfwidthArr, judge: chineseCharacterSymbol, pad: fullwidthArr });
                 } else {
                     if (fullWidthTurnHalfWidth !== '' && fullWidthTurnHalfWidth !== '_') {
                         const _commaArr = fullWidthTurnHalfWidth.split('');
@@ -56,30 +56,30 @@ export class FormatPunctuation extends FormatComponent {
                 // text = text.replace(/\.\ */g, '. ');
 
                 // handle ELLIPSIS  
-                text = text.replace(/(\. \. \. )/g, '... ')
+                text = text.replace(/(\. \. \. )/g, '... ');
 
                 switch (spaceAfterFullWidthOrHalfWidth) {
                     case "full":
-                        text = handleChinese(text)
+                        text = handleChinese(text);
                         break;
                     case "all":
-                        text = handlerEnglish(text)
-                        text = handleChinese(text)
+                        text = handlerEnglish(text);
+                        text = handleChinese(text);
                         break;
                     case "neither":
                         break;
                     case "half":
                         // handler '.!?:'
-                        text = handlerEnglish(text)
+                        text = handlerEnglish(text);
                         break;
                     default:
-                        text = handlerEnglish(text)
+                        text = handlerEnglish(text);
                 }
                 return text;
             },
-            type: 'pun'
-        })
-        return this.text
+            // type: 'pun'
+        });
+        return this.text;
     }
 
 }

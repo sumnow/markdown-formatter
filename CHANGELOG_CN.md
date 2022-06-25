@@ -2,6 +2,14 @@
 
 [English Document](./CHANGELOG.md)
 
+## 0.9.8
+
+- 添加单元测试
+- 添加 tslint 
+
+## 0.9.7
+- 修复问题: 偶现代码中格式化错误
+
 ## 0.9.6
 - 更新 snippets
 

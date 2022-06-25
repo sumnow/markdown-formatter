@@ -6,11 +6,11 @@ export abstract class FormatComponent {
         this.text = text;
     }
     public outputBeforeInfo() {
-        console.log(`< before format ${this.name} >`)
-        console.log(`${this.text}`)
+        console.log(`< before format ${this.name} >`);
+        console.log(`${this.text}`);
     }
     public outputAfterInfo() {
-        console.log(`< after format ${this.name} >`)
-        console.log(`${this.text}`)
+        console.log(`< after format ${this.name} >`);
+        console.log(`${this.text}`);
     }
 }

@@ -1,21 +1,20 @@
-import { removeReplace } from "./removeReplace";
-import { FormatComponent } from './FormatComponent'
+import { FormatComponent } from './FormatComponent';
 var escapeStringRegexp = require('escape-string-regexp');
 
 export class FormatHTML extends FormatComponent {
-    name: string = 'html'
+    name: string = 'html';
     super(text: string) {
         this.text = text;
     }
 
-    public formatted({ TAG_START_EXP, TAG_SINGLE_EXP, TAG_END_EXP }): string {
+    public formatted({ expTagStart, expTagSingle, expTagEnd }): string {
         // this.outputBeforeInfo()
-        var as = this.text.match(TAG_START_EXP)
-        var asd = this.text.match(TAG_SINGLE_EXP)
-        var asde = this.text.match(TAG_END_EXP)
+        var as = this.text.match(expTagStart);
+        var asd = this.text.match(expTagSingle);
+        var asde = this.text.match(expTagEnd);
 
 
         // this.outputAfterInfo()
-        return this.text
+        return this.text;
     }
 }

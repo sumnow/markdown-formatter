@@ -1,75 +1,75 @@
-import { FormatComponent } from './FormatComponent'
+import { FormatComponent } from './FormatComponent';
 var escapeStringRegexp = require('escape-string-regexp');
-import { removeReplace } from "./removeReplace";
+import { removeReplace } from "../utils/removeReplace";
 
 export class FormatList extends FormatComponent {
-    name: string = 'list'
+    name: string = 'list';
     super(text: string) {
         this.text = text;
     }
     private repeatZero({ number, str }: { number: number, str: string }): string {
         if (number === 0) {
-            return str
+            return str;
         } else {
-            return this.repeatZero({ number: number - 1, str: `0${str}` })
+            return this.repeatZero({ number: number - 1, str: `0${str}` });
         }
     }
-    private formatLineBetween({ LIST_EXP, CODE_BLOCK_EXP, CODE_AREA_EXP }: { LIST_EXP: RegExp, CODE_BLOCK_EXP: RegExp, CODE_AREA_EXP: RegExp }) {
+    private formatLineBetween({ expList, expCodeBlock, expCodeArea }: { expList: RegExp, expCodeBlock: RegExp, expCodeArea: RegExp }) {
         removeReplace({
             text: this.text,
-            reg: [CODE_BLOCK_EXP, CODE_AREA_EXP],
+            reg: [expCodeBlock, expCodeArea],
             func(text: String) {
-                text = text.replace(LIST_EXP, '\n\n' + '$1' + '\n\n');
-                return text
+                text = text.replace(expList, '\n\n' + '$1' + '\n\n');
+                return text;
             }
-        })
+        });
     }
-    private formatUL(text, { formatULSymbol, LIST_UL_ST_EXP, LIST_UL_ND_EXP, LIST_UL_TH_EXP }: { formatULSymbol: Boolean, LIST_UL_ST_EXP: RegExp, LIST_UL_ND_EXP: RegExp, LIST_UL_TH_EXP: RegExp }) {
+    private formatUL(text, { formatULSymbol, expUL1st, expUL2nd, expUL3th }: { formatULSymbol: Boolean, expUL1st: RegExp, expUL2nd: RegExp, expUL3th: RegExp }) {
         if (formatULSymbol) {
-            text = text.replace(LIST_UL_ST_EXP, '\n* ' + '$1');
-            text = text.replace(LIST_UL_ND_EXP, '\n  + ' + '$1');
-            text = text.replace(LIST_UL_TH_EXP, '\n    - ' + '$1');
+            text = text.replace(expUL1st, '\n* ' + '$1');
+            text = text.replace(expUL2nd, '\n  + ' + '$1');
+            text = text.replace(expUL3th, '\n    - ' + '$1');
         }
-        return text
+        return text;
     }
-    private formatOL({ LIST_OL_LI_EXP }: { LIST_OL_LI_EXP: RegExp }) {
+    private formatOL({ expListOLLi }: { expListOLLi: RegExp }) {
         // format ol
-        const _arr: Array<string> = this.text.match(LIST_OL_LI_EXP)
+        const _arr: Array<string> = this.text.match(expListOLLi);
         const _length: Array<number> = _arr !== null ? _arr.map(e => {
-            return e.replace(LIST_OL_LI_EXP, '$2').length
-        }) : []
+            return e.replace(expListOLLi, '$2').length;
+        }) : [];
 
-        const maxLength: number = Math.max(..._length)
+        const maxLength: number = Math.max(..._length);
         if (maxLength > 1) {
             _arr.forEach((e, i) => {
                 if (_length[i] < maxLength) {
                     // https://github.com/sumnow/markdown-formatter/issues/45
                     const _reg = new RegExp(escapeStringRegexp(e), 'g');
-                    this.text = this.text.replace(_reg, e.replace(LIST_OL_LI_EXP, `$1${this.repeatZero({ number: maxLength - _length[i], str: '' })}$2$3`))
+                    this.text = this.text.replace(_reg, e.replace(expListOLLi, `$1${this.repeatZero({ number: maxLength - _length[i], str: '' })}$2$3`));
                 }
-            })
+            });
         }
     }
-    public formatted({ formatULSymbol, LIST_EXP, LIST_UL_ST_EXP, LIST_UL_ND_EXP, LIST_UL_TH_EXP, LIST_OL_LI_EXP, SPLIT_LINE_EXP, CODE_BLOCK_EXP, CODE_AREA_EXP }): string {
+    public formatted({ formatULSymbol, expList, expUL1st, expUL2nd, expUL3th, expListOLLi, expSplitLine, expCodeBlock, expCodeArea }): string {
         // this.outputBeforeInfo()
         // format list
-        this.formatLineBetween({ LIST_EXP, CODE_BLOCK_EXP, CODE_AREA_EXP })
+        this.formatLineBetween({ expList, expCodeBlock, expCodeArea });
         // format ul
-        const self = this
+        const self = this;
         // https://github.com/sumnow/markdown-formatter/issues/23
         this.text = removeReplace({
             text: this.text,
-            reg: [SPLIT_LINE_EXP, CODE_BLOCK_EXP],
+            reg: [expSplitLine, expCodeBlock],
             func(text: String) {
-                text = self.formatUL(text, { formatULSymbol, LIST_UL_ST_EXP, LIST_UL_ND_EXP, LIST_UL_TH_EXP })
-                return text
+                text = self.formatUL(text, { formatULSymbol, expUL1st, expUL2nd, expUL3th });
+                return text;
             }
-        })
+        });
 
         // format ol
-        this.formatOL({ LIST_OL_LI_EXP })
+        this.formatOL({ expListOLLi });
 
         // this.outputAfterInfo()
-        return this.text
+        return this.text;
     }
 }

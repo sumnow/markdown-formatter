@@ -9,8 +9,8 @@ export class FormatTableTool {
         });
     }
     getMaxLengthPerColumn(table) {
-        return table[0].map((str, column_index) => {
-            return this.getMaxLength(this.getColumn(table, column_index));
+        return table[0].map((str, columnIndex) => {
+            return this.getMaxLength(this.getColumn(table, columnIndex));
         });
     }
     getMaxLength(array) {
@@ -46,9 +46,9 @@ export class FormatTableTool {
             }
         });
     }
-    getColumn(table, column_index) {
+    getColumn(table, columnIndex) {
         return table.map(function (row) {
-            return row[column_index];
+            return row[columnIndex];
         });
     }
     trim(str) {
@@ -97,7 +97,7 @@ export class FormatTableTool {
     }
     reformat(str) {
         const self = this;
-        var table = this.splitStringToTable(str), alignments, max_length_per_column;
+        var table = this.splitStringToTable(str), alignments, maxLengthPerColumn;
         // table[1] = table[1].map(function (cell) {
         //     return this.padHeaderSeparatorString(cell, 0);
         // });
@@ -106,14 +106,14 @@ export class FormatTableTool {
         });
         this.fillInMissingColumns(table);
         alignments = table[1].map(this.getAlignment);
-        max_length_per_column = this.getMaxLengthPerColumn(table);
-        return table.map((row, row_index) => {
-            return '|' + row.map(function (cell, column_index) {
-                var column_length = max_length_per_column[column_index];
-                if (row_index === 1) {
-                    return self.padHeaderSeparatorString(cell, column_length + 2);
+        maxLengthPerColumn = this.getMaxLengthPerColumn(table);
+        return table.map((row, rowIndex) => {
+            return '|' + row.map(function (cell, columnIndex) {
+                var columnLength = maxLengthPerColumn[columnIndex];
+                if (rowIndex === 1) {
+                    return self.padHeaderSeparatorString(cell, columnLength + 2);
                 }
-                return ' ' + self.padStringWithAlignment(cell, column_length, alignments[column_index]) + ' ';
+                return ' ' + self.padStringWithAlignment(cell, columnLength, alignments[columnIndex]) + ' ';
             }).join('|') + '|';
         }).join('\n') + '\n';
     }

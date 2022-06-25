@@ -1,11 +1,11 @@
 export class ParseHTML {
-    text: string
+    text: string;
 
     constructor(text: string) {
-        this.text = text
+        this.text = text;
     }
 
     init(): string {
-        return this.text
+        return this.text;
     }
 }
