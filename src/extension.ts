@@ -16,6 +16,7 @@ let formatOpt: any = config.get<any>('formatOpt', {});
 let formatULSymbol: boolean = config.get<boolean>('formatULSymbol', true);
 let spaceAfterFullWidthOrHalfWidth: string = config.get<string>('spaceAfterFullWidthOrHalfWidth', 'half');
 
+spaceAfterFullWidthOrHalfWidth
 vscode.workspace.onDidChangeConfiguration(_ => {
     config = vscode.workspace.getConfiguration('markdownFormatter');
     fullWidthTurnHalfWidth = config.get<string>('fullWidthTurnHalfWidth', 'auto');

@@ -141,14 +141,16 @@ export default function formatted({ textP, vsParam, throwError, otherParam }: { 
     const { date } = otherParam;
     if (!enable) { return textP; }
     // let text = document.getText(range) + '\n\n'
+
+    if (textP.match(expDisable)) {
+        console.log('format current file disabled');
+        return textP;
+    }
+    
     let text = '\n' + textP + '\n\n';
 
     const textLast = text;
 
-    if (text.match(expDisable)) {
-        console.log('format current file disabled');
-        return textP;
-    }
 
     // format \r\n to \n,fix
     text = text.replace(expBreakLine, '\n');
