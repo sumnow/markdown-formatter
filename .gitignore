@@ -3,3 +3,4 @@ out/**
 todo
 node_modules
 dist/**
+.nyc_output

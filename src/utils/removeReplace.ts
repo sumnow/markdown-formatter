@@ -19,21 +19,21 @@ export function removeReplace({ text, reg, func, type }: {
             const _reg = new RegExp(escapeStringRegexp(e.content), 'g');
             text = text.replace(_reg, e.hasN ? `\n\n$mdFormatter$${i}$mdFormatter$\n\n` : `$mdFormatter$${i}$mdFormatter$`);
         });
-        if (type) {
-            console.log(`=== === ${type} --- start === ===`);
-            console.log(text);
-        }
+        // if (type) {
+        //     console.log(`=== === ${type} --- start === ===`);
+        //     console.log(text);
+        // }
         text = func(text);
         _tempRegArr.forEach((e, i) => {
             let _mdFormatter = e.hasN ? `\n\n$mdFormatter$${i}$mdFormatter$\n\n` : `$mdFormatter$${i}$mdFormatter$`;
             const _reg = new RegExp(escapeStringRegexp(_mdFormatter), 'g');
             text = onReplace(text, _reg, _tempRegArr[i].content);
         });
-        if (type) {
-            console.log(`--- --- handler ${type} after --- ---`);
-            console.log(text);
-            console.log(`  === === ${type} --- end === ===`);
-        }
+        // if (type) {
+        //     console.log(`--- --- handler ${type} after --- ---`);
+        //     console.log(text);
+        //     console.log(`  === === ${type} --- end === ===`);
+        // }
     }
     else {
         text = func(text);

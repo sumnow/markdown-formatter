@@ -95,7 +95,8 @@
         "test-watch": "tsc -watch -p ./",
         "pretest": "yarn run test-compile && yarn run lint",
         "lint": "eslint src --ext ts",
-        "test": "mocha"
+        "test": "mocha",
+        "test:report": "nyc --reporter=text mocha"
     },
     "jest": {
         "testEnvironment": "node"
@@ -121,6 +122,7 @@
     },
     "dependencies": {
         "escape-string-regexp": "^1.0.5",
-        "js-beautify": "^1.8.8"
+        "js-beautify": "^1.8.8",
+        "nyc": "^15.1.0"
     }
 }

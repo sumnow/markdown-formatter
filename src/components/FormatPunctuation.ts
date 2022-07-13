@@ -49,6 +49,7 @@ export class FormatPunctuation extends FormatComponent {
                             });
                         }
                     }
+                    
                 }
 
                 // handle the spaces after '.' 

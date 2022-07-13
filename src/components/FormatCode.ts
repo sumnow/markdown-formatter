@@ -49,7 +49,7 @@ export class FormatCode extends FormatComponent {
                             });
                         }
                     }
-                    // specail handler: format H1 and `` 
+                    // special handler: format H1 and `` 
                     text = text.replace(expH1, '\n\n\n' + '$1' + '\n\n');
                     text = text.replace(expBackQuote, ' `$1` ');
 
