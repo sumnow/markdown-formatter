@@ -43,6 +43,7 @@ export function activate(context: vscode.ExtensionContext) {
             const start = new vscode.Position(0, 0);
             const end = new vscode.Position(document.lineCount - 1, document.lineAt(document.lineCount - 1).text.length);
             const range = new vscode.Range(start, end);
+            console.log(`text , ${document.getText(range)}`)
             let text = formatted({
                 textP: document.getText(range),
                 vsParam: {
@@ -72,7 +73,7 @@ export function activate(context: vscode.ExtensionContext) {
     // Use the console to output diagnostic information (console.log) and errors (console.error)
     // This line of code will only be executed once when your extension is activated
 
-    console.log('Congratulation1s, your extension "markdown-formatter" is now active!');
+    console.log('Congratulations, your extension "markdown-formatter" is now active!');
 
     // The command has been defined in the README.md file
     // Now provide the implementation of the command with  registerCommand

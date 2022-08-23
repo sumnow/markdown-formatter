@@ -101,7 +101,9 @@ const expBreakLine = /\r\n/g;
 
 const expTime = /(<!--\nCreated: [^\n]+\nModified: )[^\n]+(\n-->)(\n+)/g;
 
+// disable format for block or file
 const expDisable = /<!-- \/\* md-file-format-disable \*\/ -->/g;
+const expDisableBlock = /<!-- md-ignore-block-start --> [\S\s]+? <!-- md-ignore-block-end -->/g;
 
 const expTagStart = /<(?:[^\/])(?:[^"'>]|"[^"]*"|'[^']*')*[^\/]>/g;
 const expTagSingle = /<(?:[^\/])(?:[^"'>]|"[^"]*"|'[^']*')*\/>/g;
@@ -146,7 +148,9 @@ export default function formatted({ textP, vsParam, throwError, otherParam }: { 
         console.log('format current file disabled');
         return textP;
     }
+
     
+        
     let text = '\n' + textP + '\n\n';
 
     const textLast = text;
