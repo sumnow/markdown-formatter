@@ -10,7 +10,7 @@ export class FormatTable extends FormatComponent {
     super(text: string) {
         this.text = text;
     }
-    formatted({ expTable, expLink, expCodeBlock, expCodeArea }: { expTable: RegExp, expLink?: RegExp, expCodeBlock?: RegExp, expCodeArea?: RegExp }): string {
+    formatted({ expTable, expLink, expCodeBlock, expCodeArea, formatTableOpt }: { expTable: RegExp, expLink?: RegExp, expCodeBlock?: RegExp, expCodeArea?: RegExp, formatTableOpt: Options.TypeFormatTableOpt }): string {
         this.text = removeReplace({
             text: this.text, reg: [expLink, expCodeBlock, expCodeArea], func(text: string) {
                 const _tableArr = text.match(expTable);
@@ -18,7 +18,7 @@ export class FormatTable extends FormatComponent {
                 if (_tableArr && _tableArr.length > 0) {
                     _tableArr.forEach((table) => {
                         var re = new RegExp(escapeStringRegexp(String(table)), 'g');
-                        text = text.replace(re, (substring: string) => '\n\n' + new FormatTableTool().reformat(table) + '\n\n');
+                        text = text.replace(re, (substring: string) => '\n\n' + new FormatTableTool(formatTableOpt.chineseCharterWidth).reformat(table) + '\n\n');
                     });
                 }
                 return text;

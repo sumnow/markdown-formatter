@@ -13,8 +13,10 @@ type VscodeObjType = {
     enable: boolean
     formatCodes: boolean
     formatTable: boolean
+    formatTableOpt: Options.TypeFormatTableOpt
     formatOpt: any
     formatULSymbol: boolean
+    formatULSymbolOpt: Options.TypeFormatULSymbolOpt
     spaceAfterFullWidthOrHalfWidth: string
 };
 
@@ -137,8 +139,10 @@ export default function formatted({ textP, vsParam, throwError, otherParam }: { 
         enable,
         formatCodes,
         formatTable,
+        formatTableOpt,
         formatOpt,
         formatULSymbol,
+        formatULSymbolOpt,
         spaceAfterFullWidthOrHalfWidth } = vsParam;
     const { date } = otherParam;
     if (!enable) { return textP; }
@@ -149,17 +153,14 @@ export default function formatted({ textP, vsParam, throwError, otherParam }: { 
         return textP;
     }
 
-    
-        
+
     let text = '\n' + textP + '\n\n';
-
-    const textLast = text;
-
+    const textLast = textP;
 
     // format \r\n to \n,fix
     text = text.replace(expBreakLine, '\n');
 
-    // handler time
+    // handle time
     if (displayTime) {
         text = text.match(expTime) ? text.replace(expTime, `$1${handlerTime(date)}$2\n`) : `<!--\nCreated: ${handlerTime(date)}\nModified: ${handlerTime(date)}\n-->\n\n` + text;
     }
@@ -167,17 +168,17 @@ export default function formatted({ textP, vsParam, throwError, otherParam }: { 
         // format PUNCTUATION_EXP
         text = new FormatPunctuation(text).formatted({ fullWidthTurnHalfWidth, spaceAfterFullWidthOrHalfWidth, expBackQuoteWithSpace, expCodeBlock, expCodeArea, expHref, expListOLLi, expBackQuote, expPunctuationChinese, expPunctuationEnglish, expPunctuationSpacialEnglish, chineseSymbol, englishSymbol, englishCharacterSymbol, chineseCharacterSymbol });
 
-        text = new FormatLink(text).formatted({ expLinkSpace, expLink, expCodeBlock, expTable });
+        text = new FormatLink(text).formatted({ expLinkSpace, expLink, expCodeBlock, expTable, formatTableOpt });
 
-        if (formatTable) {
-            // handler table
-            text = new FormatTable(text).formatted({ expTable, expLink, expCodeBlock, expCodeArea });
+        if (formatTable !== false) {
+            // handle table
+            text = new FormatTable(text).formatted({ expTable, expLink, expCodeBlock, expCodeArea, formatTableOpt });
         }
 
-        // handler js
+        // handle js
         text = new FormatCode(text).formatted({ formatCodes, formatOpt, codeAreaToBlock, expCodeBlock, expList, expCodeArea, expH1, expBackQuote });
 
-        // handler list
+        // handle list
         text = new FormatList(text).formatted({ formatULSymbol, expList, expUL1st, expUL2nd, expUL3th, expListOLLi, expSplitLine, expCodeBlock, expCodeArea });
 
         // text = new FormatHTML(text).formatted({expTagStart,expTagSingle,expTagEnd})
@@ -185,7 +186,7 @@ export default function formatted({ textP, vsParam, throwError, otherParam }: { 
 
         // remove space in `something`+space+breakline
         // https://github.com/sumnow/markdown-formatter/issues/36
-        text = text.replace(/` \n+/g, '`\n\n');
+        text = text.replace(/ `\n+/g, '`\n\n');
 
         text = text.replace(expExtraLine, '\n\n');
 
@@ -201,15 +202,15 @@ export default function formatted({ textP, vsParam, throwError, otherParam }: { 
         text = text.replace(expBold, ' **$1** ');
         text = text.replace(expItalic, ' *$1* ');
         text = text.replace(expLineDeprecated, ' ~~$1~~ ');
+
         // clear begin-line
         text = text.replace(expBeginLine, '');
-
-
         // decrease end line
         // https://github.com/sumnow/markdown-formatter/issues/24
         text = text.replace(expEndLine, '\n');
     } catch (e) {
         text = textLast;
+        console.log(e)
         throwError(`[Error Format]:${e} \n you can ask for help by https://github.com/sumnow/markdown-formatter/issues`);
     }
     return text;

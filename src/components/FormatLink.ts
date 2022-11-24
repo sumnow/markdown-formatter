@@ -9,8 +9,8 @@ export class FormatLink extends FormatComponent {
         this.text = text;
     }
 
-    public formatted({ expLinkSpace, expLink, expCodeBlock, expTable }: {
-        expLinkSpace: RegExp, expLink: RegExp, expCodeBlock: RegExp, expTable: RegExp
+    public formatted({ expLinkSpace, expLink, expCodeBlock, expTable, formatTableOpt }: {
+        expLinkSpace: RegExp, expLink: RegExp, expCodeBlock: RegExp, expTable: RegExp, formatTableOpt: Options.TypeFormatTableOpt
     }): string {
         // this.outputBeforeInfo()
         this.text = removeReplace({
@@ -25,7 +25,7 @@ export class FormatLink extends FormatComponent {
                     text.match(expLink).forEach(e => {
                         const textRemoveLinkSymbol = e.replace(/\n\>\ /g, '\n');
                         if (textRemoveLinkSymbol.match(expTable)) {
-                            const textResult = `\n${new FormatTableTool().reformat(textRemoveLinkSymbol)}`.replace(/\n\|/g, '\n> |');
+                            const textResult = `\n${new FormatTableTool(formatTableOpt.chineseCharterWidth).reformat(textRemoveLinkSymbol)}`.replace(/\n\|/g, '\n> |');
                             const _reg = new RegExp(escapeStringRegexp(e));
                             text = text.replace(_reg, textResult);
                         }

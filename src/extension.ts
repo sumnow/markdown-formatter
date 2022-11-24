@@ -1,7 +1,7 @@
 'use strict';
-import formatted from './format';
-
 import * as vscode from 'vscode';
+
+import formatted from './format';
 
 // get configure from vscode `markdown-formater` at user's preference file `setting.json`
 
@@ -12,11 +12,12 @@ let displayTime: boolean = config.get<boolean>('displayTime', false);
 let enable: boolean = config.get<boolean>('enable', true);
 var formatCodes: boolean = config.get<boolean>('formatCodes', true);
 let formatTable: boolean = config.get<boolean>('formatTable', false);
+let formatTableOpt: Options.TypeFormatTableOpt = config.get<Options.TypeFormatTableOpt>('formatTableOpt', { chineseCharterWidth: 2 });
 let formatOpt: any = config.get<any>('formatOpt', {});
 let formatULSymbol: boolean = config.get<boolean>('formatULSymbol', true);
+let formatULSymbolOpt: Options.TypeFormatULSymbolOpt = config.get<Options.TypeFormatULSymbolOpt>('formatULSymbolOpt', { "tag": ["*", "+", "-"] });
 let spaceAfterFullWidthOrHalfWidth: string = config.get<string>('spaceAfterFullWidthOrHalfWidth', 'half');
 
-spaceAfterFullWidthOrHalfWidth
 vscode.workspace.onDidChangeConfiguration(_ => {
     config = vscode.workspace.getConfiguration('markdownFormatter');
     fullWidthTurnHalfWidth = config.get<string>('fullWidthTurnHalfWidth', 'auto');
@@ -24,9 +25,11 @@ vscode.workspace.onDidChangeConfiguration(_ => {
     displayTime = config.get<boolean>('displayTime', false);
     enable = config.get<boolean>('enable', true);
     formatTable = config.get<boolean>('formatTable', false);
+    formatTableOpt = config.get<Options.TypeFormatTableOpt>('formatTable', { chineseCharterWidth: 2 });
     formatCodes = config.get<boolean>('formatCodes', true);
     formatOpt = config.get<any>('formatOpt', {});
     formatULSymbol = config.get<boolean>('formatULSymbol', true);
+    formatULSymbolOpt = config.get<Options.TypeFormatULSymbolOpt>('formatULSymbolOpt', { "tag": ["*", "+", "-"] });
     spaceAfterFullWidthOrHalfWidth = config.get<string>('spaceAfterFullWidthOrHalfWidth', 'half');
 });
 
@@ -43,7 +46,6 @@ export function activate(context: vscode.ExtensionContext) {
             const start = new vscode.Position(0, 0);
             const end = new vscode.Position(document.lineCount - 1, document.lineAt(document.lineCount - 1).text.length);
             const range = new vscode.Range(start, end);
-            console.log(`text , ${document.getText(range)}`)
             let text = formatted({
                 textP: document.getText(range),
                 vsParam: {
@@ -53,8 +55,10 @@ export function activate(context: vscode.ExtensionContext) {
                     enable,
                     formatCodes,
                     formatTable,
+                    formatTableOpt,
                     formatOpt,
                     formatULSymbol,
+                    formatULSymbolOpt,
                     spaceAfterFullWidthOrHalfWidth,
                 },
                 throwError: vscode.window.showInformationMessage,

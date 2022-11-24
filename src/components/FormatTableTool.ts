@@ -1,5 +1,7 @@
 export class FormatTableTool {
-    constructor() {
+    proportion: number
+    constructor(proportion) {
+        this.proportion = proportion
     }
     splitStringToTable(str) {
         return this.trim(String(str)).split('\n').map(function (row) {
@@ -9,18 +11,19 @@ export class FormatTableTool {
         });
     }
     getMaxLengthPerColumn(table) {
-        return table[0].map((str, columnIndex) => {
+        return table[0].map((_, columnIndex) => {
             return this.getMaxLength(this.getColumn(table, columnIndex));
         });
     }
     getMaxLength(array) {
+        const self = this
         // chinese character
         var reg = /[\u4e00-\u9fa5]/g;
         return array.reduce(function (max, item) {
             var _length = item.length;
             // handler chinese
             if (!(item instanceof Array) && reg.test(item)) {
-                _length = _length - item.match(reg).length + Math.floor((item.match(reg).length) / 3 * 5);
+                _length = _length - item.match(reg).length + Math.floor((item.match(reg).length) * self.proportion);
             }
             return Math.max(max, _length);
         }, 0);
@@ -65,7 +68,7 @@ export class FormatTableTool {
         var reg = /[\u4e00-\u9fa5]/g;
         var _length = str.length;
         if (reg.test(str)) {
-            _length = _length - str.match(reg).length + Math.ceil((str.match(reg).length) / 3 * 5);
+            _length = _length - str.match(reg).length + Math.ceil((str.match(reg).length) * this.proportion);
         }
         return this.getPadding(len - _length) + str;
     }
@@ -73,7 +76,7 @@ export class FormatTableTool {
         var reg = /[\u4e00-\u9fa5]/g;
         var _length = str.length;
         if (reg.test(str)) {
-            _length = _length - str.match(reg).length + Math.ceil((str.match(reg).length) / 3 * 5);
+            _length = _length - str.match(reg).length + Math.ceil((str.match(reg).length) * this.proportion);
         }
         return str + this.getPadding(len - _length);
     }
@@ -81,7 +84,7 @@ export class FormatTableTool {
         var reg = /[\u4e00-\u9fa5]/g;
         var _length = str.length;
         if (reg.test(str)) {
-            _length = _length - str.match(reg).length + Math.ceil((str.match(reg).length) / 3 * 5);
+            _length = _length - str.match(reg).length + Math.ceil((str.match(reg).length) * this.proportion);
         }
         var l = (len - _length) / 2;
         return this.getPadding(Math.ceil(l)) + str + this.getPadding(Math.floor(l));
