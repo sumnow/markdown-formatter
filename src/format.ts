@@ -5,6 +5,7 @@ import { FormatCode } from './components/FormatCode';
 import { FormatLink } from './components/FormatLink';
 // import { FormatHTML } from './components/FormatHTML';
 import { handlerTime } from './utils/handlerTime';
+import { FormatSpecialFont } from './components/FormatSpecialFont';
 
 type VscodeObjType = {
     fullWidthTurnHalfWidth: string
@@ -58,7 +59,7 @@ const expQuoteAfterBreakLine = /\n\ `([^`\n]+)`\ /g;
 // issue: https://github.com/sumnow/markdown-formatter/issues/48
 const expBackQuoteWithSpace = /\ `([^`\n]+)`\ /g;
 // image link
-const expImage = /([^[])(\!\[[^\n]+\]\([^\n]+\))/g;
+const expImage = /([^[])(\!\[[^\n]+\]\([^\n]+\)\ *)/g;
 
 
 // split line 
@@ -111,10 +112,10 @@ const expTagStart = /<(?:[^\/])(?:[^"'>]|"[^"]*"|'[^']*')*[^\/]>/g;
 const expTagSingle = /<(?:[^\/])(?:[^"'>]|"[^"]*"|'[^']*')*\/>/g;
 const expTagEnd = /<\/(?:[^"'>]|"[^"]*"|'[^']*')*>/g;
 
-const expItalic = /\*\ (`[^`]+`)\ \*/g;
-const expBold = /\*\*\ (`[^`]+`)\ \*\*/g;
-const expItalicBold = /\*\*\*\ (`[^`]+`)\ \*\*\*/g;
-const expLineDeprecated = /\~\~\ (`[^`]+`)\ \~\~/g;
+const expItalic = /\ *\*([^\n]+)\*\ */g;
+const expBold = /\ *\*\*([^\n]+)\*\*\ */g;
+const expItalicBold = /\ *\*\*\*([^\n]+)\*\*\*\ */g;
+const expLineDeprecated = /\ *\~\~([^\n]+)\~\~\ */g;
 
 /**
  * format sort:
@@ -179,8 +180,15 @@ export default function formatted({ textP, vsParam, throwError, otherParam }: { 
         text = new FormatCode(text).formatted({ formatCodes, formatOpt, codeAreaToBlock, expCodeBlock, expList, expCodeArea, expH1, expBackQuote });
 
         // handle list
-        text = new FormatList(text).formatted({ formatULSymbol, expList, expUL1st, expUL2nd, expUL3th, expListOLLi, expSplitLine, expCodeBlock, expCodeArea });
+        text = new FormatList(text).formatted({ formatULSymbol, expList, expUL1st, expUL2nd, expUL3th, expListOLLi, expSplitLine, expCodeBlock, expCodeArea,formatULSymbolOpt });
 
+
+        text = new FormatSpecialFont(text).formatted({
+            expItalicBold,
+            expBold,
+            expItalic,
+            expLineDeprecated,
+        })
         // text = new FormatHTML(text).formatted({expTagStart,expTagSingle,expTagEnd})
         // text = text.replace(expBackQuote, ' `$1` ')
 
@@ -188,20 +196,22 @@ export default function formatted({ textP, vsParam, throwError, otherParam }: { 
         // https://github.com/sumnow/markdown-formatter/issues/36
         text = text.replace(/ `\n+/g, '`\n\n');
 
-        text = text.replace(expExtraLine, '\n\n');
-
         text = text.replace(expQuoteAfterBreakLine, '\n`$1` ');
         text = text.replace(expHeaders, '\n\n' + '$1' + '\n\n');
         // text = text.replace(expH1, '$1' + '\n\n')
         text = text.replace(expImage, '$1\n\n' + '$2' + '\n\n');
+
+        text = text.replace(expExtraLine, '\n\n');
+
         text = text.replace(expCodeBlock, '\n\n```' + '$1\n$2' + '```\n\n');
         // text = text.replace(expLink, '\n\n' + '$1' + '\n\n')
         // text = text.replace(expLinkSpace, '\n' + '$1 $2')
 
-        text = text.replace(expItalicBold, ` ***$1*** `);
-        text = text.replace(expBold, ' **$1** ');
-        text = text.replace(expItalic, ' *$1* ');
-        text = text.replace(expLineDeprecated, ' ~~$1~~ ');
+       
+        // text = text.replace(expItalicBold, ` ***$1*** `);
+        // text = text.replace(expBold, ' **$1** ');
+        // text = text.replace(expItalic, ' *$1* ');
+        // text = text.replace(expLineDeprecated, ' ~~$1~~ ');
 
         // clear begin-line
         text = text.replace(expBeginLine, '');

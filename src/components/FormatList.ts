@@ -24,11 +24,11 @@ export class FormatList extends FormatComponent {
             }
         });
     }
-    private formatUL(text, { formatULSymbol, expUL1st, expUL2nd, expUL3th }: { formatULSymbol: Boolean, expUL1st: RegExp, expUL2nd: RegExp, expUL3th: RegExp }) {
+    private formatUL(text, { formatULSymbol, expUL1st, expUL2nd, expUL3th, formatULSymbolOpt }: { formatULSymbol: Boolean, expUL1st: RegExp, expUL2nd: RegExp, expUL3th: RegExp, formatULSymbolOpt: Options.TypeFormatULSymbolOpt }) {
         if (formatULSymbol) {
-            text = text.replace(expUL1st, '\n* ' + '$1');
-            text = text.replace(expUL2nd, '\n  + ' + '$1');
-            text = text.replace(expUL3th, '\n    - ' + '$1');
+            text = text.replace(expUL1st, '\n' + formatULSymbolOpt.tag[0] + ' $1');
+            text = text.replace(expUL2nd, '\n' + '  ' + formatULSymbolOpt.tag[1] + ' $1');
+            text = text.replace(expUL3th, '\n' + '    ' + formatULSymbolOpt.tag[2] + ' $1');
         }
         return text;
     }
@@ -50,7 +50,7 @@ export class FormatList extends FormatComponent {
             });
         }
     }
-    public formatted({ formatULSymbol, expList, expUL1st, expUL2nd, expUL3th, expListOLLi, expSplitLine, expCodeBlock, expCodeArea }): string {
+    public formatted({ formatULSymbol, expList, expUL1st, expUL2nd, expUL3th, expListOLLi, expSplitLine, expCodeBlock, expCodeArea, formatULSymbolOpt }): string {
         // this.outputBeforeInfo()
         // format list
         this.formatLineBetween({ expList, expCodeBlock, expCodeArea });
@@ -61,7 +61,7 @@ export class FormatList extends FormatComponent {
             text: this.text,
             reg: [expSplitLine, expCodeBlock],
             func(text: String) {
-                text = self.formatUL(text, { formatULSymbol, expUL1st, expUL2nd, expUL3th });
+                text = self.formatUL(text, { formatULSymbol, expUL1st, expUL2nd, expUL3th, formatULSymbolOpt });
                 return text;
             }
         });
