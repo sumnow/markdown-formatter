@@ -34,7 +34,7 @@ function getTemp2() {
 }
 
 
-const _local_time = new Date();
+const _local_time = new Date(0);
 
 
 describe('[*]Test utils function', () => {

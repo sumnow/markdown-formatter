@@ -6,9 +6,11 @@ function generateVsCodeParam(obj = {}) {
         , formatCodes: true
         , formatOpt: {}
         , formatTable: false
+        , formatTableOpt: { chineseCharterWidth: 2 }
         , formatULSymbol: true
+        , formatULSymbolOpt: { tag: ['*', '+', '-'] }
         , fullWidthTurnHalfWidth: "auto"
-        , spaceAfterFullWidthOrHalfWidth: "half"
+        , spaceAfterFullWidthOrHalfWidth: "half",
     }
 
     return { ...common, ...obj }
@@ -39,7 +41,7 @@ function getFormatParam(textP, otherParam, vscodeParam, throwError) {
         vscodeParam = generateVsCodeParam(vscodeParam)
     }
     if (otherParam.date) {
-        otherParam.date = new Date();
+        otherParam.date = new Date(0);
     }
     const params = { textP, vsParam: vscodeParam, otherParam, throwError: throwError && typeof throwError === 'function' ? throwError : () => void 0, }
     return params

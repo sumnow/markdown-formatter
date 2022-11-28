@@ -1,8 +1,24 @@
 const assert = require('assert');
 const { getFormatParam, generateTimeHeader, generateVsCodeParam } = require('./test.params')
 const format = require('../out/src/format').default;
-const _local_time = new Date();
+const _local_time = new Date(0);
 
+
+
+
+function getDefaultTextTemp() {
+    const c = `# Test Punctuation
+
+English first english,symbol English then
+English first chinese，symbolEnglish then
+中文先中，符中文后
+中文先英,符中文后
+中文先,English Then
+中文先，English Then
+English first,中文后
+English first，中文后`
+    return c
+}
 function getTemp1() {
     return generateVsCodeParam({
         formatTable: true
@@ -74,18 +90,9 @@ function getTemp10() {
 describe('[PUN] Test PUN feature', () => {
 
 
-    it(`test Punctuation when set half function`, () => {
+    it(`test Punctuation when set all punctuation to half-width, and space only after half-width half`, () => {
         assert.equal(
-            format(getFormatParam(`# Test Punctuation
-
-English first english,symbol English then
-English first chinese，symbolEnglish then
-中文先中，符中文后
-中文先英,符中文后
-中文先,English Then
-中文先，English Then
-English first,中文后
-English first，中文后`, {}, getTemp9())),
+            format(getFormatParam(getDefaultTextTemp(), {}, getTemp9())),
             `# Test Punctuation
 
 English first english, symbol English then
@@ -99,18 +106,25 @@ English first, 中文后
 `
         )
     });
-    it(`test Punctuation when set full function`, () => {
+    it(`test Punctuation when change all punctuation to half-width, and set space only after full-width`, () => {
         assert.equal(
-            format(getFormatParam(`# Test Punctuation
+            format(getFormatParam(getDefaultTextTemp(), {}, getTemp8())),
+            `# Test Punctuation
 
 English first english,symbol English then
-English first chinese，symbolEnglish then
-中文先中，符中文后
+English first chinese,symbolEnglish then
+中文先中,符中文后
 中文先英,符中文后
 中文先,English Then
-中文先，English Then
+中文先,English Then
 English first,中文后
-English first，中文后`, {}, getTemp8())),
+English first,中文后
+`
+        )
+    });
+    it(`test Punctuation  when change all  punctuation to half-width, and all punctuation have space`, () => {
+        assert.equal(
+            format(getFormatParam(getDefaultTextTemp(), {}, getTemp6())),
             `# Test Punctuation
 
 English first english, symbol English then
@@ -124,53 +138,19 @@ English first, 中文后
 `
         )
     });
-    it(`test Punctuation when set all function`, () => {
+    it(`test Punctuation when change all punctuation to half-width and set all punctuation have no space`, () => {
         assert.equal(
-            format(getFormatParam(`# Test Punctuation
-
-English first english,symbol English then
-English first chinese，symbolEnglish then
-中文先中，符中文后
-中文先英,符中文后
-中文先,English Then
-中文先，English Then
-English first,中文后
-English first，中文后`, {}, getTemp6())),
+            format(getFormatParam(getDefaultTextTemp(), {}, getTemp7())),
             `# Test Punctuation
 
-English first english, symbol English then
-English first chinese, symbolEnglish then
-中文先中, 符中文后
-中文先英, 符中文后
-中文先, English Then
-中文先, English Then
-English first, 中文后
-English first, 中文后
-`
-        )
-    });
-    it(`test Punctuation when neither function`, () => {
-        assert.equal(
-            format(getFormatParam(`# Test Punctuation
-
 English first english,symbol English then
-English first chinese，symbolEnglish then
-中文先中，符中文后
+English first chinese,symbolEnglish then
+中文先中,符中文后
 中文先英,符中文后
 中文先,English Then
-中文先，English Then
+中文先,English Then
 English first,中文后
-English first，中文后`, {}, getTemp7())),
-            `# Test Punctuation
-
-English first english, symbol English then
-English first chinese, symbolEnglish then
-中文先中, 符中文后
-中文先英, 符中文后
-中文先, English Then
-中文先, English Then
-English first, 中文后
-English first, 中文后
+English first,中文后
 `
         )
     });

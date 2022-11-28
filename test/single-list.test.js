@@ -1,7 +1,7 @@
 const assert = require('assert');
 const { getFormatParam, generateTimeHeader, generateVsCodeParam } = require('./test.params')
 const format = require('../out/src/format').default;
-const _local_time = new Date();
+const _local_time = new Date(0);
 
 function getTemp1() {
     return generateVsCodeParam({
@@ -11,6 +11,7 @@ function getTemp1() {
 
 function getTemp2() {
     return generateVsCodeParam({
+        formatULSymbolOpt: { tag: ['*', '*', '*'] }
     })
 }
 
@@ -74,7 +75,34 @@ function getTemp10() {
 describe('[LIST] Test single feature', () => {
 
 
-    it(`test list function`, () => {
+    it(`test list function for *+-`, () => {
+        assert.equal(format(getFormatParam(`# Test list
+1. first
+2. second
+3. third
+* first
+* second
+* third
+  * second-first
+  * second-second
+    * third-first
+    * third-second
+`, {}, getTemp1())), `# Test list
+1. first
+2. second
+3. third
+* first
+* second
+* third
+  + second-first
+  + second-second
+    - third-first
+    - third-second
+`)
+    });
+
+
+    it(`test list function for ***`, () => {
         assert.equal(format(getFormatParam(`# Test list
 1. first
 2. second
@@ -93,10 +121,10 @@ describe('[LIST] Test single feature', () => {
 * first
 * second
 * third
-  + second-first
-  + second-second
-    - third-first
-    - third-second
+  * second-first
+  * second-second
+    * third-first
+    * third-second
 `)
     });
 
@@ -115,7 +143,7 @@ describe('[LIST] Test single feature', () => {
 9. ninth
 10. tenth
 11. eleven
-`, {}, getTemp2())), `# Test list
+`, {}, getTemp1())), `# Test list
 01. first
 02. second
 03. third

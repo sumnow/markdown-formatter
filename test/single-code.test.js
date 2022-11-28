@@ -1,7 +1,7 @@
 const assert = require('assert');
 const { getFormatParam, generateTimeHeader, generateVsCodeParam } = require('./test.params')
 const format = require('../out/src/format').default;
-const _local_time = new Date();
+const _local_time = new Date(0);
 
 function getTemp1() {
     return generateVsCodeParam({

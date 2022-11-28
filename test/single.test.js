@@ -1,7 +1,7 @@
 const assert = require('assert');
 const { getFormatParam, generateTimeHeader, generateVsCodeParam } = require('./test.params')
 const format = require('../out/src/format').default;
-const _local_time = new Date();
+const _local_time = new Date(0);
 
 function getTemp1() {
     return generateVsCodeParam({
@@ -134,12 +134,11 @@ i am image ![image](http://image.second.png) end image
 
 i am image 
 
-![image](http://image.second.png)
+![image](http://image.second.png) 
 
 end image
 
-
-![image](http://image.thrid.png)
+![image](http://image.thrid.png) 
 
 test me
 `)
@@ -149,6 +148,7 @@ test me
         assert.equal(format(getFormatParam(`# Test special font
 first*q*second**a**third***z***forth~~w~~fifth
 `, {}, getTemp2())), `# Test special font
+
 first *q* second **a** third ***z*** forth ~~w~~ fifth
 `)
     });
@@ -198,6 +198,17 @@ first *q* second **a** third ***z*** forth ~~w~~ fifth
 ### third line
 `)
     });
+
+
+    it(`test \` in Adifferent wrap`, () => {
+        assert.equal(format(getFormatParam("# Test qua\nasd`zxc`qwe\n`asd`zxcqwe\nasdzxc`qwe`", {}, getTemp3())),
+            `# Test qua
+asd \`zxc\` qwe
+\`asd\` zxcqwe
+asdzxc \`qwe\`
+`)
+    });
+
 
 });
 

@@ -1,7 +1,7 @@
 const assert = require('assert');
 const { getFormatParam, generateTimeHeader, generateVsCodeParam } = require('./test.params')
 const format = require('../out/src/format').default;
-const _local_time = new Date();
+const _local_time = new Date(0);
 
 function getTemp1() {
     return generateVsCodeParam({
@@ -72,7 +72,7 @@ function getTemp10() {
 }
 
 describe('[TABLE] Test single feature', () => {
-    it(`test table function`, () => {
+    it(`test table function all english`, () => {
         assert.equal(format(getFormatParam(`# Test table
 table is
 apple| banana |cat| dog
@@ -89,7 +89,7 @@ table is
     });
 
 
-    it(`test table function`, () => {
+    it(`test table function all english in link`, () => {
         assert.equal(format(getFormatParam(`# Test table
 table is
 > apple| banana |cat| dog
@@ -106,7 +106,7 @@ table is
     });
 
 
-    it(`test table function`, () => {
+    it(`test table function include chinese`, () => {
         assert.equal(format(getFormatParam(`# Test table
 table is
 苹果| 香蕉 |猫| 狗
@@ -116,13 +116,28 @@ is a|is b|is c|is d
 
 table is
 
-| 苹果  |  香蕉  |  猫  | 狗   |
-|-------|-------|------|------|
-| is a  | is b  | is c | is d |
+| 苹果 | 香蕉 | 猫   | 狗   |
+|------|------|------|------|
+| is a | is b | is c | is d |
 `)
     });
 
 
+    it(`test table function include chinese in link`, () => {
+        assert.equal(format(getFormatParam(`# Test table
+table is
+> 苹果| 香蕉 |猫| 狗
+> ---|---|---|---
+> is a|is b|is c|is d
+`, {}, getTemp1())), `# Test table
+
+table is
+
+> | 苹果 | 香蕉 | 猫   | 狗   |
+> |------|------|------|------|
+> | is a | is b | is c | is d |
+`)
+    });
 
 
 
