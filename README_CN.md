@@ -10,7 +10,7 @@
 
 安装完成以后, 你可能需要重新启动你的vscode. 
 
-在任何 `.md` 为后缀的 `markdown` 标准文件中, 都可以使用 `shift+option+f` (osx) 或者 `ctrl+shift+f` (window) 快速格式化代码. 
+在任何 `.md` 为后缀的 `markdown` 标准文件中, 都可以使用 `shift+option+f` (Macos) 或者 `ctrl+shift+f` (window) 快速格式化代码. 
 
 ![example.gif](https://raw.githubusercontent.com/sumnow/markdown-formatter/master/images/example.gif)
 
@@ -133,31 +133,40 @@
 
 ## 配置
 
-```typescript
-// 是否启用格式化
-enable = config.get <boolean> ('enable', true); 
-// 将配置里的全角符号转化为半角符号, 例如 `，：；！“”‘’（）？。` 
-// 当设置为 'auto' 的时候, 自动根据上下文转换符号
-// 当设置为 '_' 或者 '' 的时候, 不转换符号
-fullWidthTurnHalfWidth = config.get<string>('fullWidthTurnHalfWidth', 'auto'); 
-// 转换代码块为代码区，默认为''（空字符）,不转换
-// 可以设置为任意合法英文
-// 只有设置成js或者javascript，才会按照js语言语法格式化
-codeAreaToBlock = config.get<string>('codeAreaToBlock', '');
-// 是否格式化代码
-// false: 不格式化代码
-formatCodes = config.get<boolean>('formatCodes', true);
-// 配置js-beautify
-// {}: beautifyjs的配置设置
-formatOpt = config.get<any> ('formatOpt', {}); 
-// 格式化无序列表的符号 
-// * > + > -
-formatULSymbol = config.get<boolean>('formatULSymbol', true); 
-// 各种符号后是否需要空格
-spaceAfterFullWidthOrHalfWidth = config.get<string>('spaceAfterFullWidthOrHalfWidth', 'half'); 
+```js
+{
+  // 是否启用格式化
+  "markdownFormatter.enable": true,
+  // 将配置里的全角符号转化为半角符号, 例如 `，：；！“”‘’（）？。` 
+  // 当设置为 '_' 或者 '' 的时候, 不转换符号
+  // 当设置为 'auto' 的时候, 自动根据上下文转换符号
+  "markdownFormatter.fullWidthTurnHalfWidth": "auto",
+  // 转换代码块为代码区，默认为''（空字符）,不转换
+  // 可以设置为任意合法英文
+  // 只有设置成js或者javascript，才会按照js语言语法格式化
+  "markdownFormatter.codeAreaToBlock": '',
+  // 是否格式化代码
+  // false: 不格式化代码
+  "markdownFormatter.formatCodes" : true,
+  // 配置js-beautify
+  // {}: beautifyjs的配置设置
+  // 配置 `js-beautify` , 可以参考[这里](https://github.com/beautify-web/js-beautify)
+  "markdownFormatter.formatOpt": {},
+  // 格式化无序列表的符号 
+  "markdownFormatter.formatULSymbol": true,
+  // * > + > -
+  "markdownFormatter.formatULSymbolOpt": {'tag': ["*", "+", "-"]},
+  // 各种符号后是否需要空格
+  "markdownFormatter.spaceAfterFullWidthOrHalfWidth": 'half',
+  // 在文件首部显示时间
+  "markdownFormatter.displayTime" : false,
+  // 是否格式化表格
+  "markdownFormatter.formatTable" : false,
+  // 代表中文是英文的二倍宽度,用于表格对齐
+  "markdownFormatter.formatTableOpt" : {'chineseCharterWidth': 2},
+}
 ```
 
-配置 `js-beautify` , 可以参考[这里](https://github.com/beautify-web/js-beautify)
 
 ### 配置示例
 
@@ -177,9 +186,18 @@ spaceAfterFullWidthOrHalfWidth = config.get<string>('spaceAfterFullWidthOrHalfWi
 "markdownFormatter.formatOpt": {
   "indent_size": 2
 },
+
+"markdownFormatter.formatULSymbol": true,
+
+"markdownFormatter.formatULSymbolOpt": {'tag': ["*", "+", "-"]},
+"markdownFormatter.formatTable" : true,
+// 配合下面在[markdown]中设置的等宽字体, 中文是英文的二倍宽度,用于表格对齐
+"markdownFormatter.formatTableOpt" : {'chineseCharterWidth': 2},
+
+
 "[markdown]": {
   // 自动保存
-  "editor.formatOnSave": true,
+  "editor.formatOnSave": false,
   // 显示空格
   "editor.renderWhitespace": "all",
   // 快速补全
@@ -194,7 +212,11 @@ spaceAfterFullWidthOrHalfWidth = config.get<string>('spaceAfterFullWidthOrHalfWi
   // 使用enter 接受提示
   "editor.acceptSuggestionOnEnter": "on",
   // 默认格式化工具为本工具
-  "editor.defaultFormatter": "mervin.markdown-formatter"
+  "editor.defaultFormatter": "mervin.markdown-formatter",
+  
+  // 在markdown文件内,使用中文宽度为英文2倍的等宽字体: losevka, 表格的排版会更好看
+  "editor.fontFamily": "losevka, monospace"
+
 }
 ```
 

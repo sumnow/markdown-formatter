@@ -200,15 +200,15 @@ first *q* second **a** third ***z*** forth ~~w~~ fifth
     });
 
 
-    it(`test \` in Adifferent wrap`, () => {
+    it(`test \` in different wrap`, () => {
         assert.equal(format(getFormatParam("# Test qua\nasd`zxc`qwe\n`asd`zxcqwe\nasdzxc`qwe`", {}, getTemp3())),
             `# Test qua
+
 asd \`zxc\` qwe
 \`asd\` zxcqwe
 asdzxc \`qwe\`
 `)
     });
-
 
 });
 

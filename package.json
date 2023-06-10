@@ -2,7 +2,7 @@
     "name": "markdown-formatter",
     "displayName": "markdown-formatter",
     "description": " A Markdown Plugin for code artist",
-    "version": "0.9.8",
+    "version": "0.9.9",
     "icon": "icon.png",
     "publisher": "mervin",
     "keywords": [
@@ -55,6 +55,13 @@
                     "default": false,
                     "description": "Format the table, if the table contains pictures or different languages, please do not open this"
                 },
+                "markdownFormatter.formatTableOpt": {
+                    "type": "object",
+                    "default": {
+                        "chineseCharterWidth": 2
+                    },
+                    "description": "use for different width font align in table"
+                },
                 "markdownFormatter.formatOpt": {
                     "type": "object",
                     "default": {},
@@ -64,6 +71,13 @@
                     "type": "boolean",
                     "default": true,
                     "description": "Enable/disable formatted unordered list symbol."
+                },
+                "markdownFormatter.formatULSymbolOpt": {
+                    "type": "object",
+                    "default": {
+                        "tag": ["*", "+", "-"]
+                    },
+                    "description": "unordered list tag , first-tag>second-tag>third-tag"
                 },
                 "markdownFormatter.spaceAfterFullWidthOrHalfWidth": {
                     "type": "string",
@@ -78,12 +92,10 @@
                 }
             }
         },
-        "snippets": [
-            {
-                "language": "markdown",
-                "path": "./snippets/markdown.json"
-            }
-        ]
+        "snippets": [{
+            "language": "markdown",
+            "path": "./snippets/markdown.json"
+        }]
     },
     "scripts": {
         "vscode:prepublish": "yarn run package",

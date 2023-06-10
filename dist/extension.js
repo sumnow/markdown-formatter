@@ -2,18 +2,26 @@
 /******/ 	var __webpack_modules__ = ([
 /* 0 */,
 /* 1 */
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("vscode");;
+
+/***/ }),
+/* 2 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-const FormatList_1 = __webpack_require__(2);
-const FormatTable_1 = __webpack_require__(7);
-const FormatPunctuation_1 = __webpack_require__(9);
-const FormatCode_1 = __webpack_require__(10);
-const FormatLink_1 = __webpack_require__(15);
+const FormatList_1 = __webpack_require__(3);
+const FormatTable_1 = __webpack_require__(8);
+const FormatPunctuation_1 = __webpack_require__(10);
+const FormatCode_1 = __webpack_require__(11);
+const FormatLink_1 = __webpack_require__(16);
 // import { FormatHTML } from './components/FormatHTML';
-const handlerTime_1 = __webpack_require__(16);
+const handlerTime_1 = __webpack_require__(17);
+const FormatSpecialFont_1 = __webpack_require__(18);
 // console.log(vscode.window.activeTextEditor.options.tabSize)
 // replace symbol
 const chineseSymbol = `，、：；！“”‘’（）？。`;
@@ -44,7 +52,7 @@ const expQuoteAfterBreakLine = /\n\ `([^`\n]+)`\ /g;
 // issue: https://github.com/sumnow/markdown-formatter/issues/48
 const expBackQuoteWithSpace = /\ `([^`\n]+)`\ /g;
 // image link
-const expImage = /([^[])(\!\[[^\n]+\]\([^\n]+\))/g;
+const expImage = /([^[])(\!\[[^\n]+\]\([^\n]+\)\ *)/g;
 // split line 
 const expSplitLine = /\- \- \-( \-)*/g;
 // list 
@@ -85,10 +93,10 @@ const expDisableBlock = /<!-- md-ignore-block-start --> [\S\s]+? <!-- md-ignore-
 const expTagStart = /<(?:[^\/])(?:[^"'>]|"[^"]*"|'[^']*')*[^\/]>/g;
 const expTagSingle = /<(?:[^\/])(?:[^"'>]|"[^"]*"|'[^']*')*\/>/g;
 const expTagEnd = /<\/(?:[^"'>]|"[^"]*"|'[^']*')*>/g;
-const expItalic = /\*\ (`[^`]+`)\ \*/g;
-const expBold = /\*\*\ (`[^`]+`)\ \*\*/g;
-const expItalicBold = /\*\*\*\ (`[^`]+`)\ \*\*\*/g;
-const expLineDeprecated = /\~\~\ (`[^`]+`)\ \~\~/g;
+const expItalic = /\ *\*([^\n]+)\*\ */g;
+const expBold = /\ *\*\*([^\n]+)\*\*\ */g;
+const expItalicBold = /\ *\*\*\*([^\n]+)\*\*\*\ */g;
+const expLineDeprecated = /\ *\~\~([^\n]+)\~\~\ */g;
 /**
  * format sort:
  * 1. handler time
@@ -106,7 +114,7 @@ const expLineDeprecated = /\~\~\ (`[^`]+`)\ \~\~/g;
  * 13. clear break line and end line
  */
 function formatted({ textP, vsParam, throwError, otherParam }) {
-    const { fullWidthTurnHalfWidth, codeAreaToBlock, displayTime, enable, formatCodes, formatTable, formatOpt, formatULSymbol, spaceAfterFullWidthOrHalfWidth } = vsParam;
+    const { fullWidthTurnHalfWidth, codeAreaToBlock, displayTime, enable, formatCodes, formatTable, formatTableOpt, formatOpt, formatULSymbol, formatULSymbolOpt, spaceAfterFullWidthOrHalfWidth } = vsParam;
     const { date } = otherParam;
     if (!enable) {
         return textP;
@@ -117,42 +125,48 @@ function formatted({ textP, vsParam, throwError, otherParam }) {
         return textP;
     }
     let text = '\n' + textP + '\n\n';
-    const textLast = text;
+    const textLast = textP;
     // format \r\n to \n,fix
     text = text.replace(expBreakLine, '\n');
-    // handler time
+    // handle time
     if (displayTime) {
         text = text.match(expTime) ? text.replace(expTime, `$1${handlerTime_1.handlerTime(date)}$2\n`) : `<!--\nCreated: ${handlerTime_1.handlerTime(date)}\nModified: ${handlerTime_1.handlerTime(date)}\n-->\n\n` + text;
     }
     try {
         // format PUNCTUATION_EXP
         text = new FormatPunctuation_1.FormatPunctuation(text).formatted({ fullWidthTurnHalfWidth, spaceAfterFullWidthOrHalfWidth, expBackQuoteWithSpace, expCodeBlock, expCodeArea, expHref, expListOLLi, expBackQuote, expPunctuationChinese, expPunctuationEnglish, expPunctuationSpacialEnglish, chineseSymbol, englishSymbol, englishCharacterSymbol, chineseCharacterSymbol });
-        text = new FormatLink_1.FormatLink(text).formatted({ expLinkSpace, expLink, expCodeBlock, expTable });
-        if (formatTable) {
-            // handler table
-            text = new FormatTable_1.FormatTable(text).formatted({ expTable, expLink, expCodeBlock, expCodeArea });
+        text = new FormatLink_1.FormatLink(text).formatted({ expLinkSpace, expLink, expCodeBlock, expTable, formatTableOpt });
+        if (formatTable !== false) {
+            // handle table
+            text = new FormatTable_1.FormatTable(text).formatted({ expTable, expLink, expCodeBlock, expCodeArea, formatTableOpt });
         }
-        // handler js
+        // handle js
         text = new FormatCode_1.FormatCode(text).formatted({ formatCodes, formatOpt, codeAreaToBlock, expCodeBlock, expList, expCodeArea, expH1, expBackQuote });
-        // handler list
-        text = new FormatList_1.FormatList(text).formatted({ formatULSymbol, expList, expUL1st, expUL2nd, expUL3th, expListOLLi, expSplitLine, expCodeBlock, expCodeArea });
+        // handle list
+        text = new FormatList_1.FormatList(text).formatted({ formatULSymbol, expList, expUL1st, expUL2nd, expUL3th, expListOLLi, expSplitLine, expCodeBlock, expCodeArea, formatULSymbolOpt });
+        text = new FormatSpecialFont_1.FormatSpecialFont(text).formatted({
+            expItalicBold,
+            expBold,
+            expItalic,
+            expLineDeprecated,
+        });
         // text = new FormatHTML(text).formatted({expTagStart,expTagSingle,expTagEnd})
         // text = text.replace(expBackQuote, ' `$1` ')
         // remove space in `something`+space+breakline
         // https://github.com/sumnow/markdown-formatter/issues/36
-        text = text.replace(/` \n+/g, '`\n\n');
-        text = text.replace(expExtraLine, '\n\n');
+        text = text.replace(/ `\n+/g, '`\n\n');
         text = text.replace(expQuoteAfterBreakLine, '\n`$1` ');
         text = text.replace(expHeaders, '\n\n' + '$1' + '\n\n');
         // text = text.replace(expH1, '$1' + '\n\n')
         text = text.replace(expImage, '$1\n\n' + '$2' + '\n\n');
+        text = text.replace(expExtraLine, '\n\n');
         text = text.replace(expCodeBlock, '\n\n```' + '$1\n$2' + '```\n\n');
         // text = text.replace(expLink, '\n\n' + '$1' + '\n\n')
         // text = text.replace(expLinkSpace, '\n' + '$1 $2')
-        text = text.replace(expItalicBold, ` ***$1*** `);
-        text = text.replace(expBold, ' **$1** ');
-        text = text.replace(expItalic, ' *$1* ');
-        text = text.replace(expLineDeprecated, ' ~~$1~~ ');
+        // text = text.replace(expItalicBold, ` ***$1*** `);
+        // text = text.replace(expBold, ' **$1** ');
+        // text = text.replace(expItalic, ' *$1* ');
+        // text = text.replace(expLineDeprecated, ' ~~$1~~ ');
         // clear begin-line
         text = text.replace(expBeginLine, '');
         // decrease end line
@@ -161,6 +175,7 @@ function formatted({ textP, vsParam, throwError, otherParam }) {
     }
     catch (e) {
         text = textLast;
+        console.log(e);
         throwError(`[Error Format]:${e} \n you can ask for help by https://github.com/sumnow/markdown-formatter/issues`);
     }
     return text;
@@ -169,16 +184,16 @@ exports.default = formatted;
 
 
 /***/ }),
-/* 2 */
+/* 3 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.FormatList = void 0;
-const FormatComponent_1 = __webpack_require__(3);
-var escapeStringRegexp = __webpack_require__(4);
-const removeReplace_1 = __webpack_require__(5);
+const FormatComponent_1 = __webpack_require__(4);
+var escapeStringRegexp = __webpack_require__(5);
+const removeReplace_1 = __webpack_require__(6);
 class FormatList extends FormatComponent_1.FormatComponent {
     constructor() {
         super(...arguments);
@@ -205,11 +220,11 @@ class FormatList extends FormatComponent_1.FormatComponent {
             }
         });
     }
-    formatUL(text, { formatULSymbol, expUL1st, expUL2nd, expUL3th }) {
+    formatUL(text, { formatULSymbol, expUL1st, expUL2nd, expUL3th, formatULSymbolOpt }) {
         if (formatULSymbol) {
-            text = text.replace(expUL1st, '\n* ' + '$1');
-            text = text.replace(expUL2nd, '\n  + ' + '$1');
-            text = text.replace(expUL3th, '\n    - ' + '$1');
+            text = text.replace(expUL1st, '\n' + formatULSymbolOpt.tag[0] + ' $1');
+            text = text.replace(expUL2nd, '\n' + '  ' + formatULSymbolOpt.tag[1] + ' $1');
+            text = text.replace(expUL3th, '\n' + '    ' + formatULSymbolOpt.tag[2] + ' $1');
         }
         return text;
     }
@@ -230,7 +245,7 @@ class FormatList extends FormatComponent_1.FormatComponent {
             });
         }
     }
-    formatted({ formatULSymbol, expList, expUL1st, expUL2nd, expUL3th, expListOLLi, expSplitLine, expCodeBlock, expCodeArea }) {
+    formatted({ formatULSymbol, expList, expUL1st, expUL2nd, expUL3th, expListOLLi, expSplitLine, expCodeBlock, expCodeArea, formatULSymbolOpt }) {
         // this.outputBeforeInfo()
         // format list
         this.formatLineBetween({ expList, expCodeBlock, expCodeArea });
@@ -241,7 +256,7 @@ class FormatList extends FormatComponent_1.FormatComponent {
             text: this.text,
             reg: [expSplitLine, expCodeBlock],
             func(text) {
-                text = self.formatUL(text, { formatULSymbol, expUL1st, expUL2nd, expUL3th });
+                text = self.formatUL(text, { formatULSymbol, expUL1st, expUL2nd, expUL3th, formatULSymbolOpt });
                 return text;
             }
         });
@@ -255,7 +270,7 @@ exports.FormatList = FormatList;
 
 
 /***/ }),
-/* 3 */
+/* 4 */
 /***/ ((__unused_webpack_module, exports) => {
 
 "use strict";
@@ -271,7 +286,7 @@ exports.FormatComponent = FormatComponent;
 
 
 /***/ }),
-/* 4 */
+/* 5 */
 /***/ ((module) => {
 
 "use strict";
@@ -289,40 +304,53 @@ module.exports = function (str) {
 
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.removeReplace = void 0;
-var escapeStringRegexp = __webpack_require__(4);
-const handlerReplace_1 = __webpack_require__(6);
+var escapeStringRegexp = __webpack_require__(5);
+const handlerReplace_1 = __webpack_require__(7);
+function getUUID() {
+    return Number(Math.random().toString().substring(2, 16) + Date.now()).toString(36);
+}
 function removeReplace({ text, reg, func, type }) {
-    const _tempRegArr = [];
+    const _tempRegArr = {};
     reg.forEach(e => {
         // e = escapeStringRegexp(`${e}`)
         const _arr = text.match(e);
-        if (_arr) 
-        // replace second param need to escaped
-        {
-            _tempRegArr.push(..._arr.map(e => { return { content: (e), hasN: e.includes('\n') }; }));
+        if (_arr) {
+            _arr.forEach(e => {
+                const l = getUUID();
+                if (_tempRegArr[l]) {
+                    console.log(`duplicate key ${_tempRegArr[l]}`);
+                }
+                _tempRegArr[l] = {
+                    content: e,
+                    hasN: e.includes('\n')
+                };
+            });
+            // replace second param need to escaped
+            // _tempRegArr.push(..._arr.map(e => { return { content: (e), hasN: e.includes('\n') }; }));
         }
     });
-    if (_tempRegArr && _tempRegArr.length > 0) {
-        _tempRegArr.forEach((e, i) => {
-            const _reg = new RegExp(escapeStringRegexp(e.content), 'g');
-            text = text.replace(_reg, e.hasN ? `\n\n$mdFormatter$${i}$mdFormatter$\n\n` : `$mdFormatter$${i}$mdFormatter$`);
+    const _tempKeyList = Object.keys(_tempRegArr);
+    if (_tempKeyList && _tempKeyList.length > 0) {
+        _tempKeyList.forEach((e) => {
+            const _reg = new RegExp(escapeStringRegexp(_tempRegArr[e].content), 'g');
+            text = text.replace(_reg, _tempRegArr[e].hasN ? `\n\n$mdFormatter$${e}$mdFormatter$\n\n` : `$mdFormatter$${e}$mdFormatter$`);
         });
         // if (type) {
         //     console.log(`=== === ${type} --- start === ===`);
         //     console.log(text);
         // }
         text = func(text);
-        _tempRegArr.forEach((e, i) => {
-            let _mdFormatter = e.hasN ? `\n\n$mdFormatter$${i}$mdFormatter$\n\n` : `$mdFormatter$${i}$mdFormatter$`;
+        _tempKeyList.forEach((e) => {
+            let _mdFormatter = _tempRegArr[e].hasN ? `\n\n$mdFormatter$${e}$mdFormatter$\n\n` : `$mdFormatter$${e}$mdFormatter$`;
             const _reg = new RegExp(escapeStringRegexp(_mdFormatter), 'g');
-            text = handlerReplace_1.default(text, _reg, _tempRegArr[i].content);
+            text = handlerReplace_1.default(text, _reg, _tempRegArr[e].content);
         });
         // if (type) {
         //     console.log(`--- --- handler ${type} after --- ---`);
@@ -339,7 +367,7 @@ exports.removeReplace = removeReplace;
 
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ ((__unused_webpack_module, exports) => {
 
 "use strict";
@@ -354,17 +382,17 @@ exports.default = onReplace;
 
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.FormatTable = void 0;
-const FormatComponent_1 = __webpack_require__(3);
-const FormatTableTool_1 = __webpack_require__(8);
-const removeReplace_1 = __webpack_require__(5);
-var escapeStringRegexp = __webpack_require__(4);
+const FormatComponent_1 = __webpack_require__(4);
+const FormatTableTool_1 = __webpack_require__(9);
+const removeReplace_1 = __webpack_require__(6);
+var escapeStringRegexp = __webpack_require__(5);
 class FormatTable extends FormatComponent_1.FormatComponent {
     constructor() {
         super(...arguments);
@@ -373,14 +401,14 @@ class FormatTable extends FormatComponent_1.FormatComponent {
     super(text) {
         this.text = text;
     }
-    formatted({ expTable, expLink, expCodeBlock, expCodeArea }) {
+    formatted({ expTable, expLink, expCodeBlock, expCodeArea, formatTableOpt }) {
         this.text = removeReplace_1.removeReplace({
             text: this.text, reg: [expLink, expCodeBlock, expCodeArea], func(text) {
                 const _tableArr = text.match(expTable);
                 if (_tableArr && _tableArr.length > 0) {
                     _tableArr.forEach((table) => {
                         var re = new RegExp(escapeStringRegexp(String(table)), 'g');
-                        text = text.replace(re, (substring) => '\n\n' + new FormatTableTool_1.FormatTableTool().reformat(table) + '\n\n');
+                        text = text.replace(re, (substring) => '\n\n' + new FormatTableTool_1.FormatTableTool(formatTableOpt.chineseCharterWidth).reformat(table) + '\n\n');
                     });
                 }
                 return text;
@@ -393,7 +421,7 @@ exports.FormatTable = FormatTable;
 
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ ((__unused_webpack_module, exports) => {
 
 "use strict";
@@ -401,7 +429,8 @@ exports.FormatTable = FormatTable;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.FormatTableTool = void 0;
 class FormatTableTool {
-    constructor() {
+    constructor(proportion) {
+        this.proportion = proportion;
     }
     splitStringToTable(str) {
         return this.trim(String(str)).split('\n').map(function (row) {
@@ -411,18 +440,19 @@ class FormatTableTool {
         });
     }
     getMaxLengthPerColumn(table) {
-        return table[0].map((str, columnIndex) => {
+        return table[0].map((_, columnIndex) => {
             return this.getMaxLength(this.getColumn(table, columnIndex));
         });
     }
     getMaxLength(array) {
+        const self = this;
         // chinese character
         var reg = /[\u4e00-\u9fa5]/g;
         return array.reduce(function (max, item) {
             var _length = item.length;
             // handler chinese
             if (!(item instanceof Array) && reg.test(item)) {
-                _length = _length - item.match(reg).length + Math.floor((item.match(reg).length) / 3 * 5);
+                _length = _length - item.match(reg).length + Math.floor((item.match(reg).length) * self.proportion);
             }
             return Math.max(max, _length);
         }, 0);
@@ -467,7 +497,7 @@ class FormatTableTool {
         var reg = /[\u4e00-\u9fa5]/g;
         var _length = str.length;
         if (reg.test(str)) {
-            _length = _length - str.match(reg).length + Math.ceil((str.match(reg).length) / 3 * 5);
+            _length = _length - str.match(reg).length + Math.ceil((str.match(reg).length) * this.proportion);
         }
         return this.getPadding(len - _length) + str;
     }
@@ -475,7 +505,7 @@ class FormatTableTool {
         var reg = /[\u4e00-\u9fa5]/g;
         var _length = str.length;
         if (reg.test(str)) {
-            _length = _length - str.match(reg).length + Math.ceil((str.match(reg).length) / 3 * 5);
+            _length = _length - str.match(reg).length + Math.ceil((str.match(reg).length) * this.proportion);
         }
         return str + this.getPadding(len - _length);
     }
@@ -483,7 +513,7 @@ class FormatTableTool {
         var reg = /[\u4e00-\u9fa5]/g;
         var _length = str.length;
         if (reg.test(str)) {
-            _length = _length - str.match(reg).length + Math.ceil((str.match(reg).length) / 3 * 5);
+            _length = _length - str.match(reg).length + Math.ceil((str.match(reg).length) * this.proportion);
         }
         var l = (len - _length) / 2;
         return this.getPadding(Math.ceil(l)) + str + this.getPadding(Math.floor(l));
@@ -525,15 +555,15 @@ exports.FormatTableTool = FormatTableTool;
 
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.FormatPunctuation = void 0;
-const removeReplace_1 = __webpack_require__(5);
-const FormatComponent_1 = __webpack_require__(3);
+const removeReplace_1 = __webpack_require__(6);
+const FormatComponent_1 = __webpack_require__(4);
 class FormatPunctuation extends FormatComponent_1.FormatComponent {
     constructor() {
         super(...arguments);
@@ -613,21 +643,21 @@ exports.FormatPunctuation = FormatPunctuation;
 
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.FormatCode = void 0;
-const FormatComponent_1 = __webpack_require__(3);
-const removeReplace_1 = __webpack_require__(5);
-const handlerReplace_1 = __webpack_require__(6);
-var escapeStringRegexp = __webpack_require__(4);
-var beautify = __webpack_require__(11);
-var beautifyJs = __webpack_require__(11).js;
-var beautifyCss = __webpack_require__(11).css;
-var beautifyHtml = __webpack_require__(11).html;
+const FormatComponent_1 = __webpack_require__(4);
+const removeReplace_1 = __webpack_require__(6);
+const handlerReplace_1 = __webpack_require__(7);
+var escapeStringRegexp = __webpack_require__(5);
+var beautify = __webpack_require__(12);
+var beautifyJs = __webpack_require__(12).js;
+var beautifyCss = __webpack_require__(12).css;
+var beautifyHtml = __webpack_require__(12).html;
 class FormatCode extends FormatComponent_1.FormatComponent {
     constructor() {
         super(...arguments);
@@ -706,7 +736,7 @@ exports.FormatCode = FormatCode;
 
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ ((module, exports, __webpack_require__) => {
 
 "use strict";
@@ -779,9 +809,9 @@ function get_beautify(js_beautify, css_beautify, html_beautify) {
 if (true) {
   // Add support for AMD ( https://github.com/amdjs/amdjs-api/wiki/AMD#defineamd-property- )
   !(__WEBPACK_AMD_DEFINE_ARRAY__ = [
-    __webpack_require__(12),
     __webpack_require__(13),
-    __webpack_require__(14)
+    __webpack_require__(14),
+    __webpack_require__(15)
   ], __WEBPACK_AMD_DEFINE_RESULT__ = (function(js_beautify, css_beautify, html_beautify) {
     return get_beautify(js_beautify, css_beautify, html_beautify);
   }).apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
@@ -789,7 +819,7 @@ if (true) {
 } else {}
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ ((module, exports) => {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* AUTO-GENERATED. DO NOT MODIFY. */
@@ -4792,7 +4822,7 @@ if (true) {
 
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ ((module, exports) => {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* AUTO-GENERATED. DO NOT MODIFY. */
@@ -6415,7 +6445,7 @@ if (true) {
 
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ ((module, exports, __webpack_require__) => {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* AUTO-GENERATED. DO NOT MODIFY. */
@@ -9509,9 +9539,9 @@ var style_html = legacy_beautify_html;
 /* Footer */
 if (true) {
     // Add support for AMD ( https://github.com/amdjs/amdjs-api/wiki/AMD#defineamd-property- )
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, __webpack_require__(12), __webpack_require__(13)], __WEBPACK_AMD_DEFINE_RESULT__ = (function(requireamd) {
-        var js_beautify = __webpack_require__(12);
-        var css_beautify = __webpack_require__(13);
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, __webpack_require__(13), __webpack_require__(14)], __WEBPACK_AMD_DEFINE_RESULT__ = (function(requireamd) {
+        var js_beautify = __webpack_require__(13);
+        var css_beautify = __webpack_require__(14);
 
         return {
             html_beautify: function(html_source, options) {
@@ -9526,17 +9556,17 @@ if (true) {
 
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.FormatLink = void 0;
-const removeReplace_1 = __webpack_require__(5);
-const FormatComponent_1 = __webpack_require__(3);
-const FormatTableTool_1 = __webpack_require__(8);
-var escapeStringRegexp = __webpack_require__(4);
+const removeReplace_1 = __webpack_require__(6);
+const FormatComponent_1 = __webpack_require__(4);
+const FormatTableTool_1 = __webpack_require__(9);
+var escapeStringRegexp = __webpack_require__(5);
 class FormatLink extends FormatComponent_1.FormatComponent {
     constructor() {
         super(...arguments);
@@ -9545,7 +9575,7 @@ class FormatLink extends FormatComponent_1.FormatComponent {
     super(text) {
         this.text = text;
     }
-    formatted({ expLinkSpace, expLink, expCodeBlock, expTable }) {
+    formatted({ expLinkSpace, expLink, expCodeBlock, expTable, formatTableOpt }) {
         // this.outputBeforeInfo()
         this.text = removeReplace_1.removeReplace({
             text: this.text,
@@ -9559,7 +9589,7 @@ class FormatLink extends FormatComponent_1.FormatComponent {
                     text.match(expLink).forEach(e => {
                         const textRemoveLinkSymbol = e.replace(/\n\>\ /g, '\n');
                         if (textRemoveLinkSymbol.match(expTable)) {
-                            const textResult = `\n${new FormatTableTool_1.FormatTableTool().reformat(textRemoveLinkSymbol)}`.replace(/\n\|/g, '\n> |');
+                            const textResult = `\n${new FormatTableTool_1.FormatTableTool(formatTableOpt.chineseCharterWidth).reformat(textRemoveLinkSymbol)}`.replace(/\n\|/g, '\n> |');
                             const _reg = new RegExp(escapeStringRegexp(e));
                             text = text.replace(_reg, textResult);
                         }
@@ -9580,7 +9610,7 @@ exports.FormatLink = FormatLink;
 
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ ((__unused_webpack_module, exports) => {
 
 "use strict";
@@ -9594,11 +9624,48 @@ exports.handlerTime = handlerTime;
 
 
 /***/ }),
-/* 17 */
-/***/ ((module) => {
+/* 18 */
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
-module.exports = require("vscode");;
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.FormatSpecialFont = void 0;
+const FormatComponent_1 = __webpack_require__(4);
+const removeReplace_1 = __webpack_require__(6);
+class FormatSpecialFont extends FormatComponent_1.FormatComponent {
+    constructor() {
+        super(...arguments);
+        this.name = 'special';
+    }
+    super(text) {
+        this.text = text;
+    }
+    formatted({ expItalicBold, expBold, expItalic, expLineDeprecated }) {
+        let t = this.text;
+        t = t.replace(expLineDeprecated, ' ~~$1~~ ');
+        t = t.replace(expItalicBold, ` ***$1*** `);
+        t = removeReplace_1.removeReplace({
+            text: t,
+            reg: [expItalicBold,],
+            func: (tex) => {
+                tex = tex.replace(expBold, ' **$1** ');
+                tex = removeReplace_1.removeReplace({
+                    text: tex,
+                    reg: [expBold],
+                    func: (tx) => {
+                        tx = tx.replace(expItalic, ' *$1* ');
+                        return tx;
+                    }
+                });
+                return tex;
+            }
+        });
+        return t;
+    }
+}
+exports.FormatSpecialFont = FormatSpecialFont;
+
 
 /***/ })
 /******/ 	]);
@@ -9636,8 +9703,8 @@ var exports = __webpack_exports__;
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.deactivate = exports.activate = void 0;
-const format_1 = __webpack_require__(1);
-const vscode = __webpack_require__(17);
+const vscode = __webpack_require__(1);
+const format_1 = __webpack_require__(2);
 // get configure from vscode `markdown-formater` at user's preference file `setting.json`
 let config = vscode.workspace.getConfiguration('markdownFormatter');
 let fullWidthTurnHalfWidth = config.get('fullWidthTurnHalfWidth', 'auto');
@@ -9646,10 +9713,11 @@ let displayTime = config.get('displayTime', false);
 let enable = config.get('enable', true);
 var formatCodes = config.get('formatCodes', true);
 let formatTable = config.get('formatTable', false);
+let formatTableOpt = config.get('formatTableOpt', { chineseCharterWidth: 2 });
 let formatOpt = config.get('formatOpt', {});
 let formatULSymbol = config.get('formatULSymbol', true);
+let formatULSymbolOpt = config.get('formatULSymbolOpt', { "tag": ["*", "+", "-"] });
 let spaceAfterFullWidthOrHalfWidth = config.get('spaceAfterFullWidthOrHalfWidth', 'half');
-spaceAfterFullWidthOrHalfWidth;
 vscode.workspace.onDidChangeConfiguration(_ => {
     config = vscode.workspace.getConfiguration('markdownFormatter');
     fullWidthTurnHalfWidth = config.get('fullWidthTurnHalfWidth', 'auto');
@@ -9657,9 +9725,11 @@ vscode.workspace.onDidChangeConfiguration(_ => {
     displayTime = config.get('displayTime', false);
     enable = config.get('enable', true);
     formatTable = config.get('formatTable', false);
+    formatTableOpt = config.get('formatTable', { chineseCharterWidth: 2 });
     formatCodes = config.get('formatCodes', true);
     formatOpt = config.get('formatOpt', {});
     formatULSymbol = config.get('formatULSymbol', true);
+    formatULSymbolOpt = config.get('formatULSymbolOpt', { "tag": ["*", "+", "-"] });
     spaceAfterFullWidthOrHalfWidth = config.get('spaceAfterFullWidthOrHalfWidth', 'half');
 });
 // this method is called when your extension is activated
@@ -9674,7 +9744,6 @@ function activate(context) {
             const start = new vscode.Position(0, 0);
             const end = new vscode.Position(document.lineCount - 1, document.lineAt(document.lineCount - 1).text.length);
             const range = new vscode.Range(start, end);
-            console.log(`text , ${document.getText(range)}`);
             let text = format_1.default({
                 textP: document.getText(range),
                 vsParam: {
@@ -9684,8 +9753,10 @@ function activate(context) {
                     enable,
                     formatCodes,
                     formatTable,
+                    formatTableOpt,
                     formatOpt,
                     formatULSymbol,
+                    formatULSymbolOpt,
                     spaceAfterFullWidthOrHalfWidth,
                 },
                 throwError: vscode.window.showInformationMessage,

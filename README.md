@@ -10,7 +10,7 @@ This is a tool to improve the writing efficiency of markdown, not only provides 
 
 After the installation is complete, you may need to restart your vscode.
 
-In any `markdown` standard file with a `.md` suffix, you can use `shift+option+f`(osx) or `ctrl+shift+f`(window) to quickly format the code. 
+In any `markdown` standard file with a `.md` suffix, you can use `shift+option+f`(Macos) or `ctrl+shift+f`(window) to quickly format the code. 
 
 ![example.gif](https://raw.githubusercontent.com/sumnow/markdown-formatter/master/images/example.gif)
 
@@ -32,7 +32,7 @@ If you want to ignore the current file ( not to be formatted ), you can insert b
 
 ```js
 "[markdown]": {
-  // 快速补全
+  // auto fill
   "editor.quickSuggestions": {
     "other": true,
     "comments": true,
@@ -71,7 +71,7 @@ Typing `ul` or `ol`
 
 * For `，,。;；！、？：` add a space after these symbols; 
 * `，：；！“”‘’（）？。` , unify it as a half-width character(Optional); 
-* `.!?` add a space after these symbols, if before uppercases or chineses; 
+* `.!?` add a space after these symbols, if before uppercase letters or chinese; 
 * Supports converting Chinese symbols into full-width symbols according to context, or converting English into half-width symbols; 
 * a space before and after the back-quote, which wrapped by back-quote will not be formatted; 
 
@@ -81,7 +81,7 @@ Typing `ul` or `ol`
 * Empty a line for the code block; 
 * The table is aligned automatically; 
 * Empty a line for the link block; 
-* erase dulicated line; 
+* erase duplicated line; 
 
 #### table
 
@@ -132,28 +132,38 @@ The default is not formatted. If `codeAreaToBlock` is any language name, such as
 
 ## Config
 
-```typescript
-// enable/disable markdown-formatter
-enable = config.get <boolean> ('enable', true); 
-// fullwidth character translate into halfwidth character, such as `，：；！“”‘’（）？。`
-// Automatically convert symbols based on context when set to 'auto'
-// Don't convert symbols based on context when set to '_' or ''
-fullWidthTurnHalfWidth = config.get<string>('fullWidthTurnHalfWidth', 'auto');
-// Convert code block to code area, and the default is not converted. 
-// You can set it by any meaningful strings
-// if it is set to js, it will be formatted according to the js language syntax.
-codeAreaToBlock = config.get<string>('codeAreaToBlock', '');
-// enable/disable format code
-// false: disable format code
-formatCodes = config.get<boolean>('formatCodes', true);
-// config beautifyjs
-// {}: config beautifyjs
-formatOpt = config.get<any> ('formatOpt', {}); 
-// Format the symbols of the unordered list
-// * > + > -
-formatULSymbol = config.get<boolean>('formatULSymbol', true);
-// Whether a space is required after the full-width or half-width symbol
-spaceAfterFullWidthOrHalfWidth = config.get<string>('spaceAfterFullWidthOrHalfWidth', 'half');
+```js
+{
+  // 是否启用格式化
+  "markdownFormatter.enable": true,
+  // 将配置里的全角符号转化为半角符号, 例如 `，：；！“”‘’（）？。` 
+  // 当设置为 '_' 或者 '' 的时候, 不转换符号
+  // 当设置为 'auto' 的时候, 自动根据上下文转换符号
+  "markdownFormatter.fullWidthTurnHalfWidth": "auto",
+  // 转换代码块为代码区，默认为''（空字符）,不转换
+  // 可以设置为任意合法英文
+  // 只有设置成js或者javascript，才会按照js语言语法格式化
+  "markdownFormatter.codeAreaToBlock": '',
+  // 是否格式化代码
+  // false: 不格式化代码
+  "markdownFormatter.formatCodes" : true,
+  // 配置js-beautify
+  // {}: beautifyjs的配置设置
+  // 配置 `js-beautify` , 可以参考[这里](https://github.com/beautify-web/js-beautify)
+  "markdownFormatter.formatOpt": {},
+  // 格式化无序列表的符号 
+  "markdownFormatter.formatULSymbol": true,
+  // * > + > -
+  "markdownFormatter.formatULSymbolOpt": {'tag': ["*", "+", "-"]},
+  // 各种符号后是否需要空格
+  "markdownFormatter.spaceAfterFullWidthOrHalfWidth": 'half',
+  // 在文件首部显示时间
+  "markdownFormatter.displayTime" : false,
+  // 是否格式化表格
+  "markdownFormatter.formatTable" : false,
+  // 代表中文是英文的二倍宽度,用于表格对齐
+  "markdownFormatter.formatTableOpt" : {'chineseCharterWidth': 2},
+}
 ```
 
 How to config `beautifyjs` , you can click[here](https://github.com/beautify-web/js-beautify)
@@ -176,6 +186,13 @@ You can refer to my configuration:
 "markdownFormatter.formatOpt": {
   "indent_size": 2
 },
+
+"markdownFormatter.formatULSymbol": true,
+"markdownFormatter.formatULSymbolOpt": {'tag': ["*", "+", "-"]},
+"markdownFormatter.formatTable" : true,
+// if you use 2-width chinese font, otherwise not set
+"markdownFormatter.formatTableOpt" : {'chineseCharterWidth': 2},
+
 "[markdown]": {
   // auto save
   "editor.formatOnSave": false,
